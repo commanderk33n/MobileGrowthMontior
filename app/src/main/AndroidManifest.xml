@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pinlock.AppLockActivity"
+            android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"></activity>
     </application>

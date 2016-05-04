@@ -1,7 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 /**
- * Created by eikood on 04.05.2016.
+ *  Main Application
  */
 import android.app.Application;
 
@@ -14,5 +14,4 @@ public class App extends Application {
         super.onCreate();
         LockManager.getInstance().enableAppLock(this);
     }
-
 }

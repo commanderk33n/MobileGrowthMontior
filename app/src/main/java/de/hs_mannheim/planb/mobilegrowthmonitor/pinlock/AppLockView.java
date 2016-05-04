@@ -25,8 +25,8 @@ import android.widget.Toast;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
-public class AppLockActivity extends BaseActivity {
-    public static final String TAG = "AppLockActivity";
+public class AppLockView extends BaseActivity {
+    public static final String TAG = "AppLockView";
 
     private int type = -1;
     private String oldPasscode = null;
@@ -42,18 +42,18 @@ public class AppLockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_applock_view);
+        setContentView(R.layout.applock_view);
 
         tvMessage = (TextView) findViewById(R.id.tv_message);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String message = extras.getString(AppLock.MESSAGE);
+            String message = extras.getString(AbstractAppLock.MESSAGE);
             if (message != null) {
                 tvMessage.setText(message);
             }
 
-            type = extras.getInt(AppLock.TYPE, -1);
+            type = extras.getInt(AbstractAppLock.TYPE, -1);
         }
 
         filters = new InputFilter[2];
@@ -104,16 +104,16 @@ public class AppLockActivity extends BaseActivity {
 
         switch (type) {
 
-            case AppLock.DISABLE_PASSLOCK:
+            case AbstractAppLock.DISABLE_PASSLOCK:
                 this.setTitle("Disable Passcode");
                 break;
-            case AppLock.ENABLE_PASSLOCK:
+            case AbstractAppLock.ENABLE_PASSLOCK:
                 this.setTitle("Enable Passcode");
                 break;
-            case AppLock.CHANGE_PASSWORD:
+            case AbstractAppLock.CHANGE_PASSWORD:
                 this.setTitle("Change Passcode");
                 break;
-            case AppLock.UNLOCK_PASSWORD:
+            case AbstractAppLock.UNLOCK_PASSWORD:
                 this.setTitle("Unlock Passcode");
                 break;
         }
@@ -136,7 +136,7 @@ public class AppLockActivity extends BaseActivity {
 
         switch (type) {
 
-            case AppLock.DISABLE_PASSLOCK:
+            case AbstractAppLock.DISABLE_PASSLOCK:
                 if (LockManager.getInstance().getAppLock().checkPasscode(passLock)) {
                     setResult(RESULT_OK);
                     LockManager.getInstance().getAppLock().setPasscode(null);
@@ -146,7 +146,7 @@ public class AppLockActivity extends BaseActivity {
                 }
                 break;
 
-            case AppLock.ENABLE_PASSLOCK:
+            case AbstractAppLock.ENABLE_PASSLOCK:
                 if (oldPasscode == null) {
                     tvMessage.setText(R.string.reenter_passcode);
                     oldPasscode = passLock;
@@ -164,16 +164,16 @@ public class AppLockActivity extends BaseActivity {
                 }
                 break;
 
-            case AppLock.CHANGE_PASSWORD:
+            case AbstractAppLock.CHANGE_PASSWORD:
                 if (LockManager.getInstance().getAppLock().checkPasscode(passLock)) {
                     tvMessage.setText(R.string.enter_passcode);
-                    type = AppLock.ENABLE_PASSLOCK;
+                    type = AbstractAppLock.ENABLE_PASSLOCK;
                 } else {
                     onPasscodeError();
                 }
                 break;
 
-            case AppLock.UNLOCK_PASSWORD:
+            case AbstractAppLock.UNLOCK_PASSWORD:
                 if (LockManager.getInstance().getAppLock().checkPasscode(passLock)) {
                     setResult(RESULT_OK);
                     finish();
@@ -189,7 +189,7 @@ public class AppLockActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (type == AppLock.UNLOCK_PASSWORD) {
+        if (type == AbstractAppLock.UNLOCK_PASSWORD) {
             // back to home screen
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
@@ -296,7 +296,7 @@ public class AppLockActivity extends BaseActivity {
         Thread thread = new Thread() {
             public void run() {
                 Animation animation = AnimationUtils.loadAnimation(
-                        AppLockActivity.this, R.anim.shake);
+                        AppLockView.this, R.anim.shake);
                 findViewById(R.id.ll_applock).startAnimation(animation);
                 codeField1.setText("");
                 codeField2.setText("");

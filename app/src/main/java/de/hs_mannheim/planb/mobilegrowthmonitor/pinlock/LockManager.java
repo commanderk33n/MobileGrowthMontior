@@ -8,7 +8,7 @@ import android.app.Application;
 public class LockManager {
 
     private volatile static LockManager instance;
-    private AppLock curAppLocker;
+    private AbstractAppLock curAbstractAppLocker;
 
     public static LockManager getInstance() {
         synchronized (LockManager.class) {
@@ -20,28 +20,28 @@ public class LockManager {
     }
 
     public void enableAppLock(Application app) {
-        if (curAppLocker == null) {
-            curAppLocker = new AppLockImpl(app);
+        if (curAbstractAppLocker == null) {
+            curAbstractAppLocker = new AppLock(app);
         }
-        curAppLocker.enable();
+        curAbstractAppLocker.enable();
     }
 
     public boolean isAppLockEnabled() {
-        if (curAppLocker == null) {
+        if (curAbstractAppLocker == null) {
             return false;
         } else {
             return true;
         }
     }
 
-    public void setAppLock(AppLock appLocker) {
-        if (curAppLocker != null) {
-            curAppLocker.disable();
+    public void setAppLock(AbstractAppLock abstractAppLocker) {
+        if (curAbstractAppLocker != null) {
+            curAbstractAppLocker.disable();
         }
-        curAppLocker = appLocker;
+        curAbstractAppLocker = abstractAppLocker;
     }
 
-    public AppLock getAppLock() {
-        return curAppLocker;
+    public AbstractAppLock getAppLock() {
+        return curAbstractAppLocker;
     }
 }

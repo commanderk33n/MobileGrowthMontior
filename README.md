@@ -1,3 +1,8 @@
-### Mobile Growth Monitor for Android v.0.1
+### Mobile Growth Monitor for Android v0.1
 
-## Here we go....
+# MEP2016 Project - PlanB
+
+# Description:
+
+todo...
+

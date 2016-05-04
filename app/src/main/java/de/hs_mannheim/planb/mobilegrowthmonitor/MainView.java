@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLock;
-import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockActivity;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.LockManager;
 
@@ -35,8 +33,8 @@ public class MainView extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Replace with createProfile", Snackbar.LENGTH_LONG)
+                        .setAction("createProfile", null).show();
             }
         });
 
@@ -56,18 +54,18 @@ public class MainView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.on_off_pin) {
-            int type = LockManager.getInstance().getAppLock().isPasscodeSet() ? AppLock.DISABLE_PASSLOCK
-                    : AppLock.ENABLE_PASSLOCK;
-            Intent intent = new Intent(this, AppLockActivity.class);
-            intent.putExtra(AppLock.TYPE, type);
+            int type = LockManager.getInstance().getAppLock().isPasscodeSet() ? AbstractAppLock.DISABLE_PASSLOCK
+                    : AbstractAppLock.ENABLE_PASSLOCK;
+            Intent intent = new Intent(this, AppLockView.class);
+            intent.putExtra(AbstractAppLock.TYPE, type);
             startActivityForResult(intent, type);
         }
         if (id == R.id.change_pin) {
-            Intent intent = new Intent(this, AppLockActivity.class);
-            intent.putExtra(AppLock.TYPE, AppLock.CHANGE_PASSWORD);
-            intent.putExtra(AppLock.MESSAGE,
+            Intent intent = new Intent(this, AppLockView.class);
+            intent.putExtra(AbstractAppLock.TYPE, AbstractAppLock.CHANGE_PASSWORD);
+            intent.putExtra(AbstractAppLock.MESSAGE,
                     getString(R.string.enter_old_passcode));
-            startActivityForResult(intent, AppLock.CHANGE_PASSWORD);
+            startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
 
         }
         return super.onOptionsItemSelected(item);
@@ -78,10 +76,10 @@ public class MainView extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case AppLock.DISABLE_PASSLOCK:
+            case AbstractAppLock.DISABLE_PASSLOCK:
                 break;
-            case AppLock.ENABLE_PASSLOCK:
-            case AppLock.CHANGE_PASSWORD:
+            case AbstractAppLock.ENABLE_PASSLOCK:
+            case AbstractAppLock.CHANGE_PASSWORD:
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(this, getString(R.string.setup_passcode),
                             Toast.LENGTH_SHORT).show();
