@@ -12,20 +12,12 @@
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView"
     tools:showIn="@layout/main_view">
 
-<ListView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"></ListView>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Camera"
-        android:id="@+id/btn_test"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_profileList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="43dp" />
-
+        android:layout_alignParentTop="true">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

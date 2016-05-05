@@ -28,7 +28,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class CameraView extends BaseActivity {
-    private static String TAG = "CameraView";
+    private static String TAG = CameraView.class.getSimpleName();
 
     private Camera mCamera;
     private CameraPreview mPreview;

@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView">
+
+    <EditText
+        android:id="@+id/et_sex"
+        android:hint="Enter sex"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="right|bottom"
+        android:layout_below="@+id/et_birthday"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp" />
+
+    <EditText
+        android:id="@+id/et_surename"
+        android:hint="Enter surename"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_below="@+id/et_forename"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/et_birthday"
+        android:hint="Enter birthday"
+        android:layout_below="@+id/et_surename"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp" />
+
+    <EditText
+        android:id="@+id/et_forename"
+        android:hint="Enter forename"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="92dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/btn_saveProfile"
+        android:text="Save"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="53dp"
+        android:layout_below="@+id/et_sex"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

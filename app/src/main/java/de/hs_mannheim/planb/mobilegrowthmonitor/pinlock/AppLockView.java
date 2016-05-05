@@ -27,7 +27,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
 public class AppLockView extends BaseActivity {
-    public static final String TAG = "AppLockView";
+    public static final String TAG = AppLockView.class.getSimpleName();
 
     private int type = -1;
     private String oldPasscode = null;

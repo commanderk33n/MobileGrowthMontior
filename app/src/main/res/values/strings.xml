@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MobileGrowthMonitor</string>
-
     <string name="manage_passcode">Manage passcode</string>
     <string name="enter_passcode">Enter passcode</string>
     <string name="enter_old_passcode">Enter old passcode</string>
@@ -10,8 +9,8 @@
     <string name="passcode_wrong">Wrong passcode, please try again.</string>
     <string name="disable_passcode">Disable passcode</string>
     <string name="enable_passcode">Enable passcode</string>
+    <string name="capture_image">Capture Image</string>
 
-    <string name="take_picture">Take Picture</string>
-    <string name="picture_preview">Picture preview</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

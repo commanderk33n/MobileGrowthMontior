@@ -15,7 +15,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class AppLock extends AbstractAppLock implements PageListener {
-    public static final String TAG = "AppLock";
+    public static final String TAG = AppLock.class.getSimpleName();
 
     private static final String PASSWORD_PREFERENCE_KEY = "passcode";
     private static final String PASSWORD_SALT = "7xn7@c$";
