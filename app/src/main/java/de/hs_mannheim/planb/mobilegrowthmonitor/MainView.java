@@ -1,5 +1,10 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
+/**
+ * MainView of MobileGrowthMonitor
+ * Shows all Profiles - add new profiles
+ */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,8 +42,6 @@ public class MainView extends BaseActivity {
                         .setAction("createProfile", null).show();
             }
         });
-
-
     }
 
     @Override

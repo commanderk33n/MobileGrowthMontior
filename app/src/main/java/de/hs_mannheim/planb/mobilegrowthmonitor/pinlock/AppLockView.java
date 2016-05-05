@@ -1,7 +1,8 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * Activity for AppLockView
+ * @layout applock_view.xml
  */
 import android.content.Intent;
 import android.os.Bundle;

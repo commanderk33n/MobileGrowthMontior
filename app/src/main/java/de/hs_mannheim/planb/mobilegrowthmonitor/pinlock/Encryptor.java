@@ -1,7 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * Encryption for the PinCode
  */
 import java.security.MessageDigest;
 import java.util.Locale;
@@ -10,6 +10,11 @@ import android.text.TextUtils;
 
 public class Encryptor {
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     private static String bytes2Hex(byte[] bytes) {
         String hs = "";
         String stmp = "";
@@ -24,6 +29,11 @@ public class Encryptor {
         return hs.toLowerCase(Locale.ENGLISH);
     }
 
+    /**
+     *
+     * @param text
+     * @return
+     */
     public static String getSHA1(String text) {
         String sha1 = null;
         if (TextUtils.isEmpty(text)) {

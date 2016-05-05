@@ -1,7 +1,10 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * Implementation of Applock
+ *
+ * gets/saves/check pincode
+ * TODO: remove sharedPreferences and use SQLite
  */
 
 import android.app.Activity;
@@ -24,6 +27,10 @@ public class AppLock extends AbstractAppLock implements PageListener {
 
     private long lastActive;
 
+    /**
+     *
+     * @param app
+     */
     public AppLock(Application app) {
         super();
         SharedPreferences settings = PreferenceManager
@@ -41,6 +48,11 @@ public class AppLock extends AbstractAppLock implements PageListener {
         BaseActivity.setListener(null);
     }
 
+    /**
+     *
+     * @param passcode
+     * @return
+     */
     public boolean checkPasscode(String passcode) {
         passcode = PASSWORD_SALT + passcode + PASSWORD_SALT;
         passcode = Encryptor.getSHA1(passcode);
@@ -55,6 +67,11 @@ public class AppLock extends AbstractAppLock implements PageListener {
         }
     }
 
+    /**
+     *
+     * @param passcode
+     * @return
+     */
     public boolean setPasscode(String passcode) {
         SharedPreferences.Editor editor = settings.edit();
         if (passcode == null) {
@@ -71,7 +88,10 @@ public class AppLock extends AbstractAppLock implements PageListener {
         return true;
     }
 
-    // Check if we need to show the lock screen at startup
+    /**
+     * Check if we need to show the lock screen at startup
+     * @return
+     */
     public boolean isPasscodeSet() {
         if (settings.contains(PASSWORD_PREFERENCE_KEY)) {
             return true;
@@ -79,6 +99,11 @@ public class AppLock extends AbstractAppLock implements PageListener {
         return false;
     }
 
+    /**
+     *
+     * @param activity
+     * @return
+     */
     private boolean isIgnoredActivity(Activity activity) {
         String clazzName = activity.getClass().getName();
         // ignored activities
@@ -89,6 +114,11 @@ public class AppLock extends AbstractAppLock implements PageListener {
         return false;
     }
 
+    /**
+     *
+     * @param activity
+     * @return
+     */
     private boolean shouldLockSceen(Activity activity) {
         // already unlock
         if (activity instanceof AppLockView) {

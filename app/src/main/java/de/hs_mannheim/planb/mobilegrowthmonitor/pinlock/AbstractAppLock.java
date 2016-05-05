@@ -1,8 +1,10 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * Abstract Class of AppLock
+ * for configuration purposes
  */
+
 import java.util.HashSet;
 
 public abstract class AbstractAppLock {
@@ -14,25 +16,40 @@ public abstract class AbstractAppLock {
     public static final String MESSAGE = "message";
     public static final String TYPE = "type";
 
-    public static final int DEFAULT_TIMEOUT = 60000; // ms
+    public static final int DEFAULT_TIMEOUT = 60000; // timeout in milliseconds
 
     protected int lockTimeOut;
     protected HashSet<String> ignoredActivities;
 
+    /**
+     *
+     * @param timeout
+     */
     public void setTimeout(int timeout) {
         this.lockTimeOut = timeout;
     }
 
+    /**
+     * Constructor for AbstractAppLock
+     */
     public AbstractAppLock() {
         ignoredActivities = new HashSet<String>();
         lockTimeOut = DEFAULT_TIMEOUT;
     }
 
+    /**
+     *
+     * @param clazz
+     */
     public void addIgnoredActivity(Class<?> clazz) {
         String clazzName = clazz.getName();
         this.ignoredActivities.add(clazzName);
     }
 
+    /**
+     *
+     * @param clazz
+     */
     public void removeIgnoredActivity(Class<?> clazz) {
         String clazzName = clazz.getName();
         this.ignoredActivities.remove(clazzName);
@@ -42,10 +59,24 @@ public abstract class AbstractAppLock {
 
     public abstract void disable();
 
+    /**
+     *
+     * @param passcode
+     * @return
+     */
     public abstract boolean setPasscode(String passcode);
 
+    /**
+     *
+     * @param passcode
+     * @return
+     */
     public abstract boolean checkPasscode(String passcode);
 
+    /**
+     *
+     * @return
+     */
     public abstract boolean isPasscodeSet();
 }
 

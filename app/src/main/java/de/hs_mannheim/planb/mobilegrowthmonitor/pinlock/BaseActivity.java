@@ -1,7 +1,8 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * BaseActivity for all Activities of MobileGrowthMonitor
+ * !every Activity must extend BaseActivity so it is AppLock-secured!
  */
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,7 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 /**
- *  Main Application
+ *  Main Application - needed for PinLock all activities
  */
 import android.app.Application;
 

@@ -1,7 +1,9 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 
 /**
- * Created by eikood on 04.05.2016.
+ * LockManager singleton
+ * enables/disables Pinlock
+ *
  */
 import android.app.Application;
 
@@ -19,6 +21,10 @@ public class LockManager {
         return instance;
     }
 
+    /**
+     *
+     * @param app
+     */
     public void enableAppLock(Application app) {
         if (curAbstractAppLocker == null) {
             curAbstractAppLocker = new AppLock(app);
@@ -26,6 +32,10 @@ public class LockManager {
         curAbstractAppLocker.enable();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isAppLockEnabled() {
         if (curAbstractAppLocker == null) {
             return false;
