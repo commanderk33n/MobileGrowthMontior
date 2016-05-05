@@ -13,8 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.imagemanagement.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
@@ -34,14 +36,27 @@ public class MainView extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Button btn_test = (Button) findViewById(R.id.btn_test);
+
+        if (btn_test != null) {
+            btn_test.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   startCam();
+                }
+            });
+        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with createProfile", Snackbar.LENGTH_LONG)
-                        .setAction("createProfile", null).show();
-            }
-        });
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with createProfile", Snackbar.LENGTH_LONG)
+                            .setAction("createProfile", null).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -103,6 +118,13 @@ public class MainView extends BaseActivity {
             onOffPinLock.setTitle(R.string.enable_passcode);
             changePin.setEnabled(false);
         }
+    }
+
+    public void startCam() {
+
+        Intent intent = new Intent(this, CameraView.class);
+
+        startActivity(intent);
     }
 
 

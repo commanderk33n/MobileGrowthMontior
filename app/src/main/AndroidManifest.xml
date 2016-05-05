@@ -7,8 +7,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+
+    <uses-permission android:name="android.hardware.CAMERA" />
+    <uses-feature android:name="android.hardware.camera2" />
+
     <application
-        android:name="de.hs_mannheim.planb.mobilegrowthmonitor.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -27,7 +31,8 @@
         <activity
             android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".imagemanagement.CameraView"></activity>
     </application>
 
 </manifest>

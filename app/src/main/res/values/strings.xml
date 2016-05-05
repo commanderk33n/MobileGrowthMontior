@@ -11,4 +11,7 @@
     <string name="disable_passcode">Disable passcode</string>
     <string name="enable_passcode">Enable passcode</string>
 
+    <string name="take_picture">Take Picture</string>
+    <string name="picture_preview">Picture preview</string>
+
 </resources>
