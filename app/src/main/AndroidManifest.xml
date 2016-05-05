@@ -8,8 +8,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
-    <uses-permission android:name="android.hardware.CAMERA" />
-    <uses-feature android:name="android.hardware.camera2" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+
 
     <application
         android:name=".App"
