@@ -5,5 +5,5 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising;
  */
 public interface Listener {
 
-    void nameToChnge(String name);
+    void deleteProfile(int index);
 }

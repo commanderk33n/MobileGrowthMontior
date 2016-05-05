@@ -8,19 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 /**
- * Created by eikood on 05.05.2016.
+ * Basic SQLiteOpenHelper implementation
  */
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
     private static DbHelper mDbHelper;
-
 
     public static synchronized DbHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
@@ -53,6 +54,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
+            values.put(DbContract.FeedProfile.COLUMN_NAME_ID, profileData.index);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SURENAME, profileData.surename);
             values.put(DbContract.FeedProfile.COLUMN_NAME_FORENAME, profileData.forename);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SEX, profileData.sex);
@@ -76,10 +78,11 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ProfileData profileData = new ProfileData();
+                    profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
                     profileData.surename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURENAME));
                     profileData.forename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FORENAME));
-                    profileData.sex = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
-                    profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+                    profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
+                    profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
                     profileDataList.add(profileData);
                 } while (cursor.moveToNext());
             }
@@ -93,11 +96,11 @@ public class DbHelper extends SQLiteOpenHelper {
         return profileDataList;
     }
 
-    public void deleteProfile(String name) {
+    public void deleteProfile(int index) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             db.beginTransaction();
-            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where surename ='" + name + "'");
+            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where profile_Id ='" + index + "'");
             db.setTransactionSuccessful();
 
         } catch (SQLException e) {
@@ -106,6 +109,4 @@ public class DbHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
-
-
 }

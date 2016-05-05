@@ -131,8 +131,8 @@ public class MainView extends BaseActivity implements Listener {
 
     // Delete profile
     @Override
-    public void nameToChnge(String name) {
-        dbHelper.deleteProfile(name);
+    public void deleteProfile(int index) {
+        dbHelper.deleteProfile(index);
         listAdapter = new ListAdapter(this, dbHelper.getAllProfiles());
         recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -5,33 +5,12 @@
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView">
 
     <EditText
-        android:id="@+id/et_sex"
-        android:hint="Enter sex"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="right|bottom"
-        android:layout_below="@+id/et_birthday"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
-
-    <EditText
         android:id="@+id/et_surename"
         android:hint="Enter surename"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_gravity="left|center_vertical"
         android:layout_below="@+id/et_forename"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="28dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:id="@+id/et_birthday"
-        android:hint="Enter birthday"
-        android:layout_below="@+id/et_surename"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="31dp" />
@@ -42,8 +21,28 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="56dp"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/cb_sex_male"
+        android:layout_marginTop="43dp"
+        android:text="Male"
+        android:layout_below="@+id/et_surename"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/cb_sex_female"
+        android:text="Female"
+        android:layout_below="@+id/cb_sex_male"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -53,8 +52,18 @@
         android:layout_width="150dp"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/et_sex"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dp_birthday"
+        android:layout_below="@+id/cb_sex_female"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:layout_above="@+id/btn_saveProfile"></DatePicker>
 
 </RelativeLayout>

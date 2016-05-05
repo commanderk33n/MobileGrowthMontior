@@ -49,7 +49,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.nameToChnge(dataList.get((Integer) v.getTag()).toString());
+                listener.deleteProfile(dataList.get((Integer) v.getTag()).index);
             }
         });
 
