@@ -18,16 +18,15 @@ public final class DbContract {
     public static abstract class FeedProfile implements BaseColumns {
         public static final String TABLE_NAME = "profile";
         public static final String COLUMN_NAME_ID = "profile_Id";
-        public static final String COLUMN_NAME_SURENAME = "surename";
+        public static final String COLUMN_NAME_SURNAME = "surname";
         public static final String COLUMN_NAME_FORENAME = "forename";
         public static final String COLUMN_NAME_SEX = "sex";
         public static final String COLUMN_NAME_BIRTHDAY = "birthday";
-
     }
 
     public static abstract class FeedMeasurement implements BaseColumns {
         public static final String TABLE_NAME = "measurement";
-        public static final String COLUMN_NAME_ID = "profile_Id";
+        public static final String COLUMN_NAME_ID = "profile_fk";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_SIZE = "size";
         public static final String COLUMN_NAME_WEIGHT = "weight";
@@ -37,12 +36,10 @@ public final class DbContract {
     public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + FeedProfile.TABLE_NAME + "(" +
             FeedProfile._ID + " INTEGER PRIMARY KEY," +
             FeedProfile.COLUMN_NAME_ID + " INTEGER," +
-            FeedProfile.COLUMN_NAME_SURENAME + " TEXT," +
+            FeedProfile.COLUMN_NAME_SURNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_FORENAME + " TEXT," +
             FeedProfile.COLUMN_NAME_SEX + " INTEGER," +
             FeedProfile.COLUMN_NAME_BIRTHDAY + " INTEGER"+ ")";
 
     public static final String PROFILE_ALL_SELECT_QUERY = "SELECT * FROM " + FeedProfile.TABLE_NAME;
-
-
 }
