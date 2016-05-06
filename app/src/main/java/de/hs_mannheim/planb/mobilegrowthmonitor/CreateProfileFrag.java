@@ -22,6 +22,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
  * A simple {@link Fragment} subclass.
  *
  */
+
 public class CreateProfileFrag extends Fragment {
 
 
@@ -39,12 +40,10 @@ public class CreateProfileFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_create_profile, container, false);
         dbHelper = DbHelper.getInstance(mView.getContext());
         surname = (EditText) mView.findViewById(R.id.et_surname);
@@ -84,7 +83,6 @@ public class CreateProfileFrag extends Fragment {
             }
         });
         return mView;
-
     }
 
     @Override

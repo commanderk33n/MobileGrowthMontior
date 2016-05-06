@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
 /**
  * SQLite-Datamodel of MobileGrowthMonitor
  */
+
 public final class DbContract {
 
     private static final String TAG = DbHelper.class.getSimpleName();
@@ -17,7 +18,7 @@ public final class DbContract {
 
     public static abstract class FeedProfile implements BaseColumns {
         public static final String TABLE_NAME = "profile";
-        public static final String COLUMN_NAME_ID = "profile_Id";
+        public static final String COLUMN_NAME_ID = "pId";
         public static final String COLUMN_NAME_SURNAME = "surname";
         public static final String COLUMN_NAME_FORENAME = "forename";
         public static final String COLUMN_NAME_SEX = "sex";
@@ -33,9 +34,8 @@ public final class DbContract {
         public static final String COLUMN_NAME_IMAGE = "image_path";
     }
 
-    public static final String CREATE_PROFILES_TABLE = "CREATE TABLE " + FeedProfile.TABLE_NAME + "(" +
-            FeedProfile._ID + " INTEGER PRIMARY KEY," +
-            FeedProfile.COLUMN_NAME_ID + " INTEGER," +
+    public static final String CREATE_PROFILES_TABLE_QUERY = "CREATE TABLE " + FeedProfile.TABLE_NAME + "(" +
+            FeedProfile.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
             FeedProfile.COLUMN_NAME_SURNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_FORENAME + " TEXT," +
             FeedProfile.COLUMN_NAME_SEX + " INTEGER," +

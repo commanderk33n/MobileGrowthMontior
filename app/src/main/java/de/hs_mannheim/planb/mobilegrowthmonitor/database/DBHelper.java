@@ -36,7 +36,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DbContract.CREATE_PROFILES_TABLE);
+        db.execSQL(DbContract.CREATE_PROFILES_TABLE_QUERY);
     }
 
     @Override
@@ -52,17 +52,12 @@ public class DbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-
             values.put(DbContract.FeedProfile.COLUMN_NAME_SURNAME, profileData.surname);
             values.put(DbContract.FeedProfile.COLUMN_NAME_FORENAME, profileData.forename);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SEX, profileData.sex);
             values.put(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY, profileData.birthday);
-            Long newRowId = db.insertOrThrow(DbContract.FeedProfile.TABLE_NAME, null, values);
-            values.clear();
-            values.put(DbContract.FeedProfile.COLUMN_NAME_ID, newRowId.intValue());
             db.insertOrThrow(DbContract.FeedProfile.TABLE_NAME, null, values);
             db.setTransactionSuccessful();
-
         } catch (SQLException e) {
             e.printStackTrace();
             Log.e(TAG, "Error while trying to add a new profileData to db");
@@ -80,7 +75,7 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ProfileData profileData = new ProfileData();
-                    //profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
+                    profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
                     profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
                     profileData.forename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FORENAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
@@ -102,7 +97,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         try {
             db.beginTransaction();
-            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where "+ DbContract.FeedProfile._ID+" ='" + index + "'");
+            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where "+ DbContract.FeedProfile.COLUMN_NAME_ID+" ='" + index + "'");
             db.setTransactionSuccessful();
 
         } catch (SQLException e) {

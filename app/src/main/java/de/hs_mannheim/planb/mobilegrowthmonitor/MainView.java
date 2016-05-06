@@ -95,7 +95,6 @@ public class MainView extends BaseActivity implements Listener {
             intent.putExtra(AbstractAppLock.MESSAGE,
                     getString(R.string.enter_old_passcode));
             startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,5 +151,4 @@ public class MainView extends BaseActivity implements Listener {
             getFragmentManager().popBackStack();
         }
     }
-
 }

@@ -46,7 +46,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         holder.iv_delete.setTag(position);
         holder.tv_name.setText(dataList.get(position).forename + " " + dataList.get(position).surname);
 
-
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +53,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                 listener.deleteProfile(index);
             }
         });
-
     }
 
     @Override
@@ -71,9 +69,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             iv_delete = (ImageView) itemView.findViewById(R.id.iv_delete);
-
         }
     }
-
-
 }
