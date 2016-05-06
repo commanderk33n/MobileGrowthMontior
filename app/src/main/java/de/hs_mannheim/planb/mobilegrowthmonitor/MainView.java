@@ -22,6 +22,7 @@ import android.widget.Toast;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising.Listener;
+import de.hs_mannheim.planb.mobilegrowthmonitor.imagemanagement.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
@@ -37,6 +38,7 @@ public class MainView extends BaseActivity implements Listener {
 
     private MenuItem onOffPinLock;
     private MenuItem changePin;
+    private MenuItem camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +62,11 @@ public class MainView extends BaseActivity implements Listener {
                     Snackbar.make(view, "Create a new Profile?", Snackbar.LENGTH_LONG).show();
                     recyclerView.setVisibility(View.GONE);
                     fab.setVisibility(View.GONE);
-                    CreateProfileFrag createProfileFrag = new CreateProfileFrag();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.add(R.id.createProfile, createProfileFrag);
-                    fragmentTransaction.addToBackStack("recycler");
-                    fragmentTransaction.commit();
+                    CreateProfileFrag fragment = new CreateProfileFrag();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.add(R.id.createProfile, fragment);
+                    ft.addToBackStack("recycler");
+                    ft.commit();
                 }
             });
         }
@@ -75,6 +77,7 @@ public class MainView extends BaseActivity implements Listener {
         getMenuInflater().inflate(R.menu.menu_main_view, menu);
         onOffPinLock = menu.getItem(0);
         changePin = menu.getItem(1);
+        camera = menu.getItem(2);
         updateMenu();
         return true;
     }
@@ -95,6 +98,11 @@ public class MainView extends BaseActivity implements Listener {
             intent.putExtra(AbstractAppLock.MESSAGE,
                     getString(R.string.enter_old_passcode));
             startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
+        }
+        // StartCamera TODO: move this to specific profile view
+        if (id == R.id.start_cam) {
+            Intent intent = new Intent(this, CameraView.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -151,4 +159,5 @@ public class MainView extends BaseActivity implements Listener {
             getFragmentManager().popBackStack();
         }
     }
+
 }

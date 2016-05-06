@@ -40,7 +40,6 @@ public class CameraView extends BaseActivity {
         setContentView(R.layout.camera_view);
         mCameraView = findViewById(R.id.camera_preview);
 
-
         boolean opened = safeCameraOpenInView();
 
         if (!opened) {
@@ -369,7 +368,6 @@ public class CameraView extends BaseActivity {
                 case Surface.ROTATION_270:
                     degrees = 270;
                     break;
-
             }
 
             int result;
@@ -379,11 +377,9 @@ public class CameraView extends BaseActivity {
             } else {
                 result = (info.orientation - degrees + 360) % 360;
             }
-
             return result;
         }
     }
-
 
     /**
      * Picture Callback for handling a picture capture and saving it out to a file.
@@ -399,7 +395,6 @@ public class CameraView extends BaseActivity {
                         .show();
                 return;
             }
-
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
@@ -429,7 +424,6 @@ public class CameraView extends BaseActivity {
                 return null;
             }
         }
-
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;

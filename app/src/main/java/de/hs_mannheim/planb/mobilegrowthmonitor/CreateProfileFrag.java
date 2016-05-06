@@ -1,7 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +33,6 @@ public class CreateProfileFrag extends Fragment {
     Button btn_next;
     DbHelper dbHelper;
     View mView;
-    FragmentTransaction fragmentTransaction;
-    CreateProfileFrag createProfileFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +77,7 @@ public class CreateProfileFrag extends Fragment {
                 Long aLong =  calendar.getTimeInMillis();
                 profileData.birthday = aLong.intValue();
                 dbHelper.addProfile(profileData);
+                getActivity().onBackPressed();
             }
         });
         return mView;
@@ -94,4 +92,5 @@ public class CreateProfileFrag extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
 }
