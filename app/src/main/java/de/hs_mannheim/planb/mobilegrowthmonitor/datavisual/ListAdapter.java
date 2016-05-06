@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising;
+package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

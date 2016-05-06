@@ -20,9 +20,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising.ListAdapter;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising.Listener;
-import de.hs_mannheim.planb.mobilegrowthmonitor.imagemanagement.CameraView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
+import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;

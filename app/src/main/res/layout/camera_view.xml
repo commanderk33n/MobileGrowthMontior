@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.imagemanagement.CameraView">
+    tools:context=".imageprocessing.CameraView">
 
     <FrameLayout
         android:id="@+id/camera_preview"

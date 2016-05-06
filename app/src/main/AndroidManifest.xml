@@ -33,7 +33,7 @@
             android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".imagemanagement.CameraView"></activity>
+        <activity android:name=".imageprocessing.CameraView"></activity>
     </application>
 
 </manifest>

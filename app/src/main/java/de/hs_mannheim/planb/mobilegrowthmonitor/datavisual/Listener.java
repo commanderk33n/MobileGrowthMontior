@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.datavisualising;
+package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 /**
  * Created by eikood on 05.05.2016.

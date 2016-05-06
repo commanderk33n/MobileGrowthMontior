@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.imagemanagement;
+package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 
 import android.content.Context;
