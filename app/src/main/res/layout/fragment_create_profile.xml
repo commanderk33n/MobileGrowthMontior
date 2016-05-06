@@ -5,8 +5,8 @@
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView">
 
     <EditText
-        android:id="@+id/et_surename"
-        android:hint="Enter surename"
+        android:id="@+id/et_surname"
+        android:hint="Enter surname"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_gravity="left|center_vertical"
@@ -33,7 +33,7 @@
         android:id="@+id/cb_sex_male"
         android:layout_marginTop="43dp"
         android:text="Male"
-        android:layout_below="@+id/et_surename"
+        android:layout_below="@+id/et_surname"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

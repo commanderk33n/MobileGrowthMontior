@@ -9,8 +9,9 @@ import java.util.Date;
  */
 
 public class ProfileData implements Serializable {
-    public String surename, forename;
-    public int index, sex, birthday;
+    public String surname, forename;
+    public int sex, birthday, index;
+
 }
 
 
