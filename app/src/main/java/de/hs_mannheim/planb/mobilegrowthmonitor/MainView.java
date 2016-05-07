@@ -60,13 +60,8 @@ public class MainView extends BaseActivity implements Listener {
                 @Override
                 public void onClick(View view) {
                     Snackbar.make(view, "Create a new Profile?", Snackbar.LENGTH_LONG).show();
-                    recyclerView.setVisibility(View.GONE);
-                    fab.setVisibility(View.GONE);
-                    CreateProfileFrag fragment = new CreateProfileFrag();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.add(R.id.createProfile, fragment);
-                    ft.addToBackStack("recycler");
-                    ft.commit();
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileView.class);
+                    startActivity(intent);
                 }
             });
         }
@@ -126,7 +121,17 @@ public class MainView extends BaseActivity implements Listener {
         updateMenu();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (hasFocus) {
+            updateMenu();
+        }
+    }
+
     private void updateMenu() {
+        listAdapter = new ListAdapter(this, dbHelper.getAllProfiles());
+        recyclerView.setAdapter(listAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (LockManager.getInstance().getAppLock().isPasscodeSet()) {
             onOffPinLock.setTitle(R.string.disable_passcode);
             changePin.setEnabled(true);
@@ -140,19 +145,13 @@ public class MainView extends BaseActivity implements Listener {
     @Override
     public void deleteProfile(int index) {
         dbHelper.deleteProfile(index);
-        listAdapter = new ListAdapter(this, dbHelper.getAllProfiles());
-        recyclerView.setAdapter(listAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        updateMenu();
     }
 
     @Override
     public void onBackPressed() {
+        updateMenu();
         int count = getFragmentManager().getBackStackEntryCount();
-        listAdapter = new ListAdapter(this, dbHelper.getAllProfiles());
-        recyclerView.setAdapter(listAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.VISIBLE);
         if (count == 0) {
             super.onBackPressed();
         } else {

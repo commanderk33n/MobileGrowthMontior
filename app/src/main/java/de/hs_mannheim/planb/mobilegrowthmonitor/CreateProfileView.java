@@ -1,10 +1,8 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
-import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -16,51 +14,41 @@ import java.util.GregorianCalendar;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 
+public class CreateProfileView extends AppCompatActivity {
 
-/**
- * A simple {@link Fragment} subclass.
- *
- */
-
-public class CreateProfileFrag extends Fragment {
-
-
-    private static final String TAG = CreateProfileFrag.class.getSimpleName();
+    private static final String TAG = CreateProfileView.class.getSimpleName();
 
     EditText surname, forename;
     CheckBox sex_male, sex_female;
     DatePicker birthday;
     Button btn_next;
     DbHelper dbHelper;
-    View mView;
+    MainView mainView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.create_profile_view);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_create_profile, container, false);
-        dbHelper = DbHelper.getInstance(mView.getContext());
-        surname = (EditText) mView.findViewById(R.id.et_surname);
-        forename = (EditText) mView.findViewById(R.id.et_forename);
-        sex_male = (CheckBox) mView.findViewById(R.id.cb_sex_male);
-        sex_female = (CheckBox) mView.findViewById(R.id.cb_sex_female);
-        birthday = (DatePicker) mView.findViewById(R.id.dp_birthday);
+        dbHelper = DbHelper.getInstance(this);
+        surname = (EditText) findViewById(R.id.et_surname);
+        forename = (EditText) findViewById(R.id.et_forename);
+        sex_male = (CheckBox) findViewById(R.id.cb_sex_male);
+        sex_female = (CheckBox) findViewById(R.id.cb_sex_female);
+        birthday = (DatePicker) findViewById(R.id.dp_birthday);
 
-        btn_next = (Button) mView.findViewById(R.id.btn_saveProfile);
+        btn_next = (Button) findViewById(R.id.btn_saveProfile);
         btn_next.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 ProfileData profileData = new ProfileData();
-                if(!surname.getText().toString().isEmpty()) {
+                if (!surname.getText().toString().isEmpty()) {
                     profileData.surname = surname.getText().toString();
                 } else {
                     profileData.surname = "";
                 }
-                if (!forename.getText().toString().isEmpty()){
+                if (!forename.getText().toString().isEmpty()) {
                     profileData.forename = forename.getText().toString();
                 } else {
                     profileData.forename = "";
@@ -74,15 +62,14 @@ public class CreateProfileFrag extends Fragment {
                 int monthOfYear = birthday.getMonth();
                 int dayOfMonth = birthday.getDayOfMonth();
                 Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-                Long aLong =  calendar.getTimeInMillis();
+                Long aLong = calendar.getTimeInMillis();
                 profileData.birthday = aLong.intValue();
                 dbHelper.addProfile(profileData);
-                getActivity().onBackPressed();
+                finish();
             }
         });
-        return mView;
     }
-
+    
     @Override
     public void onPause(){
         super.onPause();
@@ -92,5 +79,4 @@ public class CreateProfileFrag extends Fragment {
     public void onResume() {
         super.onResume();
     }
-
 }

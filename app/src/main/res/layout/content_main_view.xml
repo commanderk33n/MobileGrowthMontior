@@ -12,6 +12,11 @@
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView"
     tools:showIn="@layout/main_view">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/createProfile" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_profileList"
         android:layout_width="match_parent"

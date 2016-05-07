@@ -6,11 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
 
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:name=".App"
@@ -33,7 +31,8 @@
             android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".imageprocessing.CameraView"></activity>
+        <activity android:name=".imageprocessing.CameraView" />
+        <activity android:name=".CreateProfileView"></activity>
     </application>
 
 </manifest>
