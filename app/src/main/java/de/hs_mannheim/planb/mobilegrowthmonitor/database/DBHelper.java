@@ -99,6 +99,7 @@ public class DbHelper extends SQLiteOpenHelper {
             db.beginTransaction();
             db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where "+ DbContract.FeedProfile.COLUMN_NAME_ID+" ='" + index + "'");
             db.setTransactionSuccessful();
+
         } catch (SQLException e) {
             Log.e(TAG, "Error while trying to delete profile from db");
         } finally {

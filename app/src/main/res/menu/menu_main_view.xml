@@ -17,4 +17,10 @@
         android:orderInCategory="100"
         android:title="Start cam"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/open_gallery"
+        android:orderInCategory="100"
+        android:title="Open Gallery"
+        app:showAsAction="never" />
+
 </menu>

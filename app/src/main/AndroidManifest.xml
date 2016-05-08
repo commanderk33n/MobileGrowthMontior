@@ -10,6 +10,7 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -33,6 +34,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".imageprocessing.CameraView" />
         <activity android:name=".CreateProfileView"></activity>
+        <activity android:name=".datavisual.GalleryView"></activity>
     </application>
 
 </manifest>

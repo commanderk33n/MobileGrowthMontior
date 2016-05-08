@@ -5,7 +5,6 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -415,20 +414,13 @@ public class CameraView extends BaseActivity {
      */
     private File getOutputMediaFile() {
 
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MobileGrowthMonitor");
 
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d(TAG, "Required media storage does not exist");
-                return null;
-            }
-        }
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
+
+        mediaFile = new File(getFilesDir().getPath() + File.separator +
+                "MobileGrowthMonitor_pictures" + File.separator + "IMG_" + timeStamp + ".jpg");
         Toast.makeText(CameraView.this, "Success! Your picture has been saved!", Toast.LENGTH_SHORT)
                 .show();
 
