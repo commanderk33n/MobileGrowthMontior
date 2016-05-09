@@ -5,5 +5,5 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
  */
 public interface Listener {
 
-    void deleteProfile(int index);
+    void selectProfile(int index);
 }

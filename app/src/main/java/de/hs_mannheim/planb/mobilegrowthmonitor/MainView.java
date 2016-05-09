@@ -9,18 +9,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
@@ -28,6 +28,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.LockManager;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 
 public class MainView extends BaseActivity implements Listener {
     public static final String TAG = MainView.class.getSimpleName();
@@ -58,7 +59,7 @@ public class MainView extends BaseActivity implements Listener {
 
 
         File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
-        if(!(folder.exists())){
+        if (!(folder.exists())) {
             folder.mkdirs();
             //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
         }
@@ -158,21 +159,20 @@ public class MainView extends BaseActivity implements Listener {
         }
     }
 
-    // Delete profile
+
     @Override
-    public void deleteProfile(int index) {
-        dbHelper.deleteProfile(index);
-        updateMenu();
+    public void selectProfile(int index) {
+        Intent intent = new Intent(this, ProfileView.class);
+        intent.putExtra("profile_Id", index);
+        startActivity(intent);
+
     }
 
     @Override
     public void onBackPressed() {
         updateMenu();
-        int count = getFragmentManager().getBackStackEntryCount();
-        if (count == 0) {
-            super.onBackPressed();
-        } else {
-            getFragmentManager().popBackStack();
-        }
+
+        super.onBackPressed();
     }
+
 }

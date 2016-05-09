@@ -1,6 +1,5 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,9 @@ import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
-public class CreateProfileView extends AppCompatActivity {
+public class CreateProfileView extends BaseActivity {
 
     private static final String TAG = CreateProfileView.class.getSimpleName();
 
@@ -23,7 +23,6 @@ public class CreateProfileView extends AppCompatActivity {
     DatePicker birthday;
     Button btn_next;
     DbHelper dbHelper;
-    MainView mainView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class CreateProfileView extends AppCompatActivity {
             }
         });
     }
-    
+
     @Override
     public void onPause(){
         super.onPause();

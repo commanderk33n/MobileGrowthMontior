@@ -33,6 +33,15 @@ public class CameraView extends BaseActivity {
     private CameraPreview mPreview;
     private View mCameraView;
 
+    /**
+     * Default empty constructor.
+     */
+    public CameraView() {
+        super();
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +91,7 @@ public class CameraView extends BaseActivity {
         mCamera = getCameraInstance();
         qOpened = (mCamera != null);
         if (qOpened == true) {
-            mPreview = new CameraPreview(this.getBaseContext(), mCamera, mCameraView);
+            mPreview = new CameraPreview(this, mCamera, mCameraView);
             FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
             preview.addView(mPreview);
             mPreview.startCameraPreview();
