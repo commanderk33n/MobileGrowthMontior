@@ -285,6 +285,7 @@ public class NativeCam extends Fragment {
             }
 
             // stop preview before making changes
+            mCamera.stopPreview();
             try {
                 Camera.Parameters parameters = mCamera.getParameters();
 
@@ -451,10 +452,7 @@ public class NativeCam extends Fragment {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
-
-                // Restart the camera preview.
-                safeCameraOpenInView(mCameraView);
-
+                getActivity().onBackPressed();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -475,7 +473,7 @@ public class NativeCam extends Fragment {
 
         mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
                 "MobileGrowthMonitor_pictures" + File.separator + "IMG_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity() , "Success! Your picture has been saved!", Toast.LENGTH_SHORT)
+        Toast.makeText(getActivity(), "Success! Your picture has been saved!", Toast.LENGTH_SHORT)
                 .show();
 
         return mediaFile;

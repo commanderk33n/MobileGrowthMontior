@@ -8,6 +8,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class CameraView extends BaseActivity {
     private static String TAG = CameraView.class.getSimpleName();
+    NativeCam camFrag;
 
 
     @Override
@@ -15,10 +16,16 @@ public class CameraView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_view);
 
-        NativeCam frag = NativeCam.newInstance();
+        camFrag = NativeCam.newInstance();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.cam_container, frag)
+                .replace(R.id.cam_container, camFrag)
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+        getFragmentManager().beginTransaction().detach(camFrag).attach(camFrag).commit();
+
     }
 }
