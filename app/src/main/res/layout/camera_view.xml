@@ -6,23 +6,8 @@
     tools:context=".imageprocessing.CameraView">
 
     <FrameLayout
-        android:id="@+id/camera_preview"
+        android:id="@+id/cam_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-
-    <RelativeLayout
-        android:id="@+id/innerRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/btn_capture"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dp"
-            android:text="@string/capture_image" />
-    </RelativeLayout>
 
 </RelativeLayout>
