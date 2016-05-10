@@ -3,6 +3,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.widget.GridView;
 
@@ -11,9 +12,7 @@ import java.util.ArrayList;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
-/**
- * Created by eikood on 05.05.2016.
- */
+
 public class GalleryView extends AppCompatActivity{
 
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
@@ -25,7 +24,6 @@ public class GalleryView extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_view);
-
     }
 
     @Override
@@ -51,6 +49,7 @@ public class GalleryView extends AppCompatActivity{
         imageGrid = (GridView) findViewById(R.id.gridview);
         bitmapList = new ArrayList<>();
         getFromSdCard();
+
         imageGrid.setAdapter(new ImageAdapter(this, bitmapList));
     }
 

@@ -1,14 +1,18 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 
+
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class CameraView extends BaseActivity {
     private static String TAG = CameraView.class.getSimpleName();
     NativeCam camFrag;
+
 
 
     @Override
@@ -23,9 +27,9 @@ public class CameraView extends BaseActivity {
                 .commit();
     }
 
-    @Override
-    public void onBackPressed(){
-        getFragmentManager().beginTransaction().detach(camFrag).attach(camFrag).commit();
 
+    public void afterPictureTaken(){
+        Intent intent = new Intent(this, GalleryView.class);
+        startActivity(intent);
     }
 }

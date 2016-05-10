@@ -1,5 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Camera;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 
 /**
  * Created by eikood on 09.05.2016.
@@ -452,7 +454,8 @@ public class NativeCam extends Fragment {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
-                getActivity().onBackPressed();
+
+                ((CameraView)getActivity()).afterPictureTaken();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -468,12 +471,12 @@ public class NativeCam extends Fragment {
 
 
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
 
         mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
                 "MobileGrowthMonitor_pictures" + File.separator + "IMG_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity(), "Success! Your picture has been saved!", Toast.LENGTH_SHORT)
+        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)
                 .show();
 
         return mediaFile;
