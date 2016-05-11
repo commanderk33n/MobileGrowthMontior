@@ -97,7 +97,8 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         try {
             db.beginTransaction();
-            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where "+ DbContract.FeedProfile.COLUMN_NAME_ID+" ='" + index + "'");
+            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where " +
+                    DbContract.FeedProfile.COLUMN_NAME_ID + " ='" + index + "'");
             db.setTransactionSuccessful();
 
         } catch (SQLException e) {
@@ -105,5 +106,32 @@ public class DbHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public ProfileData getProfile(int index) {
+        String q = "select * from " + DbContract.FeedProfile.TABLE_NAME + " where " +
+                DbContract.FeedProfile.COLUMN_NAME_ID + " =" + index ;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(q, null);
+        ProfileData profileData = new ProfileData();
+        try {
+
+            if (cursor.moveToFirst()) {
+                do {
+
+                    profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
+                    profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
+                    profileData.forename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FORENAME));
+                    profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
+                    profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+
+                } while (cursor.moveToNext());
+            }
+
+        } catch (SQLException e) {
+            Log.e(TAG, "Error while trying to fetch profile from db by id");
+        }
+
+        return profileData;
     }
 }

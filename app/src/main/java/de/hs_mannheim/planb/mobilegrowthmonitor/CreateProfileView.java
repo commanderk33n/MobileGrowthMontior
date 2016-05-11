@@ -18,7 +18,7 @@ public class CreateProfileView extends BaseActivity {
 
     private static final String TAG = CreateProfileView.class.getSimpleName();
 
-    EditText surname, forename;
+    EditText surname, firstname;
     CheckBox sex_male, sex_female;
     DatePicker birthday;
     Button btn_next;
@@ -31,7 +31,7 @@ public class CreateProfileView extends BaseActivity {
 
         dbHelper = DbHelper.getInstance(this);
         surname = (EditText) findViewById(R.id.et_surname);
-        forename = (EditText) findViewById(R.id.et_forename);
+        firstname = (EditText) findViewById(R.id.et_firstname);
         sex_male = (CheckBox) findViewById(R.id.cb_sex_male);
         sex_female = (CheckBox) findViewById(R.id.cb_sex_female);
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
@@ -47,8 +47,8 @@ public class CreateProfileView extends BaseActivity {
                 } else {
                     profileData.surname = "";
                 }
-                if (!forename.getText().toString().isEmpty()) {
-                    profileData.forename = forename.getText().toString();
+                if (!firstname.getText().toString().isEmpty()) {
+                    profileData.forename = firstname.getText().toString();
                 } else {
                     profileData.forename = "";
                 }
@@ -77,5 +77,9 @@ public class CreateProfileView extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    public void startGalleryOrCamera(View view) {
+
     }
 }
