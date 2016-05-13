@@ -53,7 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(DbContract.FeedProfile.COLUMN_NAME_SURNAME, profileData.surname);
-            values.put(DbContract.FeedProfile.COLUMN_NAME_FORENAME, profileData.forename);
+            values.put(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME, profileData.firstname);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SEX, profileData.sex);
             values.put(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY, profileData.birthday);
             db.insertOrThrow(DbContract.FeedProfile.TABLE_NAME, null, values);
@@ -77,7 +77,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     ProfileData profileData = new ProfileData();
                     profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
                     profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
-                    profileData.forename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FORENAME));
+                    profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
                     profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
                     profileDataList.add(profileData);
@@ -110,7 +110,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public ProfileData getProfile(int index) {
         String q = "select * from " + DbContract.FeedProfile.TABLE_NAME + " where " +
-                DbContract.FeedProfile.COLUMN_NAME_ID + " =" + index ;
+                DbContract.FeedProfile.COLUMN_NAME_ID + " = '" + index + "'";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(q, null);
         ProfileData profileData = new ProfileData();
@@ -121,7 +121,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
                     profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
                     profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
-                    profileData.forename = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FORENAME));
+                    profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
                     profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
 

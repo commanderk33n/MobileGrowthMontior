@@ -1,7 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.database;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -9,7 +8,7 @@ import java.util.Date;
  */
 
 public class ProfileData implements Serializable {
-    public String surname, forename;
+    public String surname, firstname;
     public int sex, birthday, index;
 
 }

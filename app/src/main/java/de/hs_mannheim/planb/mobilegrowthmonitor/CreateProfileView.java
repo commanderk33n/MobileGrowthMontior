@@ -3,9 +3,9 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -19,7 +19,7 @@ public class CreateProfileView extends BaseActivity {
     private static final String TAG = CreateProfileView.class.getSimpleName();
 
     EditText surname, firstname;
-    CheckBox sex_male, sex_female;
+    RadioButton sex_male, sex_female;
     DatePicker birthday;
     Button btn_next;
     DbHelper dbHelper;
@@ -32,8 +32,8 @@ public class CreateProfileView extends BaseActivity {
         dbHelper = DbHelper.getInstance(this);
         surname = (EditText) findViewById(R.id.et_surname);
         firstname = (EditText) findViewById(R.id.et_firstname);
-        sex_male = (CheckBox) findViewById(R.id.cb_sex_male);
-        sex_female = (CheckBox) findViewById(R.id.cb_sex_female);
+        sex_male = (RadioButton) findViewById(R.id.rb_sex_male);
+        sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
 
         btn_next = (Button) findViewById(R.id.btn_saveProfile);
@@ -48,9 +48,9 @@ public class CreateProfileView extends BaseActivity {
                     profileData.surname = "";
                 }
                 if (!firstname.getText().toString().isEmpty()) {
-                    profileData.forename = firstname.getText().toString();
+                    profileData.firstname = firstname.getText().toString();
                 } else {
-                    profileData.forename = "";
+                    profileData.firstname = "";
                 }
                 if (!sex_female.hasSelection() && sex_male.hasSelection()) {
                     profileData.sex = 1;
@@ -61,7 +61,7 @@ public class CreateProfileView extends BaseActivity {
                 int monthOfYear = birthday.getMonth();
                 int dayOfMonth = birthday.getDayOfMonth();
                 Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-                Long aLong = calendar.getTimeInMillis();
+                Long aLong = calendar.getTimeInMillis(); // from timestamp to date
                 profileData.birthday = aLong.intValue();
                 dbHelper.addProfile(profileData);
                 finish();

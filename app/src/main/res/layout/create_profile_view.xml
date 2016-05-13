@@ -16,9 +16,12 @@
         android:layout_alignParentStart="false"
         android:layout_below="@+id/et_firstname"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@+id/ib_profilepicture"
-        android:hint="Enter surname" />
+        android:hint="Enter surname"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true" />
 
     <EditText
         android:id="@+id/et_firstname"
@@ -29,41 +32,43 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginTop="56dp"
         android:layout_toRightOf="@+id/ib_profilepicture"
-        android:hint="Enter firstname" />
+        android:hint="Enter firstname"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true" />
 
+    <RadioGroup
+        android:id="@+id/rg_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_gender"
+        android:layout_toRightOf="@+id/tv_birthdate"
+        android:layout_toEndOf="@+id/tv_birthdate">
 
-    <CheckBox
-        android:id="@+id/cb_sex_male"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/et_surname"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="43dp"
-        android:text="Male" />
+        <RadioButton
+            android:id="@+id/rb_sex_male"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:text="Male" />
 
-    <CheckBox
-        android:id="@+id/cb_sex_female"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/cb_sex_male"
-        android:layout_marginTop="5dp"
-        android:text="Female" />
+        <RadioButton
+            android:id="@+id/rb_sex_female"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:text="Female" />
+    </RadioGroup>
 
     <DatePicker
         android:id="@+id/dp_birthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/cb_sex_female"
+        android:layout_below="@+id/tv_birthdate"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="10dp"
+        android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        android:padding="5dp"
-        android:spinnersShown="true" />
+        android:padding="5dp" />
     <!--DatePicker only API level 21 or higher!
      Nochmal Hannah fragen-->
 
@@ -89,5 +94,25 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal|bottom"
         android:text="Save" />
+
+    <TextView
+        android:id="@+id/tv_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ib_profilepicture"
+        android:layout_alignStart="@+id/ib_profilepicture"
+        android:layout_below="@+id/ib_profilepicture"
+        android:layout_marginTop="10dp"
+        android:text="Geschlecht" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Geburtsdatum"
+        android:id="@+id/tv_birthdate"
+        android:layout_below="@+id/rg_gender"
+        android:layout_alignLeft="@+id/tv_gender"
+        android:layout_alignStart="@+id/tv_gender"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>

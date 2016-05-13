@@ -24,10 +24,10 @@ public class ProfileView extends BaseActivity {
         ProfileData profile = dbHelper.getProfile(profileId);
 
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
-        tvFirstname.setText(profile.forename);
+        tvFirstname.setText(profile.firstname);
 
-        TextView tvAge = (TextView) findViewById(R.id.tv_age);
-        tvAge.setText(profile.birthday);
+        //TextView tvAge = (TextView) findViewById(R.id.tv_age);
+        //tvAge.setText(profile.birthday);
 
 
     }
