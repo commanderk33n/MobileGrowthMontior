@@ -19,7 +19,7 @@ public final class DbContract {
     public static abstract class FeedProfile implements BaseColumns {
         public static final String TABLE_NAME = "profile";
         public static final String COLUMN_NAME_ID = "pId";
-        public static final String COLUMN_NAME_SURNAME = "surname";
+        public static final String COLUMN_NAME_LASTNAME = "lastname";
         public static final String COLUMN_NAME_FIRSTNAME = "firstname";
         public static final String COLUMN_NAME_SEX = "sex";
         public static final String COLUMN_NAME_BIRTHDAY = "birthday";
@@ -36,10 +36,10 @@ public final class DbContract {
 
     public static final String CREATE_PROFILES_TABLE_QUERY = "CREATE TABLE " + FeedProfile.TABLE_NAME + "(" +
             FeedProfile.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
-            FeedProfile.COLUMN_NAME_SURNAME + " TEXT," +
+            FeedProfile.COLUMN_NAME_LASTNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_FIRSTNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_SEX + " INTEGER," +
-            FeedProfile.COLUMN_NAME_BIRTHDAY + " INTEGER"+ ")";
+            FeedProfile.COLUMN_NAME_BIRTHDAY + " TEXT"+ ")";
 
     public static final String PROFILE_ALL_SELECT_QUERY = "SELECT * FROM " + FeedProfile.TABLE_NAME;
 }

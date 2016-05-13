@@ -43,7 +43,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
 
-        holder.tv_name.setText(dataList.get(position).firstname + " " + dataList.get(position).surname);
+        holder.tv_name.setText(dataList.get(position).firstname + " " + dataList.get(position).lastname);
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

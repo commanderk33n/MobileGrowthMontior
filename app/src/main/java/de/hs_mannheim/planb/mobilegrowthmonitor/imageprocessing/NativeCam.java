@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 
 /**
  * Created by eikood on 09.05.2016.
@@ -292,7 +291,14 @@ public class NativeCam extends Fragment {
                 Camera.Parameters parameters = mCamera.getParameters();
 
                 // Set the auto-focus mode to "continuous"
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                // parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
+                // if-statement added so old smartphones are supported, checks whether
+                // focus_mode_continous_picture is supported and only then sets the mode
+                if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                }
+
 
                 // Preview size must exist.
                 if (mPreviewSize != null) {

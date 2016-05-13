@@ -1,12 +1,14 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -29,8 +31,11 @@ public class CreateProfileView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_profile_view);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_create_profile_view);
+        setSupportActionBar(toolbar);
+
         dbHelper = DbHelper.getInstance(this);
-        surname = (EditText) findViewById(R.id.et_surname);
+        surname = (EditText) findViewById(R.id.et_lastname);
         firstname = (EditText) findViewById(R.id.et_firstname);
         sex_male = (RadioButton) findViewById(R.id.rb_sex_male);
         sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
@@ -43,9 +48,9 @@ public class CreateProfileView extends BaseActivity {
             public void onClick(View v) {
                 ProfileData profileData = new ProfileData();
                 if (!surname.getText().toString().isEmpty()) {
-                    profileData.surname = surname.getText().toString();
+                    profileData.lastname = surname.getText().toString();
                 } else {
-                    profileData.surname = "";
+                    profileData.lastname = "";
                 }
                 if (!firstname.getText().toString().isEmpty()) {
                     profileData.firstname = firstname.getText().toString();
@@ -61,8 +66,13 @@ public class CreateProfileView extends BaseActivity {
                 int monthOfYear = birthday.getMonth();
                 int dayOfMonth = birthday.getDayOfMonth();
                 Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-                Long aLong = calendar.getTimeInMillis(); // from timestamp to date
-                profileData.birthday = aLong.intValue();
+                //long aLong = calendar.getTimeInMillis(); // TODO: try to save date as string in database
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                //format.format(calendar);
+                System.out.println(format.format(calendar.getTime()));
+
+                profileData.birthday = format.format(calendar.getTime());
+                //System.out.println(format.format(calendar));
                 dbHelper.addProfile(profileData);
                 finish();
             }
