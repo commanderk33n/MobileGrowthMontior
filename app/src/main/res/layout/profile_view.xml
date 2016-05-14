@@ -140,4 +140,5 @@
             android:textSize="22dp" />
 
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

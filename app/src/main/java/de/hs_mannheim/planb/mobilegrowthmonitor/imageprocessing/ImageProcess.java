@@ -29,24 +29,23 @@ import java.util.Date;
 import java.util.List;
 
 
-
 /**
  * Created by eikood on 05.05.2016.
  */
 public class ImageProcess {
 
     private static Context context;
+
     public ImageProcess(Context c) {
         context = c;
     }
 
-
-// this is our prototype function!!
+    // this is our prototype function!!
     public void sizeMeasurement(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
         // rotate image
-        //  Mat rotate = Imgproc.getRotationMatrix2D(new Point(source.cols()/2, source.rows()/2), 90,-1);
+        // Mat rotate = Imgproc.getRotationMatrix2D(new Point(source.cols()/2, source.rows()/2), 90,-1);
         // Imgproc.warpAffine(source, source, rotate, new Size(source.rows(), source.cols()));
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
@@ -56,9 +55,8 @@ public class ImageProcess {
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * erosion_size + 1, 2 * erosion_size + 1));
         Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * dilation_size + 1, 2 * dilation_size + 1));
         Bitmap bmp = null;
-        Rect rect_small;
-        Rect rect_large;
-        new Rect();
+        Rect rect_small, rect_large;
+
         try {
             Mat destination;
             destination = source;
@@ -92,7 +90,7 @@ public class ImageProcess {
             Utils.matToBitmap(source, bmp);
             double referenceObjectHeight = 17.5;
             double ergebnis = rect_large.height / rect_small.height * referenceObjectHeight;
-            System.out.println(ergebnis);
+            // System.out.println(ergebnis);
             Toast.makeText(context, "Height: " + ergebnis, Toast.LENGTH_LONG).show();
 
         } catch (CvException e) {
@@ -100,6 +98,7 @@ public class ImageProcess {
         }
         imageWriter(bmp);
     }
+
 
     @SuppressLint("SimpleDateFormat")
     private void imageWriter(Bitmap bmp) {

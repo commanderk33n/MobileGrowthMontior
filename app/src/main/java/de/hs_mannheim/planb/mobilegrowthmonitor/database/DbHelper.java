@@ -115,19 +115,15 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(q, null);
         ProfileData profileData = new ProfileData();
         try {
-
             if (cursor.moveToFirst()) {
                 do {
-
                     profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
                     profileData.lastname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_LASTNAME));
                     profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
                     profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
-
                 } while (cursor.moveToNext());
             }
-
         } catch (SQLException e) {
             Log.e(TAG, "Error while trying to fetch profile from db by id");
         }

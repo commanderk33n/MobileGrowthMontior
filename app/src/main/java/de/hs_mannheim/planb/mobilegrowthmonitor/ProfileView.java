@@ -79,7 +79,6 @@ public class ProfileView extends BaseActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //String date = format.format(calendar);
         tvAge.setText(Integer.toString(age));
     }
 

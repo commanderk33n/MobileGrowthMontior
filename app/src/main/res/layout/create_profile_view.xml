@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.CreateProfileView">
 
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +108,6 @@
             android:onClick="startGalleryOrCamera"
             android:src="@drawable/ic_photo_camera_black_48dp" />
 
-
         <TextView
             android:id="@+id/tv_gender"
             android:layout_width="wrap_content"
@@ -131,4 +129,5 @@
             android:text="Geburtsdatum" />
 
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>
