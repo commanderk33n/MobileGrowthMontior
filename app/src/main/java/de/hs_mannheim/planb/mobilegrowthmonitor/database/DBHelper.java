@@ -52,7 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            values.put(DbContract.FeedProfile.COLUMN_NAME_SURNAME, profileData.surname);
+            values.put(DbContract.FeedProfile.COLUMN_NAME_LASTNAME, profileData.lastname);
             values.put(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME, profileData.firstname);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SEX, profileData.sex);
             values.put(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY, profileData.birthday);
@@ -76,10 +76,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 do {
                     ProfileData profileData = new ProfileData();
                     profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
-                    profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
+                    profileData.lastname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_LASTNAME));
                     profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
-                    profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+                    profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
                     profileDataList.add(profileData);
                 } while (cursor.moveToNext());
             }
@@ -120,10 +120,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 do {
 
                     profileData.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_ID));
-                    profileData.surname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SURNAME));
+                    profileData.lastname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_LASTNAME));
                     profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
-                    profileData.birthday = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+                    profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
 
                 } while (cursor.moveToNext());
             }

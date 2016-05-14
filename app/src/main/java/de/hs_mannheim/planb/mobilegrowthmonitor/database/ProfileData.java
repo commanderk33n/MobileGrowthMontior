@@ -8,8 +8,8 @@ import java.io.Serializable;
  */
 
 public class ProfileData implements Serializable {
-    public String surname, firstname;
-    public int sex, birthday, index;
+    public String lastname, firstname, birthday;
+    public int sex, index;
 
 }
 

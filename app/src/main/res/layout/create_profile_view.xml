@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.CreateProfileView">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_create_profile_view"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
     <EditText
-        android:id="@+id/et_surname"
+        android:id="@+id/et_lastname"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentStart="false"
@@ -18,7 +30,7 @@
         android:layout_gravity="left|center_vertical"
         android:layout_marginTop="20dp"
         android:layout_toRightOf="@+id/ib_profilepicture"
-        android:hint="Enter surname"
+        android:hint="Enter lastname"
         android:lines="1"
         android:maxLines="1"
         android:singleLine="true" />
@@ -76,7 +88,7 @@
         android:id="@+id/ib_profilepicture"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/et_surname"
+        android:layout_alignBottom="@+id/et_lastname"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:layout_alignTop="@+id/et_firstname"
@@ -89,11 +101,11 @@
         android:id="@+id/btn_saveProfile"
         android:layout_width="150dp"
         android:layout_height="45dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal|bottom"
-        android:text="Save" />
+        android:text="@string/save"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ib_profilepicture"
+        android:layout_toEndOf="@+id/ib_profilepicture" />
 
     <TextView
         android:id="@+id/tv_gender"
