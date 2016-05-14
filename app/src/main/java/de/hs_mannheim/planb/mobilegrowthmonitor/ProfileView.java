@@ -112,7 +112,7 @@ public class ProfileView extends BaseActivity {
                 cursor.close();
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
-                mProfileImage.setImageBitmap(RotateBitmap(resizedBitmap, 90));
+                mProfileImage.setImageBitmap(RotateBitmap(resizedBitmap, 270));
             }
         }
     }
