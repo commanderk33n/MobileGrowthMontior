@@ -1,5 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.GridView;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.MainView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
