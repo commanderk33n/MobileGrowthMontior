@@ -1,9 +1,12 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 import android.annotation.SuppressLint;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;
@@ -25,12 +28,17 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
+
 /**
  * Created by eikood on 05.05.2016.
  */
 public class ImageProcess {
 
-
+    private static Context context;
+    public ImageProcess(Context c) {
+        context = c;
+    }
 
 
 // this is our prototype function!!
@@ -85,12 +93,13 @@ public class ImageProcess {
             double referenceObjectHeight = 17.5;
             double ergebnis = rect_large.height / rect_small.height * referenceObjectHeight;
             System.out.println(ergebnis);
+            Toast.makeText(context, "Height: " + ergebnis, Toast.LENGTH_LONG).show();
+
         } catch (CvException e) {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
         imageWriter(bmp);
     }
-
 
     @SuppressLint("SimpleDateFormat")
     private void imageWriter(Bitmap bmp) {

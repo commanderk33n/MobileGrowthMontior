@@ -14,10 +14,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 
@@ -44,12 +49,36 @@ public class MainView extends BaseActivity implements Listener {
     private MenuItem camera;
     private MenuItem gallery;
 
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i(TAG, "OpenCV loaded successfully");
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
 
         dbHelper = DbHelper.getInstance(getApplicationContext());
 
@@ -66,7 +95,7 @@ public class MainView extends BaseActivity implements Listener {
         }
 
         // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
-        folder  = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+        folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
         if (!(folder.exists())) {
             folder.mkdirs();
             //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();

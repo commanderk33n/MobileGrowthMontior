@@ -31,11 +31,12 @@ public class ImageAdapter extends BaseAdapter{
     private Animator currentAnimator;
     private ArrayList<Bitmap> bitmapList;
     private int shortAnimationDuration = 350;
-    private ImageProcess imageProcess = new ImageProcess();
+    private ImageProcess imageProcess;
 
     public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList) {
         this.context = context;
         this.bitmapList = bitmapList;
+        imageProcess = new ImageProcess(context);
     }
 
     @Override
