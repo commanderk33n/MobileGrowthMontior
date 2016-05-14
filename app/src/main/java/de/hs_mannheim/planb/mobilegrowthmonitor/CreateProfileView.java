@@ -2,6 +2,8 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -41,46 +43,51 @@ public class CreateProfileView extends BaseActivity {
         sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
 
-        btn_next = (Button) findViewById(R.id.btn_saveProfile);
-        btn_next.setOnClickListener(new View.OnClickListener() {
+    }
 
-            @Override
-            public void onClick(View v) {
-                ProfileData profileData = new ProfileData();
-                if (!surname.getText().toString().isEmpty()) {
-                    profileData.lastname = surname.getText().toString();
-                } else {
-                    profileData.lastname = "";
-                }
-                if (!firstname.getText().toString().isEmpty()) {
-                    profileData.firstname = firstname.getText().toString();
-                } else {
-                    profileData.firstname = "";
-                }
-                if (!sex_female.hasSelection() && sex_male.hasSelection()) {
-                    profileData.sex = 1;
-                } else {
-                    profileData.sex = 0;
-                }
-                int year = birthday.getYear();
-                int monthOfYear = birthday.getMonth();
-                int dayOfMonth = birthday.getDayOfMonth();
-                Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-                //long aLong = calendar.getTimeInMillis(); // TODO: try to save date as string in database
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                //format.format(calendar);
-                System.out.println(format.format(calendar.getTime()));
 
-                profileData.birthday = format.format(calendar.getTime());
-                //System.out.println(format.format(calendar));
-                dbHelper.addProfile(profileData);
-                finish();
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_create_profile_view, menu);
+        return true;
     }
 
     @Override
-    public void onPause(){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.save_profile) {
+            ProfileData profileData = new ProfileData();
+            if (!surname.getText().toString().isEmpty()) {
+                profileData.lastname = surname.getText().toString();
+            } else {
+                profileData.lastname = "";
+            }
+            if (!firstname.getText().toString().isEmpty()) {
+                profileData.firstname = firstname.getText().toString();
+            } else {
+                profileData.firstname = "";
+            }
+            if (!sex_female.hasSelection() && sex_male.hasSelection()) {
+                profileData.sex = 1;
+            } else {
+                profileData.sex = 0;
+            }
+            int year = birthday.getYear();
+            int monthOfYear = birthday.getMonth();
+            int dayOfMonth = birthday.getDayOfMonth();
+            Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println(format.format(calendar.getTime()));
+
+            profileData.birthday = format.format(calendar.getTime());
+            dbHelper.addProfile(profileData);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
         super.onPause();
     }
 
@@ -89,7 +96,5 @@ public class CreateProfileView extends BaseActivity {
         super.onResume();
     }
 
-    public void startGalleryOrCamera(View view) {
 
-    }
 }

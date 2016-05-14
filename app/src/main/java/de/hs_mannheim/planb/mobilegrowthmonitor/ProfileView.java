@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -34,6 +37,9 @@ public class ProfileView extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_view);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
+        setSupportActionBar(toolbar);
 
         Bundle extras = getIntent().getExtras();
         int profileId = extras.getInt("profile_Id");
@@ -95,7 +101,21 @@ public class ProfileView extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile_view, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.delete_profile) {
+            // TODO: delte specific profile
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -103,7 +123,7 @@ public class ProfileView extends BaseActivity {
                 // TODO: get and save image from cam
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
@@ -127,8 +147,7 @@ public class ProfileView extends BaseActivity {
         startActivity(intent);
     }
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
+    public static Bitmap RotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -81,18 +82,15 @@ public class ImageAdapter extends BaseAdapter{
         }
         // Load the high-resolution "zoomed-in" image and Buttons for OpenCV-Stuff
         final ImageView fullscreenImageView = (ImageView) ((Activity) context).findViewById(R.id.iv_fullscreenImage);
-        /*final Button edgeDetection = (Button) ((Activity) context).findViewById(R.id.btn_edgeDetection);
-        final Button contourDetection = (Button) ((Activity) context).findViewById(R.id.btn_contourDetection);
-        final Button objectDetection = (Button) ((Activity) context).findViewById(R.id.btn_objectDetection);
-        */
+        final Button sizeMeasurement = (Button) ((Activity) context).findViewById(R.id.btn_size_measurement);
+
         fullscreenImageView.setImageBitmap(this.bitmapList.get(position));
 
         String path = GalleryView.pathList.get(position);
-        /*ImgAdptOnClickListener imgAdptOnClickListener = new ImgAdptOnClickListener(path);
-        edgeDetection.setOnClickListener(imgAdptOnClickListener);
-        contourDetection.setOnClickListener(imgAdptOnClickListener);
-        objectDetection.setOnClickListener(imgAdptOnClickListener);
-        */
+
+        ImgAdptOnClickListener imgAdptOnClickListener = new ImgAdptOnClickListener(path);
+        sizeMeasurement.setOnClickListener(imgAdptOnClickListener);
+
         // Calculate the starting and ending bounds for the zoomed-in image.
         // This step
         // involves lots of math. Yay, math.
@@ -137,12 +135,7 @@ public class ImageAdapter extends BaseAdapter{
         // it will position the zoomed-in view in the place of the thumbnail.
         thumbView.setAlpha(0f);
         fullscreenImageView.setVisibility(View.VISIBLE);
-        /*
-        edgeDetection.setVisibility(View.VISIBLE);
-        contourDetection.setVisibility(View.VISIBLE);
-        objectDetection.setVisibility(View.VISIBLE);
-        */
-
+        sizeMeasurement.setVisibility(View.VISIBLE);
         // Set the pivot point for SCALE_X and SCALE_Y transformations to the
         // top-left corner of
         // the zoomed-in view (the default is the center of the view).
@@ -203,11 +196,7 @@ public class ImageAdapter extends BaseAdapter{
                     public void onAnimationEnd(Animator animation) {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
-                        /*
-                        edgeDetection.setVisibility(View.GONE);
-                        contourDetection.setVisibility(View.GONE);
-                        objectDetection.setVisibility(View.GONE);
-                        */
+                        sizeMeasurement.setVisibility(View.GONE);
                         currentAnimator = null;
                     }
 
@@ -215,11 +204,7 @@ public class ImageAdapter extends BaseAdapter{
                     public void onAnimationCancel(Animator animation) {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
-                        /*
-                        edgeDetection.setVisibility(View.GONE);
-                        contourDetection.setVisibility(View.GONE);
-                        objectDetection.setVisibility(View.GONE);
-                        */
+                        sizeMeasurement.setVisibility(View.GONE);
                         currentAnimator = null;
                     }
                 });
@@ -229,7 +214,7 @@ public class ImageAdapter extends BaseAdapter{
         });
     }
 
-    /*public class ImgAdptOnClickListener implements View.OnClickListener {
+    public class ImgAdptOnClickListener implements View.OnClickListener {
         String path;
         public ImgAdptOnClickListener(String path) {
             this.path = path;
@@ -237,17 +222,11 @@ public class ImageAdapter extends BaseAdapter{
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btn_edgeDetection:
-                    imageProcess.detectEdges(path);
-                    break;
-                case R.id.btn_contourDetection:
-                    imageProcess.detectContour(path);
-                    break;
-                case R.id.btn_objectDetection:
-                    imageProcess.objectDetect(path);
+                case R.id.btn_size_measurement:
+                    imageProcess.sizeMeasurement(path);
                     break;
             }
         }
-    }*/
+    }
 
 }

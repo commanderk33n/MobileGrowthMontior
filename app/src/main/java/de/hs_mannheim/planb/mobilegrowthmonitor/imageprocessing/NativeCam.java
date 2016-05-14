@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -479,7 +480,6 @@ public class NativeCam extends Fragment {
         // Create a media file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-
         mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
                 "MobileGrowthMonitor_pictures" + File.separator + "IMG_" + timeStamp + ".jpg");
         Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)

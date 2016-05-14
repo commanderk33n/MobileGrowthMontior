@@ -7,6 +7,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 
@@ -59,6 +60,13 @@ public class MainView extends BaseActivity implements Listener {
 
 
         File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
+        if (!(folder.exists())) {
+            folder.mkdirs();
+            //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
+        }
+
+        // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
+        folder  = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
         if (!(folder.exists())) {
             folder.mkdirs();
             //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();

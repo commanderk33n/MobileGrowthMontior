@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.GridView;
 
@@ -58,8 +59,9 @@ public class GalleryView extends AppCompatActivity{
 
     public void getFromSdCard() {
 
-        File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
-
+        // TODO: change this to Internal again after size measurement is finished
+        // File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
+        File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 
         if (folder.isDirectory()) {
             File[] listFile = folder.listFiles();
