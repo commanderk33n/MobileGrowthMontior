@@ -1,8 +1,17 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -19,6 +28,8 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class ProfileView extends BaseActivity {
 
+    private ImageButton mProfileImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +43,16 @@ public class ProfileView extends BaseActivity {
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname);
 
-        TextView tvAge = (TextView) findViewById(R.id.tv_age);
-        String ageOrBirthday = profile.birthday;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
 
+        TextView tvAge = (TextView) findViewById(R.id.tv_age);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         int age = 12;
 
         try {
@@ -44,21 +61,60 @@ public class ProfileView extends BaseActivity {
             calendar.setTime(tempDate);
             Calendar today = Calendar.getInstance();
             age = today.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-            if(today.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)){
+            if (today.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
                 age--;
-            }else if(today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)){
+            } else if (today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
                 age--;
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
         //String date = format.format(calendar);
-
-
         tvAge.setText(Integer.toString(age));
+    }
 
+
+    private void selectImage() {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileView.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    // TODO: startCam
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 2);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                // TODO: get and save image from cam
+            } else if (requestCode == 2) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
+                mProfileImage.setImageBitmap(RotateBitmap(resizedBitmap, 90));
+            }
+        }
     }
 
     public void startCamera(View view) {
@@ -69,5 +125,12 @@ public class ProfileView extends BaseActivity {
     public void startGallery(View view) {
         Intent intent = new Intent(this, GalleryView.class);
         startActivity(intent);
+    }
+
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 }
