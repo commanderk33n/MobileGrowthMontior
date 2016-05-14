@@ -31,7 +31,10 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class ProfileView extends BaseActivity {
 
+
+    private int profile_Id;
     private ImageButton mProfileImage;
+    private DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,11 @@ public class ProfileView extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
         setSupportActionBar(toolbar);
 
+        dbHelper = DbHelper.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
-        int profileId = extras.getInt("profile_Id");
+        profile_Id = extras.getInt("profile_Id");
         DbHelper dbHelper = DbHelper.getInstance(this);
-        ProfileData profile = dbHelper.getProfile(profileId);
+        ProfileData profile = dbHelper.getProfile(profile_Id);
 
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname);
@@ -110,7 +114,8 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
-            // TODO: delte specific profile
+          dbHelper.deleteProfile(profile_Id);
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

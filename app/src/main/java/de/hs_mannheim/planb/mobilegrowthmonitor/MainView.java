@@ -173,7 +173,6 @@ public class MainView extends BaseActivity implements Listener {
         Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", index);
         startActivity(intent);
-
     }
 
     @Override
