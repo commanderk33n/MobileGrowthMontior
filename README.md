@@ -10,14 +10,14 @@ tbc.
 
 
 # completly missing:
-- Gallery, ImageAdapter
-- Body size Measuring, ImageProcessing
 - Clinical Decision Rules
 - generating Charts for User
 - Exportfunction
 
 # need improvements:
+- sizeMeasurement needs grabcut implementation(python)
 - sqlite/profiling + save measurementdata and picturehandling
+- camera/galleryview profilespecific
 
 # finished:
 - Camera for capturing pictures
