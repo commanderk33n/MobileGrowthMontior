@@ -10,8 +10,6 @@
     <string name="disable_passcode">Disable passcode</string>
     <string name="enable_passcode">Enable passcode</string>
     <string name="capture_image">Capture Image</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fullscreen_image" />
     <string name="firstname">firstname</string>
@@ -25,4 +23,10 @@
     <string name="export">Export</string>
     <string name="save">Save</string>
     <string name="size_measurement">Size Measurement</string>
+    <string name="birthday">Birthday</string>
+    <string name="gender">Gender</string>
+    <string name="enter_firstname">Enter firstname</string>
+    <string name="enter_lastname">Enter lastname</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
 </resources>

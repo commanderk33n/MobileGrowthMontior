@@ -42,7 +42,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="56dp"
             android:layout_toRightOf="@+id/ib_profilepicture"
-            android:hint="Enter firstname"
+            android:hint="@string/enter_firstname"
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true" />
@@ -56,7 +56,7 @@
             android:layout_gravity="left|center_vertical"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/ib_profilepicture"
-            android:hint="Enter lastname"
+            android:hint="@string/enter_lastname"
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true" />
@@ -73,13 +73,13 @@
                 android:id="@+id/rb_sex_male"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:text="Male" />
+                android:text="@string/male" />
 
             <RadioButton
                 android:id="@+id/rb_sex_female"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:text="Female" />
+                android:text="@string/female" />
         </RadioGroup>
 
         <DatePicker
@@ -116,7 +116,7 @@
             android:layout_alignStart="@+id/ib_profilepicture"
             android:layout_below="@+id/ib_profilepicture"
             android:layout_marginTop="10dp"
-            android:text="Geschlecht" />
+            android:text="@string/gender" />
 
         <TextView
             android:id="@+id/tv_birthdate"
@@ -126,7 +126,7 @@
             android:layout_alignStart="@+id/tv_gender"
             android:layout_below="@+id/rg_gender"
             android:layout_marginTop="20dp"
-            android:text="Geburtsdatum" />
+            android:text="@string/birthday" />
 
     </RelativeLayout>
 
