@@ -44,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     public void onBindViewHolder(final ListViewHolder holder, int position) {
 
         holder.tv_name.setText(dataList.get(position).firstname + " " + dataList.get(position).lastname);
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+        holder.iv_select_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int index = dataList.get(holder.getAdapterPosition()).index;
@@ -60,13 +60,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     class ListViewHolder extends RecyclerView.ViewHolder {
         TextView tv_name;
-        ImageView iv_delete;
+        ImageView iv_select_profile;
 
         public ListViewHolder(View itemView) {
             super(itemView);
 
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            iv_delete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            iv_select_profile = (ImageView) itemView.findViewById(R.id.iv_select_profile);
         }
     }
 }

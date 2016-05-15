@@ -32,19 +32,6 @@
         android:paddingTop="60dp"
         tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.CreateProfileView">
 
-        <EditText
-            android:id="@+id/et_lastname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentStart="false"
-            android:layout_below="@+id/et_firstname"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/ib_profilepicture"
-            android:hint="Enter lastname"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true" />
 
         <EditText
             android:id="@+id/et_firstname"
@@ -56,6 +43,20 @@
             android:layout_marginTop="56dp"
             android:layout_toRightOf="@+id/ib_profilepicture"
             android:hint="Enter firstname"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/et_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/et_firstname"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/ib_profilepicture"
+            android:hint="Enter lastname"
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true" />
@@ -105,7 +106,6 @@
             android:layout_alignTop="@+id/et_firstname"
             android:layout_margin="5dp"
             android:background="#33a8a8a8"
-            android:onClick="startGalleryOrCamera"
             android:src="@drawable/ic_photo_camera_black_48dp" />
 
         <TextView
