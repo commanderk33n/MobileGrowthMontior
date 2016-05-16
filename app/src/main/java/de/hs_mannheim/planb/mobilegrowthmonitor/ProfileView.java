@@ -53,7 +53,13 @@ public class ProfileView extends BaseActivity {
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname);
 
+
+
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
+
+        Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
+        mProfileImage.setImageBitmap(originalBitmap);
+
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,9 +140,11 @@ public class ProfileView extends BaseActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
+                dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
-                mProfileImage.setImageBitmap(RotateBitmap(resizedBitmap, 270));
+              //  Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
+                mProfileImage.setImageBitmap(originalBitmap);
+
             }
         }
     }

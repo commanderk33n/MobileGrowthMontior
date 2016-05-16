@@ -23,6 +23,7 @@ public final class DbContract {
         public static final String COLUMN_NAME_FIRSTNAME = "firstname";
         public static final String COLUMN_NAME_SEX = "sex";
         public static final String COLUMN_NAME_BIRTHDAY = "birthday";
+        public static final String COLUMN_NAME_PROFILEPIC = "profilepic";
     }
 
     public static abstract class FeedMeasurement implements BaseColumns {
@@ -39,7 +40,10 @@ public final class DbContract {
             FeedProfile.COLUMN_NAME_LASTNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_FIRSTNAME + " TEXT," +
             FeedProfile.COLUMN_NAME_SEX + " INTEGER," +
-            FeedProfile.COLUMN_NAME_BIRTHDAY + " TEXT"+ ")";
+            FeedProfile.COLUMN_NAME_BIRTHDAY + " TEXT,"+
+            FeedProfile.COLUMN_NAME_PROFILEPIC + " TEXT" + ")";
 
     public static final String PROFILE_ALL_SELECT_QUERY = "SELECT * FROM " + FeedProfile.TABLE_NAME;
+
+
 }

@@ -45,7 +45,6 @@ public class CreateProfileView extends BaseActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create_profile_view, menu);

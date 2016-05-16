@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 
 public class ProfileData implements Serializable {
-    public String lastname, firstname, birthday;
+    public String lastname, firstname, birthday, profilepic;
     public int sex, index;
 
 }

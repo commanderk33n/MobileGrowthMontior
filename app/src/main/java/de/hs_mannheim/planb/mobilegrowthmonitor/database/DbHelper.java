@@ -56,11 +56,44 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME, profileData.firstname);
             values.put(DbContract.FeedProfile.COLUMN_NAME_SEX, profileData.sex);
             values.put(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY, profileData.birthday);
+            values.put(DbContract.FeedProfile.COLUMN_NAME_PROFILEPIC, profileData.profilepic);
             db.insertOrThrow(DbContract.FeedProfile.TABLE_NAME, null, values);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             e.printStackTrace();
-            Log.e(TAG, "Error while trying to add a new profileData to db");
+            Log.e(TAG, "Error while trying to add a new profile to db");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void setProfilePic(int index, String path) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.beginTransaction();
+            ContentValues value = new ContentValues();
+            value.put(DbContract.FeedProfile.COLUMN_NAME_PROFILEPIC, path);
+            String where = DbContract.FeedProfile.COLUMN_NAME_ID+"='" + index + "'";
+            db.update(DbContract.FeedProfile.TABLE_NAME, value, where , null);
+            Log.d(TAG, "Successfull set profile pic");
+        } catch (SQLException e) {
+            Log.e(TAG, "Error while trying to add a profilePic to db");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+
+    public void deleteProfile(int index) {
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.beginTransaction();
+            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where " +
+                    DbContract.FeedProfile.COLUMN_NAME_ID + " ='" + index + "'");
+            db.setTransactionSuccessful();
+
+        } catch (SQLException e) {
+            Log.e(TAG, "Error while trying to delete profile from db");
         } finally {
             db.endTransaction();
         }
@@ -80,6 +113,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
                     profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+                    profileData.profilepic = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_PROFILEPIC));
                     profileDataList.add(profileData);
                 } while (cursor.moveToNext());
             }
@@ -91,21 +125,6 @@ public class DbHelper extends SQLiteOpenHelper {
             }
         }
         return profileDataList;
-    }
-
-    public void deleteProfile(int index) {
-        SQLiteDatabase db = getWritableDatabase();
-        try {
-            db.beginTransaction();
-            db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where " +
-                    DbContract.FeedProfile.COLUMN_NAME_ID + " ='" + index + "'");
-            db.setTransactionSuccessful();
-
-        } catch (SQLException e) {
-            Log.e(TAG, "Error while trying to delete profile from db");
-        } finally {
-            db.endTransaction();
-        }
     }
 
     public ProfileData getProfile(int index) {
@@ -122,6 +141,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     profileData.firstname = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_FIRSTNAME));
                     profileData.sex = cursor.getInt(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_SEX));
                     profileData.birthday = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_BIRTHDAY));
+                    profileData.profilepic = cursor.getString(cursor.getColumnIndex(DbContract.FeedProfile.COLUMN_NAME_PROFILEPIC));
                 } while (cursor.moveToNext());
             }
         } catch (SQLException e) {
