@@ -53,12 +53,11 @@ public class ProfileView extends BaseActivity {
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname);
 
-
-
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
-
-        Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
-        mProfileImage.setImageBitmap(originalBitmap);
+        if(profile.profilepic!=null) { // if profilepic is null it keeps the drawable
+            Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
+            mProfileImage.setImageBitmap(originalBitmap);
+        }
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
