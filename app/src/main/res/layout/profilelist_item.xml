@@ -20,14 +20,4 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/tv_name"/>
 
-    <ImageView
-        android:id="@+id/iv_select_profile"
-        android:src="@drawable/ic_touch_app_black_24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
-
 </RelativeLayout>

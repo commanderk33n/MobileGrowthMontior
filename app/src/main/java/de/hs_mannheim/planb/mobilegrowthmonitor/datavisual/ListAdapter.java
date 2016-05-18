@@ -37,36 +37,31 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View convertView = inflater.inflate(R.layout.profilelist_item, parent, false);
-        return new ListViewHolder(convertView);
-    }
-
-    @Override
-    public void onBindViewHolder(final ListViewHolder holder, int position) {
-
-        holder.tv_name.setText(dataList.get(position).firstname + " " + dataList.get(position).lastname);
-        holder.iv_select_profile.setOnClickListener(new View.OnClickListener() {
+        final ListViewHolder holder = new ListViewHolder(convertView);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int index = dataList.get(holder.getAdapterPosition()).index;
                 listener.selectProfile(index);
             }
         });
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(ListViewHolder holder, int position) {
+        holder.tv_name.setText(dataList.get(position).firstname + " " + dataList.get(position).lastname);
     }
 
     @Override
     public int getItemCount() {
         return dataList.size();
     }
-
     class ListViewHolder extends RecyclerView.ViewHolder {
         TextView tv_name;
-        ImageView iv_select_profile;
-
         public ListViewHolder(View itemView) {
             super(itemView);
-
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            iv_select_profile = (ImageView) itemView.findViewById(R.id.iv_select_profile);
         }
     }
 }

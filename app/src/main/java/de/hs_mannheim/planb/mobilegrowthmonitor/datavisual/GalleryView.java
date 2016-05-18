@@ -20,7 +20,6 @@ public class GalleryView extends AppCompatActivity {
     GridView imageGrid;
     private String profile_name;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,6 @@ public class GalleryView extends AppCompatActivity {
         imageGrid.setAdapter(new ImageAdapter(this, bitmapList));
     }
 
-
     public void getFromSdCard() {
 
         // TODO: change this to Internal again after size measurement is finished
@@ -92,5 +90,4 @@ public class GalleryView extends AppCompatActivity {
         }
         return result;
     }
-
 }

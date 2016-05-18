@@ -79,6 +79,7 @@ public class CreateProfileView extends BaseActivity {
             System.out.println(format.format(calendar.getTime()));
 
             profileData.birthday = format.format(calendar.getTime());
+            profileData.profilepic = "";
             dbHelper.addProfile(profileData);
             finish();
         }
