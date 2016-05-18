@@ -27,6 +27,7 @@ import org.opencv.android.OpenCVLoader;
 import java.io.File;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
@@ -150,7 +151,9 @@ public class MainView extends BaseActivity implements Listener {
         }
         // OpenGallery TODO: move this to specific profile view
         if (id == R.id.open_gallery) {
+
             Intent intent = new Intent(this, GalleryView.class);
+            intent.putExtra("profile_name", "test");
             startActivity(intent);
         }
 

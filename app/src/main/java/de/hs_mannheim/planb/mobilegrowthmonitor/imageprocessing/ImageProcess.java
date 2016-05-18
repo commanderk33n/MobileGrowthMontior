@@ -107,7 +107,7 @@ public class ImageProcess {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             String currentDateandTime = sdf.format(new Date());
             String fileName = Environment.getExternalStorageDirectory().getPath() +
-                    "/growpics/" + currentDateandTime + "_filter.jpg";
+                    "/growpics/" + currentDateandTime + "test_filter.jpg";
             out = new FileOutputStream(fileName, true);
             bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
         } catch (Exception e) {
