@@ -35,6 +35,7 @@ public class ProfileView extends BaseActivity {
     private int profile_Id;
     private ImageButton mProfileImage;
     private DbHelper dbHelper;
+    private ProfileData profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class ProfileView extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
         DbHelper dbHelper = DbHelper.getInstance(this);
-        ProfileData profile = dbHelper.getProfile(profile_Id);
+        profile = dbHelper.getProfile(profile_Id);
 
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname);
@@ -150,11 +151,13 @@ public class ProfileView extends BaseActivity {
 
     public void startCamera(View view) {
         Intent intent = new Intent(this, CameraView.class);
+        intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
 
     public void startGallery(View view) {
         Intent intent = new Intent(this, GalleryView.class);
+        intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
 

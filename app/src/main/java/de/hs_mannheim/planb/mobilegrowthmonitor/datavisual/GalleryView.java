@@ -1,10 +1,8 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.GridView;
@@ -12,21 +10,25 @@ import android.widget.GridView;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.MainView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
-public class GalleryView extends AppCompatActivity{
+public class GalleryView extends AppCompatActivity {
 
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
+    private String profile_name;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_view);
+
+        Bundle extras = getIntent().getExtras();
+        this.profile_name = extras.getString("profile_name");
+
     }
 
     @Override
@@ -60,7 +62,7 @@ public class GalleryView extends AppCompatActivity{
     public void getFromSdCard() {
 
         // TODO: change this to Internal again after size measurement is finished
-        // File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
+        //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
         File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 
         if (folder.isDirectory()) {
@@ -69,7 +71,11 @@ public class GalleryView extends AppCompatActivity{
             for (int i = 0; i < listFile.length; i++) {
                 pathList.add(listFile[i].getAbsolutePath());
                 try {
-                    bitmapList.add(urlImageToBitmap(pathList.get(i)));
+                    // TODO: this check is inaccurate. Consider using an Id or something else
+                    if (pathList.get(i).contains(profile_name)) {
+                        bitmapList.add(urlImageToBitmap(pathList.get(i)));
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

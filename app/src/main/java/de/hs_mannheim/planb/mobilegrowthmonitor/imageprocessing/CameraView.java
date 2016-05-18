@@ -12,7 +12,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 public class CameraView extends BaseActivity {
     private static String TAG = CameraView.class.getSimpleName();
     NativeCam camFrag;
-
+    private String  profile_name;
 
 
     @Override
@@ -20,7 +20,10 @@ public class CameraView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_view);
 
-        camFrag = NativeCam.newInstance();
+        Bundle extras = getIntent().getExtras();
+        profile_name = extras.getString("profile_name");
+
+        camFrag = NativeCam.newInstance(profile_name);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
@@ -30,6 +33,7 @@ public class CameraView extends BaseActivity {
 
     public void afterPictureTaken(){
         Intent intent = new Intent(this, GalleryView.class);
+        intent.putExtra("profile_name", profile_name);
         startActivity(intent);
     }
 }
