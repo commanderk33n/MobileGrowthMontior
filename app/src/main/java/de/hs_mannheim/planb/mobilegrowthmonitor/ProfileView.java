@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,7 +164,8 @@ public class ProfileView extends BaseActivity {
 
     public void startMeasurement(View view){
         Intent intent = new Intent(this, MeasurementView.class);
-        intent.putExtra("profileId", profile_Id);
+        Log.v("ProfileView -> MEasu"," "+ profile_Id);
+        intent.putExtra("profile_Id", profile_Id);
         intent.putExtra("profileAge", age);
         startActivity(intent);
     }

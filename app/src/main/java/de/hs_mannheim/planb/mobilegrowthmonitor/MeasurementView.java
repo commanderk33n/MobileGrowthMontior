@@ -2,6 +2,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,10 @@ public class MeasurementView extends BaseActivity {
         DbHelper dbHelper = DbHelper.getInstance(this);
         profile = dbHelper.getProfile(profile_Id);
 
+        Log.v("Measurement View: " ,""+profile.lastname);
+
+        Log.v("Measurement View: " ,""+profile.sex);
+
     }
 
     public void saveMeasurement(View view) {
@@ -57,6 +62,7 @@ public class MeasurementView extends BaseActivity {
             bmiCategory.setVisibility(View.VISIBLE);
 
             bmi.setText(String.format("The BMI is: %.2f.",  bmi_value));
+            System.out.println("name: " + profile.lastname);
             System.out.println("Gender : " + profile.sex);
             if (age < 19 && age > 7) {
                 bmiCategory.setText("The child " + bmiCategorizeChild(age, bmi_value, profile.sex));
