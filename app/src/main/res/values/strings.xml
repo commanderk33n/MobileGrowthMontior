@@ -23,8 +23,8 @@
     <string name="export">Export</string>
     <string name="save">Save</string>
     <string name="size_measurement">Size Measurement</string>
-    <string name="birthday">Birthday</string>
-    <string name="gender">Gender</string>
+    <string name="birthday">Please enter the birthday of your child:</string>
+    <string name="gender">Please choose the gender of your child: </string>
     <string name="enter_firstname">Enter firstname</string>
     <string name="enter_lastname">Enter lastname</string>
     <string name="male">Male</string>

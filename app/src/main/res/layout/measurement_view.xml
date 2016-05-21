@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your childs height"
+        android:id="@+id/tv_enter_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="height in cm"
+        android:ems="10"
+        android:id="@+id/et_height"
+        android:layout_below="@+id/tv_enter_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your childs weight"
+        android:id="@+id/tv_enter_weight"
+        android:layout_below="@+id/et_height"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="weight in kg"
+        android:ems="10"
+        android:id="@+id/et_weight"
+        android:layout_below="@+id/tv_enter_weight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter"
+        android:id="@+id/btn_enter_for_bmi"
+        android:layout_alignBottom="@+id/et_weight"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:onClick="saveMeasurement" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The BMI is: "
+        android:id="@+id/tv_bmi"
+        android:layout_below="@+id/et_weight"
+        android:layout_marginTop="40dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bla"
+        android:id="@+id/tv_bmi_category"
+        android:layout_below="@+id/tv_bmi"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="5dp" />
+
+</RelativeLayout>
