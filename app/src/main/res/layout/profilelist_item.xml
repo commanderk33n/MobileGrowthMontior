@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="70dp"
     android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/holo_orange_light"
+    android:background="@drawable/gradient_box"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_name"
+        android:textSize="16sp"
         android:layout_centerVertical="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
@@ -15,9 +16,12 @@
 
     <TextView
         android:id="@+id/tv_bday"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tv_name"/>
+        android:layout_toRightOf="@id/tv_name"
+        />
 
 </RelativeLayout>

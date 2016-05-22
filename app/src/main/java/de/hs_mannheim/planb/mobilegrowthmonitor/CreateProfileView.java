@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +22,7 @@ public class CreateProfileView extends BaseActivity {
 
     private static final String TAG = CreateProfileView.class.getSimpleName();
 
-    EditText surname, firstname;
+    EditText lastname, firstname;
     RadioButton sex_male, sex_female;
     DatePicker birthday;
     Button btn_next;
@@ -37,7 +37,7 @@ public class CreateProfileView extends BaseActivity {
         setSupportActionBar(toolbar);
 
         dbHelper = DbHelper.getInstance(this);
-        surname = (EditText) findViewById(R.id.et_lastname);
+        lastname = (EditText) findViewById(R.id.et_lastname);
         firstname = (EditText) findViewById(R.id.et_firstname);
         sex_male = (RadioButton) findViewById(R.id.rb_sex_male);
         sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
@@ -55,33 +55,34 @@ public class CreateProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.save_profile) {
-            ProfileData profileData = new ProfileData();
-            if (!surname.getText().toString().isEmpty()) {
-                profileData.lastname = surname.getText().toString();
+            if (firstname.getText().toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter the childs firstname!", Toast.LENGTH_LONG).show();
+            } else if (lastname.getText().toString().trim().isEmpty()) {
+                Toast.makeText(this, "Please enter the childs lastname!", Toast.LENGTH_LONG).show();
+            } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
+                Toast.makeText(this, "Please choose the gender!", Toast.LENGTH_LONG).show();
             } else {
-                profileData.lastname = "";
-            }
-            if (!firstname.getText().toString().isEmpty()) {
+                ProfileData profileData = new ProfileData();
+                profileData.lastname = lastname.getText().toString();
                 profileData.firstname = firstname.getText().toString();
-            } else {
-                profileData.firstname = "";
-            }
-            if (!sex_female.hasSelection() && sex_male.hasSelection()) {
-                profileData.sex = 1;
-            } else {
-                profileData.sex = 0;
-            }
-            int year = birthday.getYear();
-            int monthOfYear = birthday.getMonth();
-            int dayOfMonth = birthday.getDayOfMonth();
-            Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            System.out.println(format.format(calendar.getTime()));
 
-            profileData.birthday = format.format(calendar.getTime());
-            profileData.profilepic = "";
-            dbHelper.addProfile(profileData);
-            finish();
+                if (sex_male.isChecked() && !sex_female.isChecked()) {
+                    profileData.sex = 1;
+                } else {
+                    profileData.sex = 0;
+                }
+
+                int year = birthday.getYear();
+                int monthOfYear = birthday.getMonth();
+                int dayOfMonth = birthday.getDayOfMonth();
+                Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                profileData.birthday = format.format(calendar.getTime());
+                dbHelper.addProfile(profileData);
+                finish();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,7 @@ public class ProfileView extends BaseActivity {
 
 
     private int profile_Id;
+    private int age;
     private ImageButton mProfileImage;
     private DbHelper dbHelper;
     private ProfileData profile;
@@ -69,7 +71,6 @@ public class ProfileView extends BaseActivity {
 
         TextView tvAge = (TextView) findViewById(R.id.tv_age);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        int age = 12;
 
         try {
             Date tempDate = format.parse(profile.birthday);
@@ -158,6 +159,14 @@ public class ProfileView extends BaseActivity {
     public void startGallery(View view) {
         Intent intent = new Intent(this, GalleryView.class);
         intent.putExtra("profile_name", profile.firstname);
+        startActivity(intent);
+    }
+
+    public void startMeasurement(View view){
+        Intent intent = new Intent(this, MeasurementView.class);
+        Log.v("ProfileView -> MEasu"," "+ profile_Id);
+        intent.putExtra("profile_Id", profile_Id);
+        intent.putExtra("profileAge", age);
         startActivity(intent);
     }
 
