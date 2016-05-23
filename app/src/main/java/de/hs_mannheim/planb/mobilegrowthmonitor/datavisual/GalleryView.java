@@ -67,12 +67,13 @@ public class GalleryView extends AppCompatActivity {
             File[] listFile = folder.listFiles();
 
             for (int i = 0; i < listFile.length; i++) {
-                pathList.add(listFile[i].getAbsolutePath());
+
                 try {
                     // TODO: this check is inaccurate. Consider using an Id or something else
-                    if (pathList.get(i).contains(profile_name)) {
-                        bitmapList.add(urlImageToBitmap(pathList.get(i)));
-                    }
+                    // if (pathList.get(i).contains(profile_name)) {
+                    pathList.add(listFile[i].getAbsolutePath());
+                    bitmapList.add(urlImageToBitmap(pathList.get(i)));
+                    // }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -85,7 +86,7 @@ public class GalleryView extends AppCompatActivity {
         Bitmap result = null;
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 4;
+            options.inSampleSize = 2;
             result = BitmapFactory.decodeFile(imageUrl, options);
         }
         return result;

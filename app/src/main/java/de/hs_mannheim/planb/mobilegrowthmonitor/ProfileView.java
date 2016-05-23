@@ -30,6 +30,11 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
+/**
+ * ProfileView.Activity
+ * Show selected Profiles - and Profile functions
+ */
+
 public class ProfileView extends BaseActivity {
 
 
@@ -57,7 +62,7 @@ public class ProfileView extends BaseActivity {
         tvFirstname.setText(profile.firstname);
 
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
-        if(profile.profilepic!=null) { // if profilepic is null it keeps the drawable
+        if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
             mProfileImage.setImageBitmap(originalBitmap);
         }
@@ -120,7 +125,7 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
-          dbHelper.deleteProfile(profile_Id);
+            dbHelper.deleteProfile(profile_Id);
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
@@ -143,7 +148,7 @@ public class ProfileView extends BaseActivity {
                 cursor.close();
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
-              //  Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
+                //  Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
                 mProfileImage.setImageBitmap(originalBitmap);
 
             }

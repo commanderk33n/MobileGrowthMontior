@@ -14,7 +14,6 @@ public class CameraView extends BaseActivity {
     NativeCam camFrag;
     private String  profile_name;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

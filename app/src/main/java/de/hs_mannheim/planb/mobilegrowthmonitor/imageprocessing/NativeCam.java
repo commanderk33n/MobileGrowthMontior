@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -43,6 +45,7 @@ public class NativeCam extends Fragment {
 
     // Reference to the containing view.
     private View mCameraView;
+
 
     /**
      * Default empty constructor.
@@ -232,12 +235,29 @@ public class NativeCam extends Fragment {
             mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
 
+            // TODO REMOVE AFTER PRODUCTION
+            // Camera Parameter Output for TESTING
+            System.out.println("### PARAM.OUTPUT: mCamera.getParameters()##################################");
+            System.out.println("#####################################################################");
+            System.out.println("### PARAM.getFocalLength() : " + mCamera.getParameters().getFocalLength());
+            float[] focusDisctances = new float[3];
+            mCamera.getParameters().getFocusDistances(focusDisctances);
+            System.out.println("#####################################################################");
+            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_NEAR_INDEX : " + focusDisctances[0]);
+            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_OPTIMAL_INDEX : " + focusDisctances[1]);
+            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_FAR_INDEX : " + focusDisctances[2]);
+            System.out.println("#####################################################################");
+            System.out.println("### PARAM.getHorizontalViewAngle() : " + mCamera.getParameters().getHorizontalViewAngle());
+            System.out.println("### PARAM.getVerticalViewAngle() : " + mCamera.getParameters().getVerticalViewAngle());
+            System.out.println("#####################################################################");
+
+
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
 
-            // Set the camera to Auto Flash mode.
+            // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
@@ -410,7 +430,7 @@ public class NativeCam extends Fragment {
         }
     }
 
-
+    // get Correct CameraView Orientation for rotation
     public int getCorrectCameraOrientation(Camera.CameraInfo info) {
 
         int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
@@ -463,8 +483,8 @@ public class NativeCam extends Fragment {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
-
-                ((CameraView)getActivity()).afterPictureTaken();
+                // TODO: REMOVE COMMENT
+                // ((CameraView) getActivity()).afterPictureTaken();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -473,8 +493,6 @@ public class NativeCam extends Fragment {
 
     /**
      * Used to return the camera File output.
-     *
-     * @return
      */
     private File getOutputMediaFile() {
 
@@ -482,12 +500,16 @@ public class NativeCam extends Fragment {
         // Create a media file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
-                "MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
+        String fileName = Environment.getExternalStorageDirectory().getPath() +
+                "/growpics/" + timeStamp + "_filter.jpg";
+        File testFile = new File(fileName);
+        //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
+        //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
+
         Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)
                 .show();
 
-        return mediaFile;
+        return testFile;
     }
 
 }

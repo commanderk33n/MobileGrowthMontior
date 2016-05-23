@@ -25,7 +25,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.ImageProcess;
 /**
  * Created by eikood on 05.05.2016.
  */
-public class ImageAdapter extends BaseAdapter{
+public class ImageAdapter extends BaseAdapter {
 
     private Context context;
     private Animator currentAnimator;
@@ -217,9 +217,11 @@ public class ImageAdapter extends BaseAdapter{
 
     public class ImgAdptOnClickListener implements View.OnClickListener {
         String path;
+
         public ImgAdptOnClickListener(String path) {
             this.path = path;
         }
+
         @Override
         public void onClick(View v) {
             switch (v.getId()) {

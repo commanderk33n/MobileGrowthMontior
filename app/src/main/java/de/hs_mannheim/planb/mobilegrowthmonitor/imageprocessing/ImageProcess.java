@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -21,6 +22,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,14 +46,18 @@ public class ImageProcess {
     public void sizeMeasurement(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
+
         // rotate image
         // Mat rotate = Imgproc.getRotationMatrix2D(new Point(source.cols()/2, source.rows()/2), 90,-1);
         // Imgproc.warpAffine(source, source, rotate, new Size(source.rows(), source.cols()));
+
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
         int erosion_size = 5;
         int dilation_size = 5;
+
+        // Maybe important params for better findContours()
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * erosion_size + 1, 2 * erosion_size + 1));
         Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * dilation_size + 1, 2 * dilation_size + 1));
         Bitmap bmp = null;
@@ -63,6 +69,7 @@ public class ImageProcess {
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.GaussianBlur(destination, destination, size, 0);
             Imgproc.Canny(destination, destination, 50, 100);
+            // dilate() + erode() necessary for findContours()
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
 
@@ -73,9 +80,9 @@ public class ImageProcess {
                     return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
             });
-            Imgproc.drawContours(source, contours, 0, new Scalar(255, 255, 255), 5);
+            Imgproc.drawContours(source, contours, 0, new Scalar(255, 255, 255), 2);
             rect_small = Imgproc.boundingRect(contours.get(0));
-            Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x + rect_small.width, rect_small.y + rect_small.height), new Scalar(255, 255, 255), 5);
+            Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x + rect_small.width, rect_small.y + rect_small.height), new Scalar(255, 255, 255), 3);
 
             Collections.sort(contours, new Comparator<MatOfPoint>() {
                 @Override
@@ -83,19 +90,42 @@ public class ImageProcess {
                     return (int) (Imgproc.contourArea(rhs) - Imgproc.contourArea(lhs));
                 }
             });
-            Imgproc.drawContours(source, contours, 0, new Scalar(255, 255, 255), 5);
+            Imgproc.drawContours(source, contours, 0, new Scalar(255, 255, 255), 2);
             rect_large = Imgproc.boundingRect(contours.get(0));
-            Imgproc.rectangle(source, new Point(rect_large.x, rect_large.y), new Point(rect_large.x + rect_large.width, rect_large.y + rect_large.height), new Scalar(255, 255, 255), 5);
+            Imgproc.rectangle(source, new Point(rect_large.x, rect_large.y), new Point(rect_large.x + rect_large.width, rect_large.y + rect_large.height), new Scalar(255, 255, 255), 3);
             bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(source, bmp);
-            double referenceObjectHeight = 17.5;
-            double ergebnis = rect_large.height / rect_small.height * referenceObjectHeight;
-            // System.out.println(ergebnis);
-            Toast.makeText(context, "Height: " + ergebnis, Toast.LENGTH_LONG).show();
+
+            // Height of Referenceobject and SizeMeasurement
+            // TODO: change to alertDialog until 22.05.2016
+            double referenceObjectHeight = 14.9;
+            double result = rect_large.height / rect_small.height * referenceObjectHeight;
+            DecimalFormat df = new DecimalFormat("####0.00");
+            String resultString = df.format(result);
+            Toast.makeText(context, "Size is: " + resultString + " cm", Toast.LENGTH_LONG).show();
 
         } catch (CvException e) {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
+        imageWriter(bmp);
+    }
+
+    // TODO get background imagePath
+
+    public void backgroundSub(String path) {
+        Mat foreground = Imgcodecs.imread(path);
+        Mat background = Imgcodecs.imread("test.jpg");
+        Mat result = new Mat(foreground.rows(), foreground.cols(), foreground.type());
+        Size size = new Size(7, 7);
+        Bitmap bmp;
+        Imgproc.cvtColor(foreground, foreground, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(background, background, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.GaussianBlur(foreground, foreground, size, 0);
+        Imgproc.GaussianBlur(background, background, size, 0);
+
+        Core.absdiff(foreground, background, result);
+        bmp = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(result, bmp);
         imageWriter(bmp);
     }
 
@@ -105,9 +135,9 @@ public class ImageProcess {
         FileOutputStream out = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            String currentDateandTime = sdf.format(new Date());
+            String timeStamp = sdf.format(new Date());
             String fileName = Environment.getExternalStorageDirectory().getPath() +
-                    "/growpics/" + currentDateandTime + "test_filter.jpg";
+                    "/growpics/" + timeStamp + "_filter.jpg";
             out = new FileOutputStream(fileName, true);
             bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
         } catch (Exception e) {

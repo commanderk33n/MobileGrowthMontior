@@ -8,7 +8,7 @@
         android:id="@+id/camera_preview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
+
         />
 
     <RelativeLayout
@@ -18,7 +18,7 @@
         android:layout_alignParentBottom="true" >
         <Button
             android:id="@+id/button_capture"
-            android:text="Capture"
+            android:text="@string/capture"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"

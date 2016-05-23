@@ -73,8 +73,8 @@ public class DbHelper extends SQLiteOpenHelper {
             db.beginTransaction();
             ContentValues value = new ContentValues();
             value.put(DbContract.FeedProfile.COLUMN_NAME_PROFILEPIC, path);
-            String where = DbContract.FeedProfile.COLUMN_NAME_ID+"='" + index + "'";
-            db.update(DbContract.FeedProfile.TABLE_NAME, value, where , null);
+            String where = DbContract.FeedProfile.COLUMN_NAME_ID + "='" + index + "'";
+            db.update(DbContract.FeedProfile.TABLE_NAME, value, where, null);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, "Error while trying to add a profilePic to db");

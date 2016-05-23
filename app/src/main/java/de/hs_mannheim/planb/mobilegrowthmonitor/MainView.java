@@ -1,7 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 /**
- * MainView of MobileGrowthMonitor
+ * MainView.Activity
  * Shows all Profiles - add new profiles
  */
 
@@ -147,6 +147,7 @@ public class MainView extends BaseActivity implements Listener {
         // StartCamera TODO: move this to specific profile view
         if (id == R.id.start_cam) {
             Intent intent = new Intent(this, CameraView.class);
+            intent.putExtra("profile_name", "test");
             startActivity(intent);
         }
         // OpenGallery TODO: move this to specific profile view

@@ -4,7 +4,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
  * Implementation of Applock
  *
  * gets/saves/check pincode
- * TODO: remove sharedPreferences and use SQLite
+ *
  */
 
 import android.app.Activity;
