@@ -62,8 +62,7 @@ public class MeasurementView extends BaseActivity {
             bmiCategory.setVisibility(View.VISIBLE);
 
             bmi.setText(String.format("The BMI is: %.2f.",  bmi_value));
-            System.out.println("name: " + profile.lastname);
-            System.out.println("Gender : " + profile.sex);
+
             if (age < 19 && age > 7) {
                 bmiCategory.setText("The child " + bmiCategorizeChild(age, bmi_value, profile.sex));
             } else if (age > 19) {
@@ -75,10 +74,13 @@ public class MeasurementView extends BaseActivity {
     }
 
 
+    //TODO: extract Method to set BackgroundColor
+
     // Tabellen von http://www.bmi-rechner.net/
     public String bmiCategorizeChild(int age, double bmi, int sex) {
         String result = "";
-
+        System.out.println("name: " + profile.lastname);
+        System.out.println("Gender : " + profile.sex);
         if(sex == 0 ){
             double[][] perzentileFemale = {{8, 12.2, 13.2, 15.9, 18.8, 22.3},
                     {9, 13.0, 13.7, 16.4, 19.8, 23.4},
@@ -98,22 +100,19 @@ public class MeasurementView extends BaseActivity {
 
             if(bmi < perzentileFemale[i][1]){
                 result = "is serverly underweight!";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
+                setBackgroundColor(1);
             } else if(bmi < perzentileFemale[i][2]){
                 result = "is underweight weight!";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF7B00"));
-            } else if (bmi < perzentileFemale[i][3]){
+                setBackgroundColor(2);
+            } else if (bmi > perzentileFemale[i][2] && bmi < perzentileFemale[i][4]){ //3
                 result = "has normal weight!";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFCDE28F"));
-            }else if(bmi < perzentileFemale[i][4]){
+                setBackgroundColor(4);
+            }else if(bmi > perzentileFemale[i][4] && bmi < perzentileFemale[i][5]){
                 result = "is overweight!";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFFB300"));
-            }else if (bmi < perzentileFemale[i][5]){
-                result = "has obesity";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF7B00"));
-            } else{
-                result = "has severe obesity";
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
+                setBackgroundColor(2);
+            }else {
+                result = "is severly overweight";
+                setBackgroundColor(1);
             }
 
 
@@ -139,44 +138,58 @@ public class MeasurementView extends BaseActivity {
 
             if(bmi < perzentileMale[i][1]){
                 result = "is serverly underweight!";
-
+                setBackgroundColor(1);
             } else if(bmi < perzentileMale[i][2]){
-                result = "is underweight!";
-            } else if (bmi < perzentileMale[i][3]){
+                result = "is underweight weight!";
+                setBackgroundColor(2);
+            } else if (bmi > perzentileMale[i][2] && bmi < perzentileMale[i][4]){ //3
                 result = "has normal weight!";
-            }else if(bmi < perzentileMale[i][4]){
+                setBackgroundColor(4);
+            }else if(bmi > perzentileMale[i][4] && bmi < perzentileMale[i][5]){
                 result = "is overweight!";
+                setBackgroundColor(2);
             }else {
                 result = "is severly overweight";
+                setBackgroundColor(1);
             }
-
         }
+
         return result;
     }
 
     public String bmiCategorize(double bmi, int sex) {
         if (sex == 0) {
             if (bmi < 19) {
+                setBackgroundColor(1);
                 return "are underweight!";
             } else if (bmi < 25) {
+                setBackgroundColor(4);
                 return "have normal weight!";
             } else if (bmi < 31) {
+                setBackgroundColor(2);
                 return "are overweight!";
             } else if (bmi < 41) {
+                setBackgroundColor(3);
                 return "have obesity!";
             } else {
+                setBackgroundColor(1);
                 return "have sever Obesity!";
             }
         } else {
             if (bmi < 20) {
+                setBackgroundColor(1);
                 return "are underweight!";
             } else if (bmi < 26) {
+                setBackgroundColor(4);
                 return "have normal weight!";
             } else if (bmi < 31) {
+                setBackgroundColor(2);
                 return "are overweight!";
             } else if (bmi < 41) {
+                setBackgroundColor(3);
                 return "have obesity!";
             } else {
+                setBackgroundColor(1);
                 return "have sever Obesity!";
             }
         }
@@ -191,6 +204,25 @@ public class MeasurementView extends BaseActivity {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public void setBackgroundColor(int color){
+        switch (color){
+            case 1:
+                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
+                break;
+            case 2:
+                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF7B00"));
+                break;
+            case 3:
+                bmiCategory.setBackgroundColor(Color.parseColor("#FFFFB300"));
+                break;
+            case 4:
+                bmiCategory.setBackgroundColor(Color.parseColor("#FFCDE28F"));
+                break;
+            default:
+                break;
         }
     }
 }
