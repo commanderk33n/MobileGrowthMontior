@@ -17,7 +17,7 @@
     <string name="date">Date</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
-    <string name="foto">Foto</string>
+    <string name="foto">Photo</string>
     <string name="graph">Graph</string>
     <string name="gallery">Gallery</string>
     <string name="export">Export</string>
@@ -30,4 +30,5 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="capture">Capture</string>
+    <string name="measurement">Measurement</string>
 </resources>

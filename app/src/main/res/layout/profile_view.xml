@@ -124,7 +124,7 @@
             android:drawableLeft="@drawable/ic_create_black_24dp"
             android:onClick="startMeasurement"
             android:padding="5dp"
-            android:text="Messung"
+            android:text="@string/measurement"
             android:textAlignment="viewStart"
             android:textSize="22dp" />
 
