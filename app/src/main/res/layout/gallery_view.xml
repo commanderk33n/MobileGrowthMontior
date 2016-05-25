@@ -32,4 +32,14 @@
         android:layout_gravity="start|top"
         android:visibility="invisible" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Background-Sub"
+        android:id="@+id/btn_background_sub"
+        android:layout_gravity="end|top"
+        android:visibility="invisible" />
+
+
 </FrameLayout>

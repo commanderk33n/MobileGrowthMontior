@@ -18,7 +18,7 @@ public class GalleryView extends AppCompatActivity {
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
-    private String profile_name;
+    String profile_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,6 @@ public class GalleryView extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         this.profile_name = extras.getString("profile_name");
-
     }
 
     @Override

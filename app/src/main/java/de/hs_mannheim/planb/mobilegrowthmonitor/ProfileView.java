@@ -38,7 +38,6 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class ProfileView extends BaseActivity {
 
-
     private int profile_Id;
     private int age;
     private ImageButton mProfileImage;
@@ -65,7 +64,8 @@ public class ProfileView extends BaseActivity {
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
-            mProfileImage.setImageBitmap(originalBitmap);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
+            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
         }
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,6 @@ public class ProfileView extends BaseActivity {
         //TODO: set size and weight TextView
 
     }
-
 
     private void selectImage() {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
@@ -173,8 +172,8 @@ public class ProfileView extends BaseActivity {
                 cursor.close();
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
-                //  Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 150, 150, false);
-                mProfileImage.setImageBitmap(originalBitmap);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
+                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
             }
         }
@@ -192,15 +191,15 @@ public class ProfileView extends BaseActivity {
         startActivity(intent);
     }
 
-    public void startMeasurement(View view){
+    public void startMeasurement(View view) {
         Intent intent = new Intent(this, MeasurementView.class);
-        Log.v("ProfileView -> MEasu"," "+ profile_Id);
+        Log.v("ProfileView -> Measu", " " + profile_Id);
         intent.putExtra("profile_Id", profile_Id);
         intent.putExtra("profileAge", age);
         startActivity(intent);
     }
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle) {
+    public static Bitmap rotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);

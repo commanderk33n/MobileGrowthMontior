@@ -102,7 +102,9 @@ public class ImageProcess {
             // Height of Referenceobject and SizeMeasurement
             // TODO: change to alertDialog until 22.05.2016
             double referenceObjectHeight = 14.9;
-            double result = rect_large.height / rect_small.height * referenceObjectHeight;
+            double rectLargeHeight = rect_large.height;
+            double rectSmallHeight = rect_small.height;
+            double result = rectLargeHeight / rectSmallHeight * referenceObjectHeight;
             DecimalFormat df = new DecimalFormat("####0.00");
             String resultString = df.format(result);
             Toast.makeText(context, "Size is: " + resultString + " cm", Toast.LENGTH_LONG).show();
@@ -118,7 +120,7 @@ public class ImageProcess {
 
     public void backgroundSub(String path) {
         Mat foreground = Imgcodecs.imread(path);
-        Mat background = Imgcodecs.imread("test.jpg");
+        Mat background = Imgcodecs.imread("/storage/emulated/0/growpics/background.jpg");
         Mat result = new Mat(foreground.rows(), foreground.cols(), foreground.type());
         Size size = new Size(7, 7);
         Bitmap bmp;
@@ -128,7 +130,7 @@ public class ImageProcess {
         Imgproc.GaussianBlur(background, background, size, 0);
 
         Core.absdiff(foreground, background, result);
-        bmp = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.ARGB_8888);
+        bmp = Bitmap.createBitmap(foreground.cols(), foreground.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(result, bmp);
         imageWriter(bmp);
     }
