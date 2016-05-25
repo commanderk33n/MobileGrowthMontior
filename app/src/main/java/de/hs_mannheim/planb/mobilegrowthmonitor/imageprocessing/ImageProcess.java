@@ -41,9 +41,11 @@ public class ImageProcess {
     public ImageProcess(Context c) {
         context = c;
     }
+    public ImageProcess(){
 
+    }
     // this is our prototype function!!
-    public void sizeMeasurement(String path) {
+    public double sizeMeasurement(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
 
@@ -62,6 +64,7 @@ public class ImageProcess {
         Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * dilation_size + 1, 2 * dilation_size + 1));
         Bitmap bmp = null;
         Rect rect_small, rect_large;
+        double ergebnis=0;
 
         try {
             Mat destination;
@@ -108,6 +111,7 @@ public class ImageProcess {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
         imageWriter(bmp);
+        return ergebnis;
     }
 
     // TODO get background imagePath
