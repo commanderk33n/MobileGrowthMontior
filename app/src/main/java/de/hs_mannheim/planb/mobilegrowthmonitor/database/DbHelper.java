@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,12 +39,14 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DbContract.CREATE_PROFILES_TABLE_QUERY);
+        db.execSQL(DbContract.CREATE_MEASUREMENT_TABLE_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
             db.execSQL("DROP TABLE IF EXISTS " + DbContract.FeedProfile.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + DbContract.FeedMeasurement.TABLE_NAME);
             onCreate(db);
         }
     }
@@ -146,5 +150,73 @@ public class DbHelper extends SQLiteOpenHelper {
             Log.e(TAG, "Error while trying to fetch profile from db by id");
         }
         return profileData;
+    }
+
+    public MeasurementData getLatestMeasurement(int index){
+
+        ArrayList<MeasurementData> profileDataList = new ArrayList<>();
+        String q = "SELECT * FROM " + DbContract.FeedMeasurement.TABLE_NAME +
+                " WHERE " + DbContract.FeedMeasurement.COLUMN_NAME_ID + " = '" + index + "'";
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(q, null);
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    MeasurementData data = new MeasurementData();
+                    data.date = cursor.getString(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_DATE));
+                    data.image = cursor.getString(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_IMAGE));
+                    data.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_ID));
+                    data.size = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_SIZE));
+                    data.weight = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_WEIGHT));
+                    profileDataList.add(data);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error while trying to get all measurements from db");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        int indexLatestMeasurement = 0;
+        for(int i = 0, j = 1; i < profileDataList.size() - 1; i++, j++){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date latestDate = format.parse(profileDataList.get(i).date);
+                Date dateToCompare = format.parse(profileDataList.get(j).date);
+                if(dateToCompare.after(latestDate)){
+                    indexLatestMeasurement = j;
+                }
+            } catch (java.text.ParseException e) {
+                Log.e(TAG, "Error while trying to determine the latest Measurement Date!");
+            }
+
+
+        }
+
+        return profileDataList.get(indexLatestMeasurement);
+    }
+
+    public void addMeasurement(MeasurementData measurementData) {
+        SQLiteDatabase db = getReadableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_DATE, measurementData.date);
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_ID, measurementData.index);
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_IMAGE, measurementData.image);
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_SIZE, measurementData.size);
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_WEIGHT, measurementData.weight);
+            db.insertOrThrow(DbContract.FeedMeasurement.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Error while trying to add a new measurement to db");
+        } finally {
+            db.endTransaction();
+        }
     }
 }

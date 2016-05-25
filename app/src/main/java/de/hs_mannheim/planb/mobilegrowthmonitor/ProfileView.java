@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
@@ -92,6 +93,30 @@ public class ProfileView extends BaseActivity {
             e.printStackTrace();
         }
         tvAge.setText(Integer.toString(age));
+
+        // here is a test, whether the database FeedMeasurement works
+        // TODO: add a check, whether there was already taken a measurement
+        MeasurementData data1 = new MeasurementData();
+        data1.size = 1.65;
+        data1.weight = 55.0;
+        data1.index = profile_Id;
+        data1.image = "";
+        data1.date = "2016-05-23";
+        dbHelper.addMeasurement(data1);
+
+        MeasurementData data2 = new MeasurementData();
+        data2.size = 1.70;
+        data2.weight = 80.0;
+        data2.index = profile_Id;
+        data2.image = "";
+        data2.date = "2016-05-24";
+        dbHelper.addMeasurement(data2);
+
+        TextView tvLastMeasurement = (TextView) findViewById(R.id.tv_date_last_measurement);
+        MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
+        tvLastMeasurement.setText(measurementData.date);
+        //TODO: set size and weight TextView
+
     }
 
 

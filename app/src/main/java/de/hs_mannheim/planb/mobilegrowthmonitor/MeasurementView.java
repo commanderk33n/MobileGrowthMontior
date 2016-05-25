@@ -74,8 +74,6 @@ public class MeasurementView extends BaseActivity {
     }
 
 
-    //TODO: extract Method to set BackgroundColor
-
     // Tabellen von http://www.bmi-rechner.net/
     public String bmiCategorizeChild(int age, double bmi, int sex) {
         String result = "";

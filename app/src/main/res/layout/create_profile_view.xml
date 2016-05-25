@@ -21,98 +21,101 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="60dp"
-        tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.CreateProfileView">
+        android:layout_height="match_parent">
 
-
-        <EditText
-            android:id="@+id/et_firstname"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentStart="false"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="30dp"
-            android:hint="@string/enter_firstname"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true" />
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="60dp"
+            tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.CreateProfileView">
 
-        <EditText
-            android:id="@+id/et_lastname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentStart="false"
-            android:layout_below="@+id/et_firstname"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginTop="10dp"
-            android:hint="@string/enter_lastname"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true" />
 
-        <TextView
-            android:id="@+id/tv_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/et_lastname"
-            android:layout_marginTop="10dp"
-            android:text="@string/gender" />
-
-        <RadioGroup
-            android:id="@+id/rg_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_gender"
-            android:layout_toEndOf="@+id/tv_gender"
-            android:layout_marginTop="5dp">
-
-            <RadioButton
-                android:id="@+id/rb_sex_male"
+            <EditText
+                android:id="@+id/et_firstname"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="@string/male" />
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentStart="false"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="30dp"
+                android:hint="@string/enter_firstname"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true" />
 
-            <RadioButton
-                android:id="@+id/rb_sex_female"
+            <EditText
+                android:id="@+id/et_lastname"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:text="@string/female" />
-        </RadioGroup>
+                android:layout_height="45dp"
+                android:layout_alignParentStart="false"
+                android:layout_below="@+id/et_firstname"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginTop="10dp"
+                android:hint="@string/enter_lastname"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true" />
 
-        <TextView
-            android:id="@+id/tv_birthdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_gender"
-            android:layout_alignStart="@+id/tv_gender"
-            android:layout_below="@+id/rg_gender"
-            android:layout_marginTop="20dp"
-            android:text="@string/birthday" />
+            <TextView
+                android:id="@+id/tv_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_lastname"
+                android:layout_marginTop="10dp"
+                android:text="@string/gender" />
 
-        <DatePicker
-            android:id="@+id/dp_birthday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tv_birthdate"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
-            android:padding="5dp" />
-        <!--DatePicker only API level 21 or higher!
-         Nochmal Hannah fragen-->
+            <RadioGroup
+                android:id="@+id/rg_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_gender"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/tv_gender">
 
+                <RadioButton
+                    android:id="@+id/rb_sex_male"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:text="@string/male" />
 
-    </RelativeLayout>
+                <RadioButton
+                    android:id="@+id/rb_sex_female"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:text="@string/female" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_birthdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tv_gender"
+                android:layout_alignStart="@+id/tv_gender"
+                android:layout_below="@+id/rg_gender"
+                android:layout_marginTop="20dp"
+                android:text="@string/birthday" />
+
+            <DatePicker
+                android:id="@+id/dp_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/tv_birthdate"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:padding="5dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -28,7 +28,7 @@ public final class DbContract {
 
     public static abstract class FeedMeasurement implements BaseColumns {
         public static final String TABLE_NAME = "measurement";
-        public static final String COLUMN_NAME_ID = "profile_fk";
+        public static final String COLUMN_NAME_ID = "profile_id";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_SIZE = "size";
         public static final String COLUMN_NAME_WEIGHT = "weight";
@@ -45,5 +45,14 @@ public final class DbContract {
 
     public static final String PROFILE_ALL_SELECT_QUERY = "SELECT * FROM " + FeedProfile.TABLE_NAME;
 
+    public static final String CREATE_MEASUREMENT_TABLE_QUERY = "CREATE TABLE " + FeedMeasurement.TABLE_NAME + "(" +
+            FeedMeasurement.COLUMN_NAME_ID + " INTEGER NOT NULL, " +
+            FeedMeasurement.COLUMN_NAME_DATE + " TEXT NOT NULL, " +
+            FeedMeasurement.COLUMN_NAME_SIZE + " REAL, " +
+            FeedMeasurement.COLUMN_NAME_WEIGHT + " REAL, " +
+            FeedMeasurement.COLUMN_NAME_IMAGE + " TEXT, " +
+            "FOREIGN KEY(" + FeedMeasurement.COLUMN_NAME_ID + ")" + " REFERENCES " +
+            FeedProfile.TABLE_NAME + "(" + FeedProfile.COLUMN_NAME_ID + "), " +
+            "PRIMARY KEY("+ FeedMeasurement.COLUMN_NAME_ID + ", " + FeedMeasurement.COLUMN_NAME_DATE + "))";
 
 }
