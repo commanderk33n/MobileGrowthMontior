@@ -9,7 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -54,6 +58,18 @@ public class MeasurementView extends BaseActivity {
             double weight = Double.parseDouble(this.weight.getText().toString());
 
             double bmi_value = weight / (height * height);
+
+            MeasurementData measurementData = new MeasurementData();
+            measurementData.height = height;
+            measurementData.weight = weight;
+            measurementData.index = profile_Id;
+            measurementData.image = ""; //TODO: picture-path needs to be saved here
+            Calendar today = Calendar.getInstance();
+            today.getTime();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            measurementData.date = format.format(today.getTime());
+
+            dbHelper.addMeasurement(measurementData);
 
             bmi = (TextView) findViewById(R.id.tv_bmi);
             bmi.setVisibility(View.VISIBLE);
@@ -223,4 +239,5 @@ public class MeasurementView extends BaseActivity {
                 break;
         }
     }
+
 }

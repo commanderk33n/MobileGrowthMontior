@@ -87,6 +87,7 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    //TODO: delete measurements with coresponding id in measurement table
     public void deleteProfile(int index) {
         SQLiteDatabase db = getWritableDatabase();
         try {
@@ -162,16 +163,18 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(q, null);
 
         try {
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToFirst() && cursor.getCount() > 0) {
                 do {
                     MeasurementData data = new MeasurementData();
                     data.date = cursor.getString(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_DATE));
                     data.image = cursor.getString(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_IMAGE));
                     data.index = cursor.getInt(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_ID));
-                    data.size = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_SIZE));
+                    data.height = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_SIZE));
                     data.weight = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_WEIGHT));
                     profileDataList.add(data);
                 } while (cursor.moveToNext());
+            }else{
+                return null;
             }
         } catch (Exception e) {
             Log.e(TAG, "Error while trying to get all measurements from db");
@@ -183,7 +186,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         int indexLatestMeasurement = 0;
         for(int i = 0, j = 1; i < profileDataList.size() - 1; i++, j++){
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 Date latestDate = format.parse(profileDataList.get(i).date);
                 Date dateToCompare = format.parse(profileDataList.get(j).date);
@@ -193,8 +196,6 @@ public class DbHelper extends SQLiteOpenHelper {
             } catch (java.text.ParseException e) {
                 Log.e(TAG, "Error while trying to determine the latest Measurement Date!");
             }
-
-
         }
 
         return profileDataList.get(indexLatestMeasurement);
@@ -208,7 +209,7 @@ public class DbHelper extends SQLiteOpenHelper {
             values.put(DbContract.FeedMeasurement.COLUMN_NAME_DATE, measurementData.date);
             values.put(DbContract.FeedMeasurement.COLUMN_NAME_ID, measurementData.index);
             values.put(DbContract.FeedMeasurement.COLUMN_NAME_IMAGE, measurementData.image);
-            values.put(DbContract.FeedMeasurement.COLUMN_NAME_SIZE, measurementData.size);
+            values.put(DbContract.FeedMeasurement.COLUMN_NAME_SIZE, measurementData.height);
             values.put(DbContract.FeedMeasurement.COLUMN_NAME_WEIGHT, measurementData.weight);
             db.insertOrThrow(DbContract.FeedMeasurement.TABLE_NAME, null, values);
             db.setTransactionSuccessful();

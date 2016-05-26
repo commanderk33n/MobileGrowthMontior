@@ -59,7 +59,7 @@ public class ProfileView extends BaseActivity {
         profile = dbHelper.getProfile(profile_Id);
 
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
-        tvFirstname.setText(profile.firstname);
+        tvFirstname.setText(profile.firstname + ",");
 
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
@@ -94,28 +94,32 @@ public class ProfileView extends BaseActivity {
         }
         tvAge.setText(Integer.toString(age));
 
-        // here is a test, whether the database FeedMeasurement works
-        // TODO: add a check, whether there was already taken a measurement
-        MeasurementData data1 = new MeasurementData();
-        data1.size = 1.65;
-        data1.weight = 55.0;
-        data1.index = profile_Id;
-        data1.image = "";
-        data1.date = "2016-05-23";
-        dbHelper.addMeasurement(data1);
+        setMeasurementTextViews();
 
-        MeasurementData data2 = new MeasurementData();
-        data2.size = 1.70;
-        data2.weight = 80.0;
-        data2.index = profile_Id;
-        data2.image = "";
-        data2.date = "2016-05-24";
-        dbHelper.addMeasurement(data2);
+    }
 
-        TextView tvLastMeasurement = (TextView) findViewById(R.id.tv_date_last_measurement);
+    private void setMeasurementTextViews(){
+
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
-        tvLastMeasurement.setText(measurementData.date);
-        //TODO: set size and weight TextView
+
+        if (measurementData != null) {
+            TextView tvLastMeasurement = (TextView) findViewById(R.id.tv_date_last_measurement);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Calendar date = new GregorianCalendar();
+                date.setTime(format.parse(measurementData.date));
+                String text = format.format(date.getTime());
+                tvLastMeasurement.setText(text);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            TextView tvWeight = (TextView) findViewById(R.id.tv_weight);
+            tvWeight.setText(measurementData.weight + " kg");
+
+            TextView tvHeight = (TextView) findViewById(R.id.tv_height);
+            tvHeight.setText(measurementData.height + " m");
+        }
 
     }
 
@@ -176,6 +180,9 @@ public class ProfileView extends BaseActivity {
                 mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
             }
+        }else if(requestCode == 3){
+
+            setMeasurementTextViews();
         }
     }
 
@@ -196,7 +203,7 @@ public class ProfileView extends BaseActivity {
         Log.v("ProfileView -> Measu", " " + profile_Id);
         intent.putExtra("profile_Id", profile_Id);
         intent.putExtra("profileAge", age);
-        startActivity(intent);
+        startActivityForResult(intent, 3);
     }
 
     public static Bitmap rotateBitmap(Bitmap source, float angle) {
@@ -204,4 +211,5 @@ public class ProfileView extends BaseActivity {
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
+
 }

@@ -30,7 +30,7 @@ public final class DbContract {
         public static final String TABLE_NAME = "measurement";
         public static final String COLUMN_NAME_ID = "profile_id";
         public static final String COLUMN_NAME_DATE = "date";
-        public static final String COLUMN_NAME_SIZE = "size";
+        public static final String COLUMN_NAME_SIZE = "height";
         public static final String COLUMN_NAME_WEIGHT = "weight";
         public static final String COLUMN_NAME_IMAGE = "image_path";
     }

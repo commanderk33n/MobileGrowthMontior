@@ -58,7 +58,7 @@ public class GalleryView extends AppCompatActivity {
 
     public void getFromSdCard() {
 
-        // TODO: change this to Internal again after size measurement is finished
+        // TODO: change this to Internal again after height measurement is finished
         //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
         File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 

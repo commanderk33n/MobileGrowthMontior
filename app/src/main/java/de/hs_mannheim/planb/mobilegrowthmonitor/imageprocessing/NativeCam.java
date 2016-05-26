@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -323,7 +322,7 @@ public class NativeCam extends Fragment {
                 }
 
 
-                // Preview size must exist.
+                // Preview height must exist.
                 if (mPreviewSize != null) {
                     Camera.Size previewSize = mPreviewSize;
                     parameters.setPreviewSize(previewSize.width, previewSize.height);
@@ -416,7 +415,7 @@ public class NativeCam extends Fragment {
             final double ASPECT_TOLERANCE = 0.1;
             double targetRatio = (double) height / width;
 
-            // Try to find a size match which suits the whole screen minus the menu on the left.
+            // Try to find a height match which suits the whole screen minus the menu on the left.
             for (Camera.Size size : sizes) {
 
                 if (size.height != width) continue;

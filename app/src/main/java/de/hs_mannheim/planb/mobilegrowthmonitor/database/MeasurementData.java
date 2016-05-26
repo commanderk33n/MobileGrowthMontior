@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class MeasurementData implements Serializable {
 
     public int index;
-    public double weight, size;
+    public double weight, height;
     public String image, date;
 
 }
