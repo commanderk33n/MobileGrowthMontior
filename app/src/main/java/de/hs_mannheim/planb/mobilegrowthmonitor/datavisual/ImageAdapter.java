@@ -234,7 +234,7 @@ public class ImageAdapter extends BaseAdapter {
                     imageProcess.sizeMeasurement(path);
                     break;
                 case R.id.btn_background_sub:
-                    imageProcess.backgroundSub(path);
+                    imageProcess.backgroundSubtraction(path);
                     break;
             }
         }
