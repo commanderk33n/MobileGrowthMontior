@@ -51,6 +51,12 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Adds the profile created in CreateProfileView to the Feedprofile table
+     *
+     * @param profileData Java Object profileData contains all information that has to be saved
+     *                    in database FeedProfile
+     */
     public void addProfile(ProfileData profileData) {
         SQLiteDatabase db = getReadableDatabase();
         db.beginTransaction();
@@ -71,6 +77,13 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Sets the path to the profile picture in the FeedProfile table by updating the profile
+     * picture value
+     *
+     * @param index index of profile where the profile picture has to be set
+     * @param path path to location of profile picture
+     */
     public void setProfilePic(int index, String path) {
         SQLiteDatabase db = getWritableDatabase();
         try {
@@ -87,13 +100,20 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    //TODO: delete measurements with coresponding id in measurement table
+    /**
+     * Deletes the profile from the FeedProfile table and deletes associated data sets in
+     * FeedMeasurement table
+     *
+     * @param index index of profile which should be deleted
+     */
     public void deleteProfile(int index) {
         SQLiteDatabase db = getWritableDatabase();
         try {
             db.beginTransaction();
             db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where " +
                     DbContract.FeedProfile.COLUMN_NAME_ID + " ='" + index + "'");
+            db.execSQL("delete from " + DbContract.FeedMeasurement.TABLE_NAME + " where " +
+                    DbContract.FeedMeasurement.COLUMN_NAME_ID +  " ='" + index + "'");
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, "Error while trying to delete profile from db");
@@ -102,6 +122,11 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Returns all profiles in FeedProfile table
+     *
+     * @return List containing all profiles in FeedProfile table
+     */
     public List<ProfileData> getAllProfiles() {
         List<ProfileData> profileDataList = new ArrayList<>();
         String q = DbContract.PROFILE_ALL_SELECT_QUERY;
@@ -130,6 +155,12 @@ public class DbHelper extends SQLiteOpenHelper {
         return profileDataList;
     }
 
+    /**
+     * Returns the profile data set where the commited index matches the id in the FeedProfile table
+     *
+     * @param index index of profile to be returned
+     * @return returns a profileData Object that contains the data from the FeedProfile table
+     */
     public ProfileData getProfile(int index) {
         String q = "select * from " + DbContract.FeedProfile.TABLE_NAME + " where " +
                 DbContract.FeedProfile.COLUMN_NAME_ID + " = '" + index + "'";
@@ -153,6 +184,13 @@ public class DbHelper extends SQLiteOpenHelper {
         return profileData;
     }
 
+    /**
+     * Takes the index of the profile to which the latest measurement has to be returned
+     *
+     * @param index index of profile where the latest measurement has to be returned
+     * @return MeasurementData Object with data of latest measurement associated to the profile
+     * with the commited index
+     */
     public MeasurementData getLatestMeasurement(int index){
 
         ArrayList<MeasurementData> profileDataList = new ArrayList<>();
@@ -201,6 +239,11 @@ public class DbHelper extends SQLiteOpenHelper {
         return profileDataList.get(indexLatestMeasurement);
     }
 
+    /**
+     * Adds measurementData to the FeedMeasurement table
+     *
+     * @param measurementData measurementData contains the data of the measurement
+     */
     public void addMeasurement(MeasurementData measurementData) {
         SQLiteDatabase db = getReadableDatabase();
         db.beginTransaction();

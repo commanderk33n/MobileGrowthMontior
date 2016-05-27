@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
@@ -51,16 +52,30 @@ public class CreateProfileView extends BaseActivity {
         return true;
     }
 
+    private Date getDateFromDatePicker(){
+        int year = birthday.getYear();
+        int monthOfYear = birthday.getMonth();
+        int dayOfMonth = birthday.getDayOfMonth();
+        Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+        return calendar.getTime();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.save_profile) {
+
+            Calendar today = Calendar.getInstance();
+            Date dateFromDatePicker = getDateFromDatePicker();
+
             if (firstname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs firstname!", Toast.LENGTH_LONG).show();
             } else if (lastname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs lastname!", Toast.LENGTH_LONG).show();
             } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
                 Toast.makeText(this, "Please choose the gender!", Toast.LENGTH_LONG).show();
+            } else if(dateFromDatePicker.after(today.getTime())){
+                Toast.makeText(this, "Please choose a reasonable birthday!", Toast.LENGTH_LONG).show();
             } else {
                 ProfileData profileData = new ProfileData();
                 profileData.lastname = lastname.getText().toString();
@@ -72,17 +87,11 @@ public class CreateProfileView extends BaseActivity {
                     profileData.sex = 0;
                 }
 
-                int year = birthday.getYear();
-                int monthOfYear = birthday.getMonth();
-                int dayOfMonth = birthday.getDayOfMonth();
-                Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-                profileData.birthday = format.format(calendar.getTime());
+                profileData.birthday = format.format(dateFromDatePicker);
                 dbHelper.addProfile(profileData);
                 finish();
             }
-
         }
         return super.onOptionsItemSelected(item);
     }
