@@ -118,8 +118,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
             e.printStackTrace();
         }
 
-        // Trap the capture button.
-        captureButton = (Button) view.findViewById(R.id.button_capture);
+        // Init the capture button.
+        captureButton = (Button) view.findViewById(R.id.btn_capture);
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -172,19 +172,17 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
             mSensorManager.unregisterListener(this);
-            //mCamera.takePicture(null, null, mPicture);
             captureButton.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
         mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         mSensorManager.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
-
 
     /**
      * Recommended "safe" way to open the camera.
@@ -326,14 +324,12 @@ public class NativeCam extends Fragment implements SensorEventListener {
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
-
             // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
-
             requestLayout();
         }
 
@@ -434,45 +430,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
          * @param bottom
          */
 
-        @Override
-        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-            // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
-            if (changed) {
-                final int width = right - left;
-                final int height = bottom - top;
-
-                int previewWidth = width;
-                int previewHeight = height;
-
-                if (mPreviewSize != null) {
-                    Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-                    switch (display.getRotation()) {
-                        case Surface.ROTATION_0:
-                            previewWidth = mPreviewSize.height;
-                            previewHeight = mPreviewSize.width;
-                            mCamera.setDisplayOrientation(90);
-                            break;
-                        case Surface.ROTATION_90:
-                            previewWidth = mPreviewSize.width;
-                            previewHeight = mPreviewSize.height;
-                            break;
-                        case Surface.ROTATION_180:
-                            previewWidth = mPreviewSize.height;
-                            previewHeight = mPreviewSize.width;
-                            break;
-                        case Surface.ROTATION_270:
-                            previewWidth = mPreviewSize.width;
-                            previewHeight = mPreviewSize.height;
-                            mCamera.setDisplayOrientation(180);
-                            break;
-                    }
-                }
-
-                final int scaledChildHeight = previewHeight * width / previewWidth;
-                mCameraView.layout(0, height - scaledChildHeight, width, height);
-            }
-        }
 
         /**
          * @param sizes

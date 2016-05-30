@@ -70,10 +70,10 @@ public class ImageProcess {
         int yCoordinateHighestPoint = 0;
         try {
             Mat destination;
-            destination = source;
+            destination = source.clone();
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.GaussianBlur(destination, destination, size, 0);
-            Imgproc.Canny(destination, destination, 0, 100);
+            Imgproc.Canny(destination, destination, 50, 100, 3, true);
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -89,7 +89,7 @@ public class ImageProcess {
             for (MatOfPoint m : contours) {
                 if (Imgproc.boundingRect(m).y < source.height() * 1.0 / 2.0 && Imgproc.boundingRect(m).y
                         > source.height() / 6.0) {
-                    Imgproc.drawContours(source, contours, i, new Scalar(255, 255, 255), 2);
+                    Imgproc.drawContours(source, contours, i, new Scalar(0, 255, 0), 2);
                     heightReferenceObject = Imgproc.boundingRect(m).height;
                     break;
                 }
@@ -97,7 +97,7 @@ public class ImageProcess {
             }
             rect_small = Imgproc.boundingRect(contours.get(i));
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
-                    rect_small.width, rect_small.y + rect_small.height), new Scalar(255, 255, 255), 3);
+                    rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
                     yCoordinateHighestPoint = j;
@@ -105,7 +105,7 @@ public class ImageProcess {
                 }
             }
             Imgproc.line(source, new Point(source.width() / 2.0, yCoordinateHorizontalLine),
-                    new Point(source.width()/2.0, yCoordinateHighestPoint), new Scalar(255, 255, 255), 4);
+                    new Point(source.width() / 2.0, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
             // Height of ReferenceObject and SizeMeasurement
             // TODO: change to alertDialog
             double referenceObjectHeight = 14.9;
@@ -114,7 +114,7 @@ public class ImageProcess {
             DecimalFormat df = new DecimalFormat("####0.00");
             String resultString = df.format(heightOfPerson);
             Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
-
+            Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(source, bmp);
 
@@ -153,14 +153,9 @@ public class ImageProcess {
                     }
                 }
             }
-            // For debugging: draw horizontal Line in Image and create Bitmap
-            //
-            // bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
-            // Utils.matToBitmap(source, bmp);
         } catch (CvException e) {
             Log.e("backgroundSub():", e.getMessage());
         }
-        // imageWriter(bmp);
         return miny;
     }
 

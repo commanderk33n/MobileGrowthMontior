@@ -1,7 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 import android.graphics.DashPathEffect;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.androidplot.util.PixelUtils;
