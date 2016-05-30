@@ -12,14 +12,12 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -171,18 +169,22 @@ public class NativeCam extends Fragment implements SensorEventListener {
         ((TextView) mActivity.findViewById(R.id.roll)).setText("Roll: " + Math.round(roll));
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
-            mSensorManager.unregisterListener(this);
             captureButton.setVisibility(View.VISIBLE);
+
+        }else {
+
+            captureButton.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
         mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         mSensorManager.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
 
     /**
      * Recommended "safe" way to open the camera.
@@ -324,12 +326,14 @@ public class NativeCam extends Fragment implements SensorEventListener {
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
+
             // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
+
             requestLayout();
         }
 

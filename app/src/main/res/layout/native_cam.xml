@@ -1,20 +1,23 @@
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    >
 
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        >
+
     </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/innerRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true">
-
+        android:layout_alignParentBottom="true" >
         <TextView
             android:id="@+id/pitch"
             android:layout_width="wrap_content"
@@ -24,12 +27,12 @@
 
         <TextView
             android:id="@+id/roll"
+            android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/pitch"
             android:background="@color/ap_white"
-            android:textSize="16sp" />
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/pitch"/>
 
         <Button
             android:id="@+id/btn_capture"
@@ -41,4 +44,5 @@
             android:text="@string/capture"
             android:visibility="invisible" />
     </RelativeLayout>
+
 </RelativeLayout>
