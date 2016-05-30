@@ -19,6 +19,10 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
+/**
+ * Needed to create a new Profile.
+ *
+ */
 public class CreateProfileView extends BaseActivity {
 
     private static final String TAG = CreateProfileView.class.getSimpleName();
@@ -29,6 +33,10 @@ public class CreateProfileView extends BaseActivity {
     Button btn_next;
     DbHelper dbHelper;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,11 @@ public class CreateProfileView extends BaseActivity {
         return true;
     }
 
+    /**
+     * Fetches Date from DatePicker and converts it in a Dateobject
+     *
+     * @return Dateobject which contains date from DatePicker
+     */
     private Date getDateFromDatePicker(){
         int year = birthday.getYear();
         int monthOfYear = birthday.getMonth();
@@ -60,6 +73,16 @@ public class CreateProfileView extends BaseActivity {
         return calendar.getTime();
     }
 
+
+    /**
+     * On selecting menu item save profile, this method validates the user input and notifies the
+     * user, if there are any fields left to fill out.
+     * When all fields are filled, data is saved in Java Object profileData. In the end profileData
+     * is added to FeedProfile table.
+     *
+     * @param item selected menu item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -88,8 +111,8 @@ public class CreateProfileView extends BaseActivity {
                     profileData.sex = 0;
                 }
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                profileData.birthday = format.format(dateFromDatePicker);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                profileData.birthday = simpleDateFormat.format(dateFromDatePicker);
                 dbHelper.addProfile(profileData);
                 finish();
             }

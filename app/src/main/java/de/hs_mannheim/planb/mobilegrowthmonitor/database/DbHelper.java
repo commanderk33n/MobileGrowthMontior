@@ -162,7 +162,7 @@ public class DbHelper extends SQLiteOpenHelper {
      */
     public ProfileData getProfile(int index) {
         String q = "select * from " + DbContract.FeedProfile.TABLE_NAME + " where " +
-                DbContract.FeedProfile.COLUMN_NAME_ID + " = '" + index + "'";
+                DbContract.FeedProfile.COLUMN_NAME_ID + " = '" + index + "' ";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(q, null);
         ProfileData profileData = new ProfileData();

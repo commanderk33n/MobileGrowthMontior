@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -66,7 +68,7 @@ public class ProfileView extends BaseActivity {
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
+            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 90));
         }
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +77,17 @@ public class ProfileView extends BaseActivity {
                 selectImage();
             }
         });
+
+
+        ImageView imGender = (ImageView) findViewById(R.id.iv_gender);
+        if (profile.sex == 0) {
+            Drawable dw = getApplicationContext().getResources().getDrawable(R.drawable.female_24);
+            imGender.setImageDrawable(dw);
+        } else {
+            Drawable dw = getApplicationContext().getResources().getDrawable(R.drawable.male_24);
+            imGender.setImageDrawable(dw);
+        }
+
 
         TextView tvAge = (TextView) findViewById(R.id.tv_age);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -99,7 +112,7 @@ public class ProfileView extends BaseActivity {
 
     }
 
-    private void setMeasurementTextViews(){
+    private void setMeasurementTextViews() {
 
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
 
@@ -181,7 +194,7 @@ public class ProfileView extends BaseActivity {
                 mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
             }
-        }else if(requestCode == 3){
+        } else if (requestCode == 3) {
 
             setMeasurementTextViews();
         }

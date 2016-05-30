@@ -59,7 +59,8 @@
                 android:layout_toRightOf="@+id/ib_profilepic"
                 android:padding="3dp"
                 android:text="@string/firstname"
-                android:textSize="24dp" />
+                android:textSize="26dp"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_age"
@@ -70,7 +71,18 @@
                 android:layout_toRightOf="@+id/tv_firstname"
                 android:padding="3dp"
                 android:text="@string/age"
-                android:textSize="24sp" />
+                android:textSize="26sp"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/iv_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="false"
+                android:layout_toEndOf="@+id/tv_age"
+                android:layout_toRightOf="@+id/tv_age"
+                android:layout_alignBottom="@+id/tv_age"
+                android:layout_alignTop="@+id/tv_age" />
 
             <TextView
                 android:id="@+id/tv_label_last_measurement"

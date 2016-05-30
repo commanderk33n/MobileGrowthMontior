@@ -1,9 +1,14 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -31,7 +37,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 /**
  * Created by eikood on 09.05.2016.
  */
-public class NativeCam extends Fragment {
+public class NativeCam extends Fragment implements SensorEventListener {
 
     // part of the name for the picture
     String profileName;
@@ -44,6 +50,17 @@ public class NativeCam extends Fragment {
 
     // Reference to the containing view.
     private View mCameraView;
+
+    private Activity mActivity;
+
+    private Button captureButton;
+
+
+    private SensorManager mSensorManager;
+    private Sensor mRotationSensor;
+
+    private static final int SENSOR_DELAY = 500 * 1000; // 500ms
+    private static final int FROM_RADS_TO_DEGS = -57;
 
 
     /**
@@ -63,6 +80,12 @@ public class NativeCam extends Fragment {
         NativeCam fragment = new NativeCam();
         fragment.profileName = profile_name;
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
     }
 
     /**
@@ -86,8 +109,17 @@ public class NativeCam extends Fragment {
             return view;
         }
 
+        try {
+            mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
+            mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        } catch (Exception e) {
+            Toast.makeText(mActivity, "Hardware compatibility issue", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
         // Trap the capture button.
-        final Button captureButton = (Button) view.findViewById(R.id.button_capture);
+        captureButton = (Button) view.findViewById(R.id.button_capture);
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -101,6 +133,57 @@ public class NativeCam extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor == mRotationSensor) {
+            if (event.values.length > 4) {
+                float[] truncatedRotationVector = new float[4];
+                System.arraycopy(event.values, 0, truncatedRotationVector, 0, 4);
+                update(truncatedRotationVector);
+            } else {
+                update(event.values);
+            }
+        }
+    }
+
+    private void update(float[] vectors) {
+
+        float[] rotationMatrix = new float[9];
+        SensorManager.getRotationMatrixFromVector(rotationMatrix, vectors);
+
+        int worldAxisX = SensorManager.AXIS_X;
+        int worldAxisZ = SensorManager.AXIS_Z;
+
+        float[] adjustedRotationMatrix = new float[9];
+        SensorManager.remapCoordinateSystem(rotationMatrix, worldAxisX, worldAxisZ, adjustedRotationMatrix);
+
+        float[] orientation = new float[3];
+        SensorManager.getOrientation(adjustedRotationMatrix, orientation);
+
+        float pitch = orientation[1] * FROM_RADS_TO_DEGS;
+        float roll = orientation[2] * FROM_RADS_TO_DEGS;
+        ((TextView) mActivity.findViewById(R.id.pitch)).setText("Pitch: " + Math.round(pitch));
+        ((TextView) mActivity.findViewById(R.id.roll)).setText("Roll: " + Math.round(roll));
+
+        if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
+            mSensorManager.unregisterListener(this);
+            //mCamera.takePicture(null, null, mPicture);
+            captureButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        mSensorManager.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
 
     /**
@@ -149,6 +232,9 @@ public class NativeCam extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         releaseCameraAndPreview();
+        if (mRotationSensor != null) {
+            mSensorManager.unregisterListener(this);
+        }
     }
 
     /**
@@ -236,29 +322,11 @@ public class NativeCam extends Fragment {
             mCamera = camera;
             mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
-
-            // TODO REMOVE AFTER PRODUCTION
-            // Camera Parameter Output for TESTING
-            System.out.println("### PARAM.OUTPUT: mCamera.getParameters()##################################");
-            System.out.println("#####################################################################");
-            System.out.println("### PARAM.getFocalLength() : " + mCamera.getParameters().getFocalLength());
-            float[] focusDisctances = new float[3];
-            mCamera.getParameters().getFocusDistances(focusDisctances);
-            System.out.println("#####################################################################");
-            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_NEAR_INDEX : " + focusDisctances[0]);
-            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_OPTIMAL_INDEX : " + focusDisctances[1]);
-            System.out.println("### PARAM.getFocusDistances() FOCUS_DISTANCE_FAR_INDEX : " + focusDisctances[2]);
-            System.out.println("#####################################################################");
-            System.out.println("### PARAM.getHorizontalViewAngle() : " + mCamera.getParameters().getHorizontalViewAngle());
-            System.out.println("### PARAM.getVerticalViewAngle() : " + mCamera.getParameters().getVerticalViewAngle());
-            System.out.println("#####################################################################");
-
-
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
-       //     mCamera.getParameters().setRotation(0);
+
             // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
@@ -365,6 +433,7 @@ public class NativeCam extends Fragment {
          * @param right
          * @param bottom
          */
+
         @Override
         protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails

@@ -87,8 +87,8 @@ public class ImageProcess {
             // Find Contour of ReferenceObject in middle of left side of the picture
             int i = 0;
             for (MatOfPoint m : contours) {
-                if (Imgproc.boundingRect(m).y < source.height() * 3.0 / 4.0 && Imgproc.boundingRect(m).y
-                        > source.height() / 4.0) {
+                if (Imgproc.boundingRect(m).y < source.height() * 1.0 / 2.0 && Imgproc.boundingRect(m).y
+                        > source.height() / 6.0) {
                     Imgproc.drawContours(source, contours, i, new Scalar(255, 255, 255), 2);
                     heightReferenceObject = Imgproc.boundingRect(m).height;
                     break;
@@ -104,6 +104,8 @@ public class ImageProcess {
                     break;
                 }
             }
+            Imgproc.line(source, new Point(source.width() / 2.0, yCoordinateHorizontalLine),
+                    new Point(source.width()/2.0, yCoordinateHighestPoint), new Scalar(255, 255, 255), 4);
             // Height of ReferenceObject and SizeMeasurement
             // TODO: change to alertDialog
             double referenceObjectHeight = 14.9;
@@ -152,7 +154,7 @@ public class ImageProcess {
                 }
             }
             // For debugging: draw horizontal Line in Image and create Bitmap
-            // Imgproc.line(source, new Point(source.width() / 3.0, miny), new Point(source.width() * 2.0 / 3.0, miny), new Scalar(0, 255, 0), 4);
+            //
             // bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             // Utils.matToBitmap(source, bmp);
         } catch (CvException e) {

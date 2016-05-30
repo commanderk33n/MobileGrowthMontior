@@ -31,7 +31,8 @@
             android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".imageprocessing.CameraView" />
+        <activity android:name=".imageprocessing.CameraView"
+            android:screenOrientation="portrait"/>
         <activity android:name=".CreateProfileView"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ProfileView"
