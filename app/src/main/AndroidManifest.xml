@@ -38,7 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".datavisual.GalleryView"></activity>
         <activity android:name=".MeasurementView"></activity>
-
+        <activity android:name=".datavisual.GraphView"></activity>
     </application>
 
 </manifest>

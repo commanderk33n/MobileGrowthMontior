@@ -15,8 +15,9 @@ import com.androidplot.xy.XYSeries;
 import java.util.Arrays;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
-public class GraphView extends AppCompatActivity {
+public class GraphView extends BaseActivity {
 
     private XYPlot plot;
 
