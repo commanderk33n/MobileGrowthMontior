@@ -84,7 +84,6 @@ public class ImageAdapter extends BaseAdapter {
         // Load the high-resolution "zoomed-in" image and Buttons for OpenCV-Stuff
         final ImageView fullscreenImageView = (ImageView) ((Activity) context).findViewById(R.id.iv_fullscreenImage);
         final Button sizeMeasurement = (Button) ((Activity) context).findViewById(R.id.btn_size_measurement);
-        final Button backgroundSub = (Button) ((Activity) context).findViewById(R.id.btn_background_sub);
 
         fullscreenImageView.setImageBitmap(this.bitmapList.get(position));
 
@@ -92,7 +91,6 @@ public class ImageAdapter extends BaseAdapter {
 
         ImgAdptOnClickListener imgAdptOnClickListener = new ImgAdptOnClickListener(path);
         sizeMeasurement.setOnClickListener(imgAdptOnClickListener);
-        backgroundSub.setOnClickListener(imgAdptOnClickListener);
 
         // Calculate the starting and ending bounds for the zoomed-in image.
         // This step
@@ -139,7 +137,6 @@ public class ImageAdapter extends BaseAdapter {
         thumbView.setAlpha(0f);
         fullscreenImageView.setVisibility(View.VISIBLE);
         sizeMeasurement.setVisibility(View.VISIBLE);
-        backgroundSub.setVisibility(View.VISIBLE);
         // Set the pivot point for SCALE_X and SCALE_Y transformations to the
         // top-left corner of
         // the zoomed-in view (the default is the center of the view).
@@ -201,7 +198,6 @@ public class ImageAdapter extends BaseAdapter {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
                         sizeMeasurement.setVisibility(View.GONE);
-                        backgroundSub.setVisibility(View.GONE);
                         currentAnimator = null;
                     }
 
@@ -210,7 +206,6 @@ public class ImageAdapter extends BaseAdapter {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
                         sizeMeasurement.setVisibility(View.GONE);
-                        backgroundSub.setVisibility(View.GONE);
                         currentAnimator = null;
                     }
                 });
@@ -232,9 +227,6 @@ public class ImageAdapter extends BaseAdapter {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
                     imageProcess.sizeMeasurement(path);
-                    break;
-                case R.id.btn_background_sub:
-                    imageProcess.backgroundSub(path);
                     break;
             }
         }
