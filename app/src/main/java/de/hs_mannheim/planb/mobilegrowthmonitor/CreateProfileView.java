@@ -70,6 +70,7 @@ public class CreateProfileView extends BaseActivity {
 
             if (firstname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs firstname!", Toast.LENGTH_LONG).show();
+           
             } else if (lastname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs lastname!", Toast.LENGTH_LONG).show();
             } else if (!(sex_female.isChecked() || sex_male.isChecked())) {

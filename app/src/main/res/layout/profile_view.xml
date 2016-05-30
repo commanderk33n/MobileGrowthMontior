@@ -157,6 +157,7 @@
                 android:drawableLeft="@drawable/ic_timeline_black_24dp"
                 android:padding="5dp"
                 android:text="@string/graph"
+                android:onClick="startGraph"
                 android:textAlignment="viewStart"
                 android:textSize="22dp" />
 

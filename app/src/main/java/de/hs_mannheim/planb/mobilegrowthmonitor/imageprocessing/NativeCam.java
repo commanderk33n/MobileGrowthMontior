@@ -53,6 +53,7 @@ public class NativeCam extends Fragment {
         super();
     }
 
+
     /**
      * Static factory method
      *
@@ -99,6 +100,8 @@ public class NativeCam extends Fragment {
 
         return view;
     }
+
+
 
     /**
      * Recommended "safe" way to open the camera.
@@ -255,7 +258,7 @@ public class NativeCam extends Fragment {
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
-
+       //     mCamera.getParameters().setRotation(0);
             // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
@@ -472,6 +475,7 @@ public class NativeCam extends Fragment {
         public void onPictureTaken(byte[] data, Camera camera) {
 
             File pictureFile = getOutputMediaFile();
+
             if (pictureFile == null) {
                 Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
                         .show();
@@ -479,6 +483,7 @@ public class NativeCam extends Fragment {
             }
 
             try {
+
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();

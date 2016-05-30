@@ -39,7 +39,7 @@ public class Filereader{
         Scanner reader = new Scanner(file);
       //  int spalte = 0;
         int zeile = 0;
-reader.nextLine();
+        reader.nextLine(); // skip the first line
         while(reader.hasNextDouble()){
             values[zeile/10][zeile%10] = reader.nextDouble();
             zeile++;

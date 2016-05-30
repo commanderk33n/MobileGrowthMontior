@@ -28,6 +28,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -188,6 +189,11 @@ public class ProfileView extends BaseActivity {
 
     public void startCamera(View view) {
         Intent intent = new Intent(this, CameraView.class);
+        intent.putExtra("profile_name", profile.firstname);
+        startActivity(intent);
+    }
+    public void startGraph(View view){
+        Intent intent = new Intent(this, GraphView.class);
         intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
