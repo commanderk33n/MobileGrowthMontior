@@ -84,7 +84,7 @@ public class ImageProcess {
                 }
             });
 
-            // find contour
+            // Find Contour of ReferenceObject in middle of left side of the picture
             int i = 0;
             for (MatOfPoint m : contours) {
                 if (Imgproc.boundingRect(m).y < source.height() * 3.0 / 4.0 && Imgproc.boundingRect(m).y

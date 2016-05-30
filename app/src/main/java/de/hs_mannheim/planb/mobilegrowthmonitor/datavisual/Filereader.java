@@ -6,11 +6,12 @@ import java.util.Scanner;
 /**
  * Created by Morty on 25.05.2016.
  */
-public class Filereader{
+public class Filereader {
+
     public static void main(String[] args) {
         try {
             double[][] height = readZScore("C:\\Users\\Yogi\\Desktop\\who\\height-age\\lhfa_boys_z_exp.txt");
-            for(int i=0;i<height.length;i++){
+            for (int i = 0; i < height.length; i++) {
                 System.out.println(height[i][0]);
 
             }
@@ -37,13 +38,13 @@ public class Filereader{
         lnr.close();
         File file = new File(path);
         Scanner reader = new Scanner(file);
-      //  int spalte = 0;
+        //  int spalte = 0;
         int zeile = 0;
-reader.nextLine();
-        while(reader.hasNextDouble()){
-            values[zeile/10][zeile%10] = reader.nextDouble();
+        reader.nextLine();
+        while (reader.hasNextDouble()) {
+            values[zeile / 10][zeile % 10] = reader.nextDouble();
             zeile++;
         }
-return values;
+        return values;
     }
 }
