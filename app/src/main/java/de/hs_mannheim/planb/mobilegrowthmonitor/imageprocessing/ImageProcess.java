@@ -53,24 +53,21 @@ public class ImageProcess {
         // rotate image
         // Mat rotate = Imgproc.getRotationMatrix2D(new Point(source.cols()/2, source.rows()/2), 90,-1);
         // Imgproc.warpAffine(source, source, rotate, new Size(source.rows(), source.cols()));
-
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
         int erosion_size = 5;
         int dilation_size = 5;
-
         Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * erosion_size + 1,
                 2 * erosion_size + 1));
         Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * dilation_size + 1,
                 2 * dilation_size + 1));
         Bitmap bmp = null;
-        Rect rect_small, rect_large;
-        double ergebnis = 0;
-        double YUNTENFUERGROESSE = backgroundSubtraction(path);
-        double YHOEHEVONREFERENZ = 0;
-        int obersteWeisse = 0;
-
+        Rect rect_small;
+        double heightOfPerson = 0;
+        double yCoordinateHorizontalLine = getYLowerHorizontalLine(path);
+        double heightReferenceObject = 0;
+        int yCoordinateHighestPoint = 0;
         try {
             Mat destination;
             destination = source;
@@ -87,41 +84,34 @@ public class ImageProcess {
                 }
             });
 
-            // find contour
+            // Find Contour of ReferenceObject in middle of left side of the picture
             int i = 0;
             for (MatOfPoint m : contours) {
                 if (Imgproc.boundingRect(m).y < source.height() * 3.0 / 4.0 && Imgproc.boundingRect(m).y
                         > source.height() / 4.0) {
                     Imgproc.drawContours(source, contours, i, new Scalar(255, 255, 255), 2);
-                    YHOEHEVONREFERENZ = Imgproc.boundingRect(m).height;
+                    heightReferenceObject = Imgproc.boundingRect(m).height;
                     break;
                 }
                 i++;
             }
-            rect_small = Imgproc.boundingRect(contours.get(0));
+            rect_small = Imgproc.boundingRect(contours.get(i));
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(255, 255, 255), 3);
-
-
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
-                    obersteWeisse = j;
+                    yCoordinateHighestPoint = j;
                     break;
                 }
-
-
             }
-
             // Height of ReferenceObject and SizeMeasurement
             // TODO: change to alertDialog
             double referenceObjectHeight = 14.9;
-
-            double OBENFUERBERECHNUNG = YUNTENFUERGROESSE - obersteWeisse;
-
-            double result = OBENFUERBERECHNUNG / YHOEHEVONREFERENZ * referenceObjectHeight;
+            double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
+            heightOfPerson = heightInPixels / heightReferenceObject * referenceObjectHeight;
             DecimalFormat df = new DecimalFormat("####0.00");
-            String resultString = df.format(result);
-            Toast.makeText(context, "Size is: " + resultString + " cm", Toast.LENGTH_LONG).show();
+            String resultString = df.format(heightOfPerson);
+            Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
 
             bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(source, bmp);
@@ -130,11 +120,11 @@ public class ImageProcess {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
         imageWriter(bmp);
-        return ergebnis;
+        return heightOfPerson;
     }
 
-    // backgroundSubtraction
-    public int backgroundSubtraction(String path) {
+    // finding lower horizontal Line
+    public int getYLowerHorizontalLine(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
         Bitmap bmp = null;
@@ -148,30 +138,23 @@ public class ImageProcess {
             destination = source.clone();
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.Canny(destination, destination, 50, 100, 3, true);
-
             Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
-
             for (int x = 0; x < lines.rows(); x++) {
                 double[] vec = lines.get(x, 0);
                 double x1 = vec[0],
                         y1 = vec[1],
                         x2 = vec[2],
                         y2 = vec[3];
-                Log.v(TAG, "atan =" + (Math.abs(Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)));
-
                 if ((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI == 0)) {
                     if (source.width() / 4.0 < x2 && x2 < source.width() * 3.0 / 4.0 && y1 > miny && y1 < source.height()) {
-
                         miny = (int) y1;
                     }
                 }
             }
-
-           /* Imgproc.line(source, new Point(source.width() / 3.0, miny),
-                    new Point(source.width() * 2.0 / 3.0, miny), new Scalar(0, 255, 0), 4);
-            bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(source, bmp);
-            */
+            // For debugging: draw horizontal Line in Image and create Bitmap
+            // Imgproc.line(source, new Point(source.width() / 3.0, miny), new Point(source.width() * 2.0 / 3.0, miny), new Scalar(0, 255, 0), 4);
+            // bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
+            // Utils.matToBitmap(source, bmp);
         } catch (CvException e) {
             Log.e("backgroundSub():", e.getMessage());
         }
