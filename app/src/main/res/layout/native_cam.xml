@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:background="@color/ap_white"
             android:textSize="16dp"
-            android:layout_toRightOf="@id/pitch"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
 
         <Button
             android:id="@+id/btn_capture"
