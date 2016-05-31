@@ -14,12 +14,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -128,9 +130,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
         mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        if(mRotationSensor != null){
+        if (mRotationSensor != null) {
             mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        }else{
+        } else {
             Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
             captureButton.setVisibility(View.VISIBLE);
         }
@@ -286,7 +288,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p/>
+     * <p>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
     class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -363,7 +365,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
-
             requestLayout();
         }
 
@@ -464,28 +465,84 @@ public class NativeCam extends Fragment implements SensorEventListener {
          * @param right
          * @param bottom
          */
+        @Override
+        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+            // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
+            if (changed) {
+                final int width = right - left;
+                final int height = bottom - top;
+
+                int previewWidth = width;
+                int previewHeight = height;
+
+                if (mPreviewSize != null) {
+                    Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+                    switch (display.getRotation()) {
+                        case Surface.ROTATION_0:
+                            previewWidth = mPreviewSize.height;
+                            previewHeight = mPreviewSize.width;
+                            mCamera.setDisplayOrientation(90);
+                            break;
+                        case Surface.ROTATION_90:
+                            previewWidth = mPreviewSize.width;
+                            previewHeight = mPreviewSize.height;
+                            break;
+                        case Surface.ROTATION_180:
+                            previewWidth = mPreviewSize.height;
+                            previewHeight = mPreviewSize.width;
+                            break;
+                        case Surface.ROTATION_270:
+                            previewWidth = mPreviewSize.width;
+                            previewHeight = mPreviewSize.height;
+                            mCamera.setDisplayOrientation(180);
+                            break;
+                    }
+                }
+
+                final int scaledChildHeight = previewHeight * width / previewWidth;
+                mCameraView.layout(0, height - scaledChildHeight, width, height);
+            }
+        }
 
 
         /**
          * @param sizes
-         * @param width
-         * @param height
+         * @param w
+         * @param h
          * @return
          */
-        private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int width, int height) {
+        private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
-            Camera.Size optimalSize = null;
-
             final double ASPECT_TOLERANCE = 0.1;
-            double targetRatio = (double) height / width;
+            double targetRatio = (double) h / w;
 
-            // Try to find a height match which suits the whole screen minus the menu on the left.
+            if (sizes == null)
+                return null;
+
+            Camera.Size optimalSize = null;
+            double minDiff = Double.MAX_VALUE;
+
+            int targetHeight = h;
+
             for (Camera.Size size : sizes) {
-
-                if (size.height != width) continue;
                 double ratio = (double) size.width / size.height;
-                if (ratio <= targetRatio + ASPECT_TOLERANCE && ratio >= targetRatio - ASPECT_TOLERANCE) {
+                if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                    continue;
+
+                if (Math.abs(size.height - targetHeight) < minDiff) {
                     optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+
+            if (optimalSize == null) {
+                minDiff = Double.MAX_VALUE;
+                for (Camera.Size size : sizes) {
+                    if (Math.abs(size.height - targetHeight) < minDiff) {
+                        optimalSize = size;
+                        minDiff = Math.abs(size.height - targetHeight);
+                    }
                 }
             }
 
@@ -541,7 +598,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 return;
             }
             try {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 bitmap = ProfileView.rotateBitmap(bitmap, 90);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);

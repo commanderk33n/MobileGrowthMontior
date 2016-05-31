@@ -50,12 +50,6 @@ public class ImageProcess {
     public double sizeMeasurement(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
-
-        // rotate image
-       // Core.transpose(source, source);
-       // Core.flip(source, source, 1);
-
-
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
@@ -104,17 +98,17 @@ public class ImageProcess {
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                //   for(int k = destination.width()/3;k<destination.width()*2/3;k++){
+                   for(int k = destination.width()/3;k<destination.width()*2/3;k++){
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
                     yCoordinateHighestPoint = j;
-                    //    breakForLoop = true;
+                        breakForLoop = true;
                     break;
                 }
 
-                //  }
-                //  if(breakForLoop){
-                //      break;
-                // }
+                  }
+                  if(breakForLoop){
+                     break;
+                 }
             }
             Imgproc.line(source, new Point(source.width() / 2.0, yCoordinateHorizontalLine),
                     new Point(source.width() / 2.0, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
