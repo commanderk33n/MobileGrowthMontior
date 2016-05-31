@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * Created by Laura on 23.05.2016.
+ *
+ * Class provides Java Object for data set in feedMeasurement table.
  */
 public class MeasurementData implements Serializable {
 

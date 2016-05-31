@@ -47,6 +47,11 @@ public class ProfileView extends BaseActivity {
     private DbHelper dbHelper;
     private ProfileData profile;
 
+    /**
+     * Support is set to toolbar. Profile is fetched from database. Profile data is set to text
+     * views.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +117,9 @@ public class ProfileView extends BaseActivity {
 
     }
 
+    /**
+     * Latest measurement is fetched from database and data is set to textviews in profile view.
+     */
     private void setMeasurementTextViews() {
 
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
@@ -137,6 +145,10 @@ public class ProfileView extends BaseActivity {
 
     }
 
+    /**
+     * Selects photo to be displayed as profile picture. User can choose whether to take a photo,
+     * choose a picture from the gallery or cancel action.
+     */
     private void selectImage() {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileView.this);
@@ -157,12 +169,22 @@ public class ProfileView extends BaseActivity {
         builder.show();
     }
 
+    /**
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile_view, menu);
         return true;
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -173,6 +195,12 @@ public class ProfileView extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -195,28 +223,44 @@ public class ProfileView extends BaseActivity {
 
             }
         } else if (requestCode == 3) {
-
             setMeasurementTextViews();
         }
     }
 
+    /**
+     * OnClick method to start CameraView Activity
+     * @param view
+     */
     public void startCamera(View view) {
         Intent intent = new Intent(this, CameraView.class);
         intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
+
+    /**
+     * OnClick method to start GraphView Activity
+     * @param view
+     */
     public void startGraph(View view){
         Intent intent = new Intent(this, GraphView.class);
         intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
 
+    /**
+     * OnClick method to start GalleryView Activity
+     * @param view
+     */
     public void startGallery(View view) {
         Intent intent = new Intent(this, GalleryView.class);
         intent.putExtra("profile_name", profile.firstname);
         startActivity(intent);
     }
 
+    /**
+     * OnClick method to start MeasurementView Activity
+     * @param view
+     */
     public void startMeasurement(View view) {
         Intent intent = new Intent(this, MeasurementView.class);
         Log.v("ProfileView -> Measu", " " + profile_Id);
@@ -225,6 +269,13 @@ public class ProfileView extends BaseActivity {
         startActivityForResult(intent, 3);
     }
 
+    /**
+     * Rotates Bitmap
+     *
+     * @param source bitmap to be rotated
+     * @param angle angle that the picture has to be rotated
+     * @return rotated bitmap
+     */
     public static Bitmap rotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);

@@ -2,7 +2,6 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +29,11 @@ public class MeasurementView extends BaseActivity {
     private ProfileData profile;
     private TextView bmi, bmiCategory;
 
+    /**
+     * Fetches Profile from database
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +49,15 @@ public class MeasurementView extends BaseActivity {
         DbHelper dbHelper = DbHelper.getInstance(this);
         profile = dbHelper.getProfile(profile_Id);
 
-        Log.v("Measurement View: " ,""+profile.lastname);
-
-        Log.v("Measurement View: " ,""+profile.sex);
 
     }
 
+    /**
+     * Data is fetched from input fields and put in the database.
+     * BMI is calculated and analyzed.
+     *
+     * @param view
+     */
     public void saveMeasurement(View view) {
 
         if (validate()) {

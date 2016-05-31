@@ -57,7 +57,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private SensorManager mSensorManager;
     private Sensor mRotationSensor;
 
-    private static final int SENSOR_DELAY = 500 * 1000; // 500ms
+    // used to convert radiant to degree
     private static final int FROM_RADS_TO_DEGS = -57;
 
 
@@ -80,6 +80,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         return fragment;
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -88,6 +89,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
     /**
      * OnCreateView fragment override
+     * Also provides a reference to rotation vector sensor and registers Sensor Event Listener
      *
      * @param inflater
      * @param container
@@ -136,6 +138,11 @@ public class NativeCam extends Fragment implements SensorEventListener {
         // TODO Auto-generated method stub
     }
 
+    /**
+     * Monitors the data from the rotation vector sensor and calls the update method
+     *
+     * @param event
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor == mRotationSensor) {
@@ -149,6 +156,15 @@ public class NativeCam extends Fragment implements SensorEventListener {
         }
     }
 
+    /**
+     * Converts rotation vector in rotation matrix, remaps the rotation matrix to
+     * portrait coordinate system. Based on the rotation matrix the orientation is
+     * computed and the converts the angle in degrees.
+     * The button to take a picture is only set visible, when the angle differs less than 5 degrees
+     * in each direction.
+     *
+     * @param vectors
+     */
     private void update(float[] vectors) {
 
         float[] rotationMatrix = new float[9];
@@ -177,6 +193,10 @@ public class NativeCam extends Fragment implements SensorEventListener {
         }
     }
 
+    /**
+     * In onResume the sensorManager and rotationSensor have to be set again and the sensor event
+     * listener has to be registered again.
+     */
     @Override
     public void onResume(){
         super.onResume();
@@ -228,6 +248,11 @@ public class NativeCam extends Fragment implements SensorEventListener {
         super.onPause();
     }
 
+
+    /**
+     * when fragment is destroyed the sensor event listener is unregistered and
+     * releaseCameraAndPreview() is called
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

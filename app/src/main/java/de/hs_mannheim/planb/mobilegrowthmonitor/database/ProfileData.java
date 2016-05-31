@@ -5,6 +5,9 @@ import java.io.Serializable;
 
 /**
  * Created by eikood on 05.05.2016.
+ *
+ * Class provides Java Object for data set in FeedProfile table.
+ *
  */
 
 public class ProfileData implements Serializable {
