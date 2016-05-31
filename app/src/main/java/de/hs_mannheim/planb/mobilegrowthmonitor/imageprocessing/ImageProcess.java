@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -51,8 +52,10 @@ public class ImageProcess {
         Mat source = Imgcodecs.imread(path);
 
         // rotate image
-        // Mat rotate = Imgproc.getRotationMatrix2D(new Point(source.cols()/2, source.rows()/2), 90,-1);
-        // Imgproc.warpAffine(source, source, rotate, new Size(source.rows(), source.cols()));
+       // Core.transpose(source, source);
+       // Core.flip(source, source, 1);
+
+
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
@@ -65,15 +68,16 @@ public class ImageProcess {
         Bitmap bmp = null;
         Rect rect_small;
         double heightOfPerson = 0;
-        double yCoordinateHorizontalLine = getYLowerHorizontalLine(path);
+        double yCoordinateHorizontalLine = getYLowerHorizontalLine(source);
         double heightReferenceObject = 0;
         int yCoordinateHighestPoint = 0;
+        boolean breakForLoop = false;
         try {
             Mat destination;
             destination = source.clone();
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.GaussianBlur(destination, destination, size, 0);
-            Imgproc.Canny(destination, destination, 50, 100, 3, true);
+            Imgproc.Canny(destination, destination, 50, 100);
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -87,6 +91,7 @@ public class ImageProcess {
             // Find Contour of ReferenceObject in middle of left side of the picture
             int i = 0;
             for (MatOfPoint m : contours) {
+
                 if (Imgproc.boundingRect(m).y < source.height() * 1.0 / 2.0 && Imgproc.boundingRect(m).y
                         > source.height() / 6.0) {
                     Imgproc.drawContours(source, contours, i, new Scalar(0, 255, 0), 2);
@@ -99,10 +104,17 @@ public class ImageProcess {
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
+                //   for(int k = destination.width()/3;k<destination.width()*2/3;k++){
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
                     yCoordinateHighestPoint = j;
+                    //    breakForLoop = true;
                     break;
                 }
+
+                //  }
+                //  if(breakForLoop){
+                //      break;
+                // }
             }
             Imgproc.line(source, new Point(source.width() / 2.0, yCoordinateHorizontalLine),
                     new Point(source.width() / 2.0, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
@@ -126,10 +138,9 @@ public class ImageProcess {
     }
 
     // finding lower horizontal Line
-    public int getYLowerHorizontalLine(String path) {
+    public int getYLowerHorizontalLine(Mat img) {
         // init
-        Mat source = Imgcodecs.imread(path);
-        Bitmap bmp = null;
+        Mat source = img.clone();
         int threshold = 50;
         int minLineLength = 1;
         int maxLineGap = 10;
@@ -137,7 +148,7 @@ public class ImageProcess {
         int miny = 0;
         try {
             Mat destination;
-            destination = source.clone();
+            destination = source;
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.Canny(destination, destination, 50, 100, 3, true);
             Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
@@ -158,7 +169,6 @@ public class ImageProcess {
         }
         return miny;
     }
-
 
     @SuppressLint("SimpleDateFormat")
     private void imageWriter(Bitmap bmp) {
@@ -182,5 +192,4 @@ public class ImageProcess {
             }
         }
     }
-
 }

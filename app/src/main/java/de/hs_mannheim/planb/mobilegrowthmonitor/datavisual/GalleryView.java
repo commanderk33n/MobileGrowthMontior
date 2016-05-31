@@ -2,6 +2,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -86,8 +87,13 @@ public class GalleryView extends AppCompatActivity {
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
+            //result = rotateBitmap(BitmapFactory.decodeFile(imageUrl, options), 90);
             result = BitmapFactory.decodeFile(imageUrl, options);
+
         }
         return result;
     }
+
+
+
 }

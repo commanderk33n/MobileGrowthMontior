@@ -4,13 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -23,6 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 /**
@@ -187,7 +194,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
             captureButton.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
 
             captureButton.setVisibility(View.INVISIBLE);
         }
@@ -198,7 +205,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
      * listener has to be registered again.
      */
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
         mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -370,6 +377,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         public void surfaceCreated(SurfaceHolder holder) {
             try {
                 mCamera.setPreviewDisplay(holder);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -528,34 +536,35 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
             File pictureFile = getOutputMediaFile();
-
             if (pictureFile == null) {
                 Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-
             try {
-
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
+                bitmap = ProfileView.rotateBitmap(bitmap, 90);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                bitmap.recycle();
+                byte[] byteArray = stream.toByteArray();
                 FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
+                fos.write(byteArray);
                 fos.close();
                 // TODO: REMOVE COMMENT
-                // ((CameraView) getActivity()).afterPictureTaken();
+                ((CameraView) getActivity()).afterPictureTaken();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     };
 
+
     /**
      * Used to return the camera File output.
      */
     private File getOutputMediaFile() {
-
-
         // Create a media file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
@@ -564,10 +573,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-
         Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)
                 .show();
-
         return testFile;
     }
 

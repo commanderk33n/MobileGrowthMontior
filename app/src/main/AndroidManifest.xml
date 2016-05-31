@@ -31,15 +31,18 @@
             android:name=".pinlock.AppLockView"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".imageprocessing.CameraView"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".CreateProfileView"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ProfileView"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".datavisual.GalleryView"></activity>
-        <activity android:name=".MeasurementView"></activity>
-        <activity android:name=".datavisual.GraphView"></activity>
+        <activity
+            android:name=".imageprocessing.CameraView"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateProfileView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProfileView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".datavisual.GalleryView" />
+        <activity android:name=".MeasurementView" />
+        <activity android:name=".datavisual.GraphView" />
     </application>
 
 </manifest>

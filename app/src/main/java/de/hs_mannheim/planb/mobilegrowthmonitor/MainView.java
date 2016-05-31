@@ -27,7 +27,6 @@ import org.opencv.android.OpenCVLoader;
 import java.io.File;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
