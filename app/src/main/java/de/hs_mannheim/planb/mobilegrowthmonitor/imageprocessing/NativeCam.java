@@ -6,16 +6,13 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -116,14 +113,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
             return view;
         }
 
-        try {
-            mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
-            mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } catch (Exception e) {
-            Toast.makeText(mActivity, "Hardware compatibility issue", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
@@ -136,6 +125,15 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     }
                 }
         );
+
+        mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
+        mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        if(mRotationSensor != null){
+            mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }else{
+            Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
+            captureButton.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
