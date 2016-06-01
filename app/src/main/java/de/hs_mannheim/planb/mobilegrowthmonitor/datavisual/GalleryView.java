@@ -1,5 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.widget.GridView;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
@@ -21,6 +23,7 @@ public class GalleryView extends AppCompatActivity {
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
     String profile_name;
+    int profile_Id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class GalleryView extends AppCompatActivity {
         setContentView(R.layout.gallery_view);
 
         Bundle extras = getIntent().getExtras();
-        this.profile_name = extras.getString("profile_name");
+        this.profile_Id = extras.getInt("profile_Id");
     }
 
     @Override
@@ -139,6 +142,12 @@ public class GalleryView extends AppCompatActivity {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ProfileView.class);
+        intent.putExtra("profile_Id", 1);
+        startActivity(intent);
 
-
+    }
 }

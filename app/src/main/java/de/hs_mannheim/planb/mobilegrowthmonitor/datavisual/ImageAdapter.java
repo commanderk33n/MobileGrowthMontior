@@ -96,7 +96,7 @@ public class ImageAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
-        String path = GalleryView.pathList.get(position);
+        String path = pathlist.get(position);
 
         ImgAdptOnClickListener imgAdptOnClickListener = new ImgAdptOnClickListener(path);
         sizeMeasurement.setOnClickListener(imgAdptOnClickListener);

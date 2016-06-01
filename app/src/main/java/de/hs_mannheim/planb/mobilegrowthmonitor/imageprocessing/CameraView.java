@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -16,14 +17,18 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     private static String TAG = CameraView.class.getSimpleName();
     NativeCam camFrag;
     private String  profile_name;
-
+    private int profile_Id;
+    DbHelper db ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_view);
+        DbHelper db = DbHelper.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
-        profile_name = extras.getString("profile_name");
+        profile_Id = extras.getInt("profile_Id");
+
+        profile_name = db.getProfile(profile_Id).firstname;
 
         camFrag = NativeCam.newInstance(profile_name);
         FragmentManager fragmentManager = getFragmentManager();
@@ -35,8 +40,9 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
     public void afterPictureTaken(){
         Intent intent = new Intent(this, GalleryView.class);
-        intent.putExtra("profile_name", profile_name);
+        intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
+       // finish();
     }
 
     @Override

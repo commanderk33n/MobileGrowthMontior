@@ -233,7 +233,7 @@ public class ProfileView extends BaseActivity {
      */
     public void startCamera(View view) {
         Intent intent = new Intent(this, CameraView.class);
-        intent.putExtra("profile_name", profile.firstname);
+        intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
     }
 
@@ -243,7 +243,7 @@ public class ProfileView extends BaseActivity {
      */
     public void startGraph(View view){
         Intent intent = new Intent(this, GraphView.class);
-        intent.putExtra("profile_name", profile.firstname);
+        intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
     }
 
@@ -253,7 +253,7 @@ public class ProfileView extends BaseActivity {
      */
     public void startGallery(View view) {
         Intent intent = new Intent(this, GalleryView.class);
-        intent.putExtra("profile_name", profile.firstname);
+        intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
     }
 
