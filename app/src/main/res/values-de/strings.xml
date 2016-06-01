@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MobileGrowthMonitor</string>
+    <string name="age">Alter</string>
+    <string name="birthday">Geburtstag</string>
+    <string name="capture">Aufnahme</string>
+    <string name="capture_image">Foto aufnehmen</string>
+    <string name="change_passcode">PIN ändern</string>
+    <string name="date">Datum</string>
+    <string name="disable_passcode">PIN entfernen</string>
+    <string name="enable_passcode">PIN einsetzen</string>
+    <string name="enter_firstname">Vorname eingeben</string>
+    <string name="enter_lastname">Nachname eingeben</string>
+    <string name="enter_old_passcode">Alten PIN eingeben</string>
+    <string name="enter_passcode">PIN eingeben</string>
+    <string name="export">Export</string>
+    <string name="female">Weiblich</string>
+    <string name="firstname">Vorname</string>
+    <string name="foto">Foto</string>
+    <string name="fullscreen_image"></string>
+    <string name="gallery">Galerie</string>
+    <string name="gender">Bitte wählen Sie das Geschlecht des Kindes aus</string>
+    <string name="graph">Auswertung</string>
+    <string name="height">Größe: </string>
+    <string name="hello_blank_fragment"></string>
+    <string name="in_kg">in kg</string>
+    <string name="last_measurement">Letzte Messung </string>
+    <string name="male">Männlich</string>
+    <string name="manage_passcode">PIN bearbeiten</string>
+    <string name="measurement">Messung</string>
+    <string name="passcode_wrong">Falscher PIN, bitte versuchen Sie es erneut.</string>
+    <string name="reenter_passcode">Geben Sie den PIN erneut ein.</string>
+    <string name="save">Speichern</string>
+    <string name="setup_passcode">PIN festlegen</string>
+    <string name="size_measurement">Größenmessung</string>
+    <string name="weight">Gewicht: </string>
+    <string name="template_age">Jahre alt</string>
+</resources>

@@ -73,7 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             e.printStackTrace();
         }
 
-        holder.tv_bday.setText(Integer.toString(age) + " years old");
+        holder.tv_bday.setText(Integer.toString(age) + " " + context.getString(R.string.template_age));
     }
 
     @Override
