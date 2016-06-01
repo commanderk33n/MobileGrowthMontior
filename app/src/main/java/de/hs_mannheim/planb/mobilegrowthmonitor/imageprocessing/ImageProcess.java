@@ -38,6 +38,9 @@ public class ImageProcess {
     private static final String TAG = "ImageProcess";
 
     private static Context context;
+    private final  double REFERENCEOBJECTHEIGHT = 14.7;
+    private final double REFERENCEOBJECTPOSITION = 2;
+    private final double PERSONPOSITION = 3;
 
   public ImageProcess(Context  c) {
         context = c;
@@ -94,7 +97,7 @@ public class ImageProcess {
             int i = 0;
             for (MatOfPoint m : contours) {
 
-                if (Imgproc.boundingRect(m).y < source.height() * 3.0 / 4.0 && Imgproc.boundingRect(m).y
+                if (Imgproc.boundingRect(m).y < source.height() / REFERENCEOBJECTPOSITION && Imgproc.boundingRect(m).y
                         > source.height() / 10.0) {
                     Imgproc.drawContours(source, contours, i, new Scalar(0, 255, 0), 2);
                     heightReferenceObject = Imgproc.boundingRect(m).height;
@@ -106,7 +109,7 @@ public class ImageProcess {
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                   for(int k = destination.cols()/5;k<destination.cols()*4/5;k++){
+                   for(int k =(int)(destination.cols()/PERSONPOSITION);k<destination.cols()*2/PERSONPOSITION;k++){
                 if (destination.get(j, k)[0] > 0) {
                     yCoordinateHighestPoint = j;
                     xCoordinateHighestPoint = k;
@@ -124,9 +127,8 @@ public class ImageProcess {
                     new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
             // Height of ReferenceObject and SizeMeasurement
             // TODO: change to alertDialog
-            double referenceObjectHeight = 14.9;
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
-            heightOfPerson = heightInPixels / heightReferenceObject * referenceObjectHeight;
+            heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
             DecimalFormat df = new DecimalFormat("####0.00");
             String resultString = df.format(heightOfPerson);
             Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();

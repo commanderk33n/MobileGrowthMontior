@@ -8,7 +8,12 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.GridView;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +23,21 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
 public class GalleryView extends AppCompatActivity {
-
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.i("as", "OpenCV loaded successfully");
+                }
+                break;
+                default: {
+                    super.onManagerConnected(status);
+                }
+                break;
+            }
+        }
+    };
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
@@ -40,8 +59,16 @@ public class GalleryView extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d("as", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
+        } else {
+            Log.d("as", "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+
     }
 
     @Override
