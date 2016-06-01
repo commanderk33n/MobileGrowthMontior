@@ -39,7 +39,7 @@ public class ImageProcess {
 
     private static Context context;
 
-    public ImageProcess(Context c) {
+  public ImageProcess(Context  c) {
         context = c;
     }
 
@@ -50,6 +50,12 @@ public class ImageProcess {
     public double sizeMeasurement(String path) {
         // init
         Mat source = Imgcodecs.imread(path);
+
+        // rotate image
+       // Core.transpose(source, source);
+       // Core.flip(source, source, 1);
+
+
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
@@ -62,7 +68,7 @@ public class ImageProcess {
         Bitmap bmp = null;
         Rect rect_small;
         double heightOfPerson = 0;
-        double yCoordinateHorizontalLine = getYLowerHorizontalLine(source);
+        double yCoordinateHorizontalLine =0;
         double heightReferenceObject = 0;
         int yCoordinateHighestPoint = 0;
         boolean breakForLoop = false;
@@ -72,6 +78,7 @@ public class ImageProcess {
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.GaussianBlur(destination, destination, size, 0);
             Imgproc.Canny(destination, destination, 50, 100);
+            yCoordinateHorizontalLine =  getYLowerHorizontalLine(destination);
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -98,16 +105,16 @@ public class ImageProcess {
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                   for(int k = destination.width()/3;k<destination.width()*2/3;k++){
+                   for(int k = destination.width()/5;k<destination.width()*4/5;k++){
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
                     yCoordinateHighestPoint = j;
-                        breakForLoop = true;
+                    //    breakForLoop = true;
                     break;
                 }
 
                   }
                   if(breakForLoop){
-                     break;
+                      break;
                  }
             }
             Imgproc.line(source, new Point(source.width() / 2.0, yCoordinateHorizontalLine),
@@ -134,7 +141,7 @@ public class ImageProcess {
     // finding lower horizontal Line
     public int getYLowerHorizontalLine(Mat img) {
         // init
-        Mat source = img.clone();
+        Mat source = img;
         int threshold = 50;
         int minLineLength = 1;
         int maxLineGap = 10;
@@ -143,7 +150,9 @@ public class ImageProcess {
         try {
             Mat destination;
             destination = source;
-            Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
+
+        //
+        //    Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.Canny(destination, destination, 50, 100, 3, true);
             Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
             for (int x = 0; x < lines.rows(); x++) {

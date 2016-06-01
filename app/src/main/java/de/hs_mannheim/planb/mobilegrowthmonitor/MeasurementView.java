@@ -132,7 +132,7 @@ public class MeasurementView extends BaseActivity {
                 result = "is overweight!";
                 setBackgroundColor(2);
             }else {
-                result = "is severly overweight";
+                result = "is severely overweight";
                 setBackgroundColor(1);
             }
 
@@ -170,7 +170,7 @@ public class MeasurementView extends BaseActivity {
                 result = "is overweight!";
                 setBackgroundColor(2);
             }else {
-                result = "is severly overweight";
+                result = "is severely overweight";
                 setBackgroundColor(1);
             }
         }
@@ -194,7 +194,7 @@ public class MeasurementView extends BaseActivity {
                 return "have obesity!";
             } else {
                 setBackgroundColor(1);
-                return "have sever Obesity!";
+                return "have severe Obesity!";
             }
         } else {
             if (bmi < 20) {
@@ -211,7 +211,7 @@ public class MeasurementView extends BaseActivity {
                 return "have obesity!";
             } else {
                 setBackgroundColor(1);
-                return "have sever Obesity!";
+                return "have severe Obesity!";
             }
         }
     }

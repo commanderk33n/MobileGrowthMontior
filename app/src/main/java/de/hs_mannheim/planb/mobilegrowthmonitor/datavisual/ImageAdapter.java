@@ -32,11 +32,13 @@ public class ImageAdapter extends BaseAdapter {
     private ArrayList<Bitmap> bitmapList;
     private int shortAnimationDuration = 350;
     private ImageProcess imageProcess;
+    private ArrayList<String> pathlist;
 
-    public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList) {
+    public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList,ArrayList<String> pathlist ){
         this.context = context;
         this.bitmapList = bitmapList;
         imageProcess = new ImageProcess(context);
+        this.pathlist = pathlist;
     }
 
     @Override
@@ -65,6 +67,8 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         imageView.setImageBitmap(this.bitmapList.get(position));
+
+
         imageView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,6 +78,7 @@ public class ImageAdapter extends BaseAdapter {
         });
         return imageView;
     }
+
 
     private void zoomImageFromThumb(final View thumbView, int position) {
         // If there's an animation in progress, cancel it immediately and
@@ -85,7 +90,11 @@ public class ImageAdapter extends BaseAdapter {
         final ImageView fullscreenImageView = (ImageView) ((Activity) context).findViewById(R.id.iv_fullscreenImage);
         final Button sizeMeasurement = (Button) ((Activity) context).findViewById(R.id.btn_size_measurement);
 
-        fullscreenImageView.setImageBitmap(this.bitmapList.get(position));
+        try {
+            fullscreenImageView.setImageBitmap(GalleryView.urlImageToBitmap(this.pathlist.get(position),true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String path = GalleryView.pathList.get(position);
 
