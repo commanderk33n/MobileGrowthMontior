@@ -104,7 +104,7 @@ public class ImageProcess {
             rect_small = Imgproc.boundingRect(contours.get(i));
             Imgproc.rectangle(source, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
-            for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
+            for (int j = destination.rows() / 20; j < destination.rows() * 2 / 3; j++) {
                    for(int k = destination.width()/5;k<destination.width()*4/5;k++){
                 if (destination.get(j, destination.width() / 2)[0] > 0) {
                     yCoordinateHighestPoint = j;
