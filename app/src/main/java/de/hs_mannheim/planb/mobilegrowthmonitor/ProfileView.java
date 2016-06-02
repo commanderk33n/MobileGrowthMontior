@@ -219,7 +219,7 @@ public class ProfileView extends BaseActivity {
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
+                mProfileImage.setImageBitmap(resizedBitmap);
 
             }
         } else if (requestCode == 3) {

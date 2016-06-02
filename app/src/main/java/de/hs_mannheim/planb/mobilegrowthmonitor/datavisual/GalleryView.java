@@ -11,10 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -23,7 +19,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
 public class GalleryView extends AppCompatActivity {
-
+    public static final String TAG = GalleryView.class.getSimpleName();
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
