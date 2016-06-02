@@ -66,19 +66,6 @@ public class MainView extends BaseActivity implements Listener {
     };
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
@@ -104,7 +91,7 @@ public class MainView extends BaseActivity implements Listener {
         folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
         if (!(folder.exists())) {
             folder.mkdirs();
-            //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -118,6 +105,18 @@ public class MainView extends BaseActivity implements Listener {
                     startActivity(intent);
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
 

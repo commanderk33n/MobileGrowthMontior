@@ -30,7 +30,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GraphView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -65,7 +65,7 @@ public class ProfileView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         DbHelper dbHelper = DbHelper.getInstance(this);
         profile = dbHelper.getProfile(profile_Id);
-
+        dbHelper.close();
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname + ",");
 
@@ -219,7 +219,7 @@ public class ProfileView extends BaseActivity {
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
+                mProfileImage.setImageBitmap(resizedBitmap);
 
             }
         } else if (requestCode == 3) {

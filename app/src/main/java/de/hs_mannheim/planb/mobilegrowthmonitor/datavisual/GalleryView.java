@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.GridView;
 
 import java.io.File;
@@ -18,7 +19,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
 public class GalleryView extends AppCompatActivity {
-
+    public static final String TAG = GalleryView.class.getSimpleName();
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
@@ -40,12 +41,15 @@ public class GalleryView extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+
+
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Log.i("Gallery","onFocusChanged");
         bitmapList.clear();
         pathList.clear();
         if (hasFocus) {
@@ -94,7 +98,10 @@ public class GalleryView extends AppCompatActivity {
             if(hiRes) {
                 options.inSampleSize = 1;
             }else{
-                options.inSampleSize = 10;
+                options.inSampleSize = 30;
+             //   options.outHeight = 250;
+               //         options.outWidth =250;
+
 
             }
             //result = rotateBitmap(BitmapFactory.decodeFile(imageUrl, options), 90);

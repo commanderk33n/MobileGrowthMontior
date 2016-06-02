@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -81,7 +82,7 @@ public class ImageAdapter extends BaseAdapter {
 
 
     private void zoomImageFromThumb(final View thumbView, int position) {
-        // If there's an animation in progress, cancel it immediately and
+        // If there's a11n animation in progress, cancel it immediately and
         // proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
@@ -208,6 +209,7 @@ public class ImageAdapter extends BaseAdapter {
                         fullscreenImageView.setVisibility(View.GONE);
                         sizeMeasurement.setVisibility(View.GONE);
                         currentAnimator = null;
+
                     }
 
                     @Override
@@ -235,7 +237,13 @@ public class ImageAdapter extends BaseAdapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
-                    imageProcess.sizeMeasurement(path);
+                    try {
+                        imageProcess.sizeMeasurement(path);
+                        ((Activity) context).onWindowFocusChanged(true);
+
+                    }catch (IllegalArgumentException e){
+                        Toast.makeText(context, "No reference Object found, please take a new picture", Toast.LENGTH_LONG).show();
+                    }
                     break;
             }
         }

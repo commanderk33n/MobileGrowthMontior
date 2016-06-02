@@ -20,7 +20,7 @@
     <string name="foto">Photo</string>
     <string name="graph">Graph</string>
     <string name="gallery">Gallery</string>
-    <string name="export">Export</string>
+    <string name="export" translatable="false">Export</string>
     <string name="save">Save</string>
     <string name="size_measurement">Size Measurement</string>
     <string name="birthday">Please enter the birthday of your child:</string>
@@ -33,4 +33,5 @@
     <string name="measurement">Measurement</string>
     <string name="last_measurement">Last measurement:</string>
     <string name="in_kg">in kg</string>
+    <string name="template_age">years old</string>
 </resources>

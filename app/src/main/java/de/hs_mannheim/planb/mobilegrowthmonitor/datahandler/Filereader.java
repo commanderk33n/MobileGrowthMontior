@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
+package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 import java.io.*;
 import java.util.Scanner;

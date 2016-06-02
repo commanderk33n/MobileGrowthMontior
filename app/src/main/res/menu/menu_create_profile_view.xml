@@ -4,6 +4,6 @@
     <item
         android:id="@+id/save_profile"
         android:orderInCategory="100"
-        android:title="SAVE?"
+        android:title="@string/save"
         app:showAsAction="ifRoom" />
 </menu>

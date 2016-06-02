@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -171,7 +172,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
      *
      * @param vectors
      */
-    private void update(float[] vectors) {
+    private synchronized void update(float[] vectors) {
 
         float[] rotationMatrix = new float[9];
         SensorManager.getRotationMatrixFromVector(rotationMatrix, vectors);
@@ -516,28 +517,47 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();
+        public void onPictureTaken(final byte[] data, Camera camera) {
+            final File pictureFile = getOutputMediaFile();
             if (pictureFile == null) {
                 Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
-            try {
-                // TODO: find another possibilty to rotate image before saving picture
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                bitmap = ProfileView.rotateBitmap(bitmap, 90);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                bitmap.recycle();
-                byte[] byteArray = stream.toByteArray();
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(byteArray);
-                fos.close();
+
+              new Thread(new Runnable() {
+                    public void run() {
+                        Log.i("Thread","started");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                       final Bitmap turnedBitmap = ProfileView.rotateBitmap(bitmap, 90);
+
+                                // TODO: find another possibilty to rotate image before saving picture
+
+
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                turnedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                                turnedBitmap.recycle();
+                                byte[] byteArray = stream.toByteArray();
+                                FileOutputStream fos = null;
+                                try {
+                                    fos = new FileOutputStream(pictureFile);
+                                    fos.write(byteArray);
+                                    fos.close();
+                                    Log.i("Thread","finished");
+                                    NativeCam.this.onDestroy();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                }).start();
+
+
                 ((CameraView) getActivity()).afterPictureTaken();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     };
 
@@ -554,7 +574,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)
+        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Profile...", Toast.LENGTH_LONG)
                 .show();
         return testFile;
     }
