@@ -23,21 +23,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 
 public class GalleryView extends AppCompatActivity {
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("as", "OpenCV loaded successfully");
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
-                break;
-            }
-        }
-    };
+
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
@@ -61,18 +47,13 @@ public class GalleryView extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d("as", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-        } else {
-            Log.d("as", "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
+
 
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Log.i("Gallery","onFocusChanged");
         bitmapList.clear();
         pathList.clear();
         if (hasFocus) {

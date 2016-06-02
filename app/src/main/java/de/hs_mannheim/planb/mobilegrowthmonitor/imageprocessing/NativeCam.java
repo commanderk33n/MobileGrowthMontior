@@ -574,7 +574,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Gallery...", Toast.LENGTH_LONG)
+        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Profile...", Toast.LENGTH_LONG)
                 .show();
         return testFile;
     }
