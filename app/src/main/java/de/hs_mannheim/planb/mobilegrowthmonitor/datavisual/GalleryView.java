@@ -8,7 +8,12 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.GridView;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,12 +45,15 @@ public class GalleryView extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+
+
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Log.i("Gallery","onFocusChanged");
         bitmapList.clear();
         pathList.clear();
         if (hasFocus) {

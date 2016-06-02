@@ -65,7 +65,7 @@ public class ProfileView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         DbHelper dbHelper = DbHelper.getInstance(this);
         profile = dbHelper.getProfile(profile_Id);
-
+        dbHelper.close();
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname + ",");
 

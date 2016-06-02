@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -235,7 +236,11 @@ public class ImageAdapter extends BaseAdapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
-                    imageProcess.sizeMeasurement(path);
+                    try {
+                        imageProcess.sizeMeasurement(path);
+                    }catch (IllegalArgumentException e){
+                        Toast.makeText(context, "No reference Object found, please take a new picture", Toast.LENGTH_LONG).show();
+                    }
                     break;
             }
         }

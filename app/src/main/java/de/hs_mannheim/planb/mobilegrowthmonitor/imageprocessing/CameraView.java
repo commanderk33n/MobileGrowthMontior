@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.os.Bundle;
 
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
@@ -39,7 +40,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
 
     public void afterPictureTaken(){
-        Intent intent = new Intent(this, GalleryView.class);
+        Intent intent = new Intent(this,ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
        // finish();
