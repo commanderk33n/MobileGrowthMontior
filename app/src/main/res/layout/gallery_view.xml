@@ -9,10 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:columnWidth="115dp"
         android:gravity="center"
         android:horizontalSpacing="5dp"
-        android:numColumns="auto_fit"
+        android:numColumns="3"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp" />
 

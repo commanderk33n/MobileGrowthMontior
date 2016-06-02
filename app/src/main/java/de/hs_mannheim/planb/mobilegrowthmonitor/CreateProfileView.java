@@ -51,6 +51,7 @@ public class CreateProfileView extends BaseActivity {
         sex_male = (RadioButton) findViewById(R.id.rb_sex_male);
         sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
+        birthday.setMaxDate(System.currentTimeMillis()+10);
 
     }
 
