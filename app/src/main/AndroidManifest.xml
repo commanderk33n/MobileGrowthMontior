@@ -42,7 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".datavisual.GalleryView" />
         <activity android:name=".MeasurementView" />
-        <activity android:name=".datavisual.GraphView" />
+        <activity android:name=".datahandler.GraphView" />
     </application>
 
 </manifest>

@@ -102,7 +102,10 @@ public class GalleryView extends AppCompatActivity {
             if(hiRes) {
                 options.inSampleSize = 1;
             }else{
-                options.inSampleSize = 10;
+                options.inSampleSize = 30;
+             //   options.outHeight = 250;
+               //         options.outWidth =250;
+
 
             }
             //result = rotateBitmap(BitmapFactory.decodeFile(imageUrl, options), 90);

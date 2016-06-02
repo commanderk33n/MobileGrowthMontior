@@ -144,7 +144,7 @@ public class ImageProcess {
         return heightOfPerson;
     }
 
-    public static boolean isContourSquare(MatOfPoint thisContour) {
+    public static boolean isContourRect(MatOfPoint thisContour) {
         MatOfPoint2f approxCurve = new MatOfPoint2f();
         //Convert contours from MatOfPoint to MatOfPoint2f
         MatOfPoint2f contour2f = new MatOfPoint2f(thisContour.toArray());
@@ -168,8 +168,6 @@ public class ImageProcess {
                 Rect rect = Imgproc.boundingRect(points);
 
                 if (Math.abs(rect.height - rect.width) < 100) {
-                    // draw enclosing rectangle
-                    //TODO Change back to picori
 
                     return true;
 
@@ -186,7 +184,7 @@ public class ImageProcess {
 
         for (MatOfPoint c : contours) {
 
-            if ((ImageProcess.isContourSquare(c))) {
+            if ((ImageProcess.isContourRect(c))) {
 
                 if (squares == null)
                     squares = new ArrayList<MatOfPoint>();
