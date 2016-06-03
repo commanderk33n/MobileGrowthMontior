@@ -102,7 +102,12 @@ public class ImageProcess {
             });
             int i = 0;
             for (MatOfPoint m : rectContour) {
-                if (Imgproc.boundingRect(m).y < source.height() / 2) { //reference object should be in the upper half
+
+                Rect temp = Imgproc.boundingRect(m);
+
+                if (temp.y+temp.height < source.height() / 2 && temp.y+temp.height
+                        > source.height() / 10.0) { //refernce object upper half and under 90 %
+             //   if (Imgproc.boundingRect(m).y < source.height() / 2) { //reference object should be in the upper half
                     Imgproc.drawContours(source, rectContour, i, new Scalar(0, 255, 0), 2);
                     heightReferenceObject = Imgproc.boundingRect(m).height;
                     break;
@@ -349,4 +354,5 @@ public class ImageProcess {
         imageWriter(bmp);
         return heightOfPerson;
     }
+
 }
