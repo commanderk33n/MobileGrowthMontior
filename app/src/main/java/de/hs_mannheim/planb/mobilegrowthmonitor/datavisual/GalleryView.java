@@ -78,9 +78,7 @@ public class GalleryView extends AppCompatActivity {
                 Log.i("Gallery", "folder length" + listFile.length);
 
                 if (folder.isDirectory()) {
-                    bitmapList.clear();
 
-                    pathList.clear();
                     refreshView();
                 }
             } else {

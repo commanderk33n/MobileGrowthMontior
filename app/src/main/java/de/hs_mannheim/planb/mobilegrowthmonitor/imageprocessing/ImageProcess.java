@@ -75,6 +75,9 @@ public class ImageProcess {
             Imgproc.GaussianBlur(destination, destination, size, 0);
             Imgproc.Canny(destination, destination, 50, 100);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+            if(contours.size() == 0){
+                throw new IllegalArgumentException("No Objects found");
+            }
 
             List<MatOfPoint> rectContour = getRectContour(contours);
             if (rectContour == null) {
