@@ -27,12 +27,17 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.core.MatOfPoint;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -282,7 +287,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p/>
+     * <p>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
     class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -405,17 +410,22 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
+                
+                Collections.sort(mSupportedPreviewSizes, new Comparator<Camera.Size>() {
+                    @Override
+                    public int compare(Camera.Size lhs, Camera.Size rhs) {
+                        return rhs.width - lhs.width;
+                    }
+                });
 
-                for(Camera.Size size : mSupportedPreviewSizes) {
-                    if(size.width / size.height <1.8 && size.width/size.height>1.7) {
+                for (Camera.Size size : mSupportedPreviewSizes) {
+                    double ratio = (double) size.width / size.height;
+                    if (ratio < 1.8 && ratio > 1.7) {
                         parameters.setPreviewSize(size.width, size.height);
                         parameters.setPictureSize(size.width, size.height);
                         break;
                     }
                 }
-
-                //parameters.setPreviewSize(1920, 1080);
-               // parameters.setPictureSize(1920, 1080);
 
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
