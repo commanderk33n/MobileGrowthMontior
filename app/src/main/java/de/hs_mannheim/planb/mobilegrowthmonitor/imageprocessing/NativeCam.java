@@ -296,6 +296,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
         // Flash modes supported by this camera
         private List<String> mSupportedFlashModes;
 
+        // List of supported preview sizes
+        private List<Camera.Size> mSupportedPreviewSizes;
+
         public CameraPreview(Context context, Camera camera, View cameraView) {
             super(context);
 
@@ -332,6 +335,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
@@ -402,8 +406,16 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
 
-                parameters.setPreviewSize(1920, 1080);
-                parameters.setPictureSize(1920, 1080);
+                for(Camera.Size size : mSupportedPreviewSizes) {
+                    if(size.width / size.height <1.8 && size.width/size.height>1.7) {
+                        parameters.setPreviewSize(size.width, size.height);
+                        parameters.setPictureSize(size.width, size.height);
+                        break;
+                    }
+                }
+
+                //parameters.setPreviewSize(1920, 1080);
+               // parameters.setPictureSize(1920, 1080);
 
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
