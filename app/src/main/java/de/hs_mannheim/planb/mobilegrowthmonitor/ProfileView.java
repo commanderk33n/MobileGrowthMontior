@@ -33,6 +33,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.ExportView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
+
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
@@ -69,13 +70,8 @@ public class ProfileView extends BaseActivity {
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname + ",");
 
-        mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
-        if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
-            Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-            mProfileImage.setImageBitmap(resizedBitmap);
-        }
 
+        mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +112,17 @@ public class ProfileView extends BaseActivity {
 
         setMeasurementTextViews();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
+            Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
+            rotateBitmap(resizedBitmap, 180);
+            mProfileImage.setImageBitmap(resizedBitmap);
+        }
     }
 
     /**
@@ -210,19 +217,18 @@ public class ProfileView extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                Bundle extras = data.getExtras();
-                Uri selectedImage = data.getData();
+                Uri selectedCamImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage,
+                Cursor cursor = getContentResolver().query(selectedCamImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
+                String pictureCamPath = cursor.getString(columnIndex);
                 cursor.close();
-                Bitmap originalBitmap = (Bitmap) extras.get("data");
-                dbHelper.setProfilePic(profile_Id, picturePath);
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-                mProfileImage.setImageBitmap(resizedBitmap);
+                dbHelper.setProfilePic(profile_Id, pictureCamPath);
+                Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
+                Bitmap resizedCamBitmap = Bitmap.createScaledBitmap(camBitmap, 200, 200, false);
+                mProfileImage.setImageBitmap(resizedCamBitmap);
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -306,6 +312,20 @@ public class ProfileView extends BaseActivity {
         super.onBackPressed();
         Intent i = new Intent(this,MainView.class);
         startActivity(i);
+    }
+
+
+    /**
+     * Rotates Bitmap
+     *
+     * @param source bitmap to be rotated
+     * @param angle  angle that the picture has to be rotated
+     * @return rotated bitmap
+     */
+    private Bitmap rotateBitmap(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
 }

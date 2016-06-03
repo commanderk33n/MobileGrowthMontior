@@ -413,9 +413,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 int maxWidth = mSupportedPreviewSizes.get(0).width;
                 int maxHeight = mSupportedPreviewSizes.get(0).height;
                 for (Camera.Size size : mSupportedPreviewSizes) {
-                    Log.i("width= ", ""+maxWidth);
+                    Log.i("width= ", "" + maxWidth);
                     double ratio = (double) size.width / size.height;
-                    if (ratio < 1.8 && ratio > 1.7 && size.width>maxWidth) {
+                    if (ratio < 1.8 && ratio > 1.7 && size.width > maxWidth) {
                         maxWidth = size.width;
                         maxHeight = size.height;
                     }
@@ -539,15 +539,14 @@ public class NativeCam extends Fragment implements SensorEventListener {
         return testFile;
     }
 
-
     /**
      * Rotates Bitmap
      *
      * @param source bitmap to be rotated
-     * @param angle angle that the picture has to be rotated
+     * @param angle  angle that the picture has to be rotated
      * @return rotated bitmap
      */
-    private  Bitmap rotateBitmap(Bitmap source, float angle) {
+    private Bitmap rotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
