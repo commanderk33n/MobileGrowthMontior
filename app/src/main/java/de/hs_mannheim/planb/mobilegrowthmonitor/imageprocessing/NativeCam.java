@@ -396,9 +396,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 // preview surface does not exist
                 return;
             }
-
-            // stop preview before making changes
-            mCamera.stopPreview();
+            
             try {
                 Camera.Parameters parameters = mCamera.getParameters();
 
@@ -410,7 +408,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
-            
+
                 int maxWidth = mSupportedPreviewSizes.get(0).width;
                 int maxHeight = mSupportedPreviewSizes.get(0).height;
                 for (Camera.Size size : mSupportedPreviewSizes) {
