@@ -53,9 +53,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
     // View to display the camera output.
     private CameraPreview mPreview;
 
-    // Reference to the containing view.
-    private View mCameraView;
-
     private Activity mActivity;
 
     private Button captureButton;
@@ -222,7 +219,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
         boolean qOpened = false;
         releaseCameraAndPreview();
         mCamera = getCameraInstance();
-        mCameraView = view;
         qOpened = (mCamera != null);
 
         if (qOpened == true) {
@@ -297,27 +293,13 @@ public class NativeCam extends Fragment implements SensorEventListener {
         // Our Camera.
         private Camera mCamera;
 
-        // Parent Context.
-        private Context mContext;
-
-        // Camera Sizing (For rotation, orientation changes)
-        private Camera.Size mPreviewSize;
-
-
-        // List of supported preview sizes
-        private List<Camera.Size> mSupportedPreviewSizes;
-
-
         // Flash modes supported by this camera
         private List<String> mSupportedFlashModes;
-
-
 
         public CameraPreview(Context context, Camera camera, View cameraView) {
             super(context);
 
             // Capture the context
-            mContext = context;
             setCamera(camera);
 
             // Install a SurfaceHolder.Callback so we get notified when the
@@ -350,15 +332,12 @@ public class NativeCam extends Fragment implements SensorEventListener {
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
-            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
 
-            // Set the camera to Auto Flash mode. TODO: DO WE NEED THAT?!
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
@@ -422,12 +401,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
-                // Preview height must exist.
-                if (mPreviewSize != null) {
-                    Camera.Size previewSize = mPreviewSize;
-                    parameters.setPreviewSize(previewSize.width, previewSize.height);
-                }
 
+                parameters.setPreviewSize(1920, 1080);
                 parameters.setPictureSize(1920, 1080);
 
                 mCamera.setParameters(parameters);
@@ -449,29 +424,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
             setMeasuredDimension(width, height);
-            if (mSupportedPreviewSizes != null) {
-                mPreviewSize = getBestPreviewSize(width, height);
-            }
-        }
-
-        private Camera.Size getBestPreviewSize(int width, int height) {
-            Camera.Size result = null;
-            Camera.Parameters p = mCamera.getParameters();
-            for (Camera.Size size : mSupportedPreviewSizes) {
-                if (size.width <= width && size.height <= height) {
-                    if (result == null) {
-                        result = size;
-                    } else {
-                        int resultArea = result.width * result.height;
-                        int newArea = size.width * size.height;
-
-                        if (newArea > resultArea) {
-                            result = size;
-                        }
-                    }
-                }
-            }
-            return result;
         }
     }
 

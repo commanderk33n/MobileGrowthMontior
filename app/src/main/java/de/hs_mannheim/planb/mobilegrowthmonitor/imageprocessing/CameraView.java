@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
@@ -17,14 +19,21 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 public class CameraView extends BaseActivity implements SensorEventListener {
     private static String TAG = CameraView.class.getSimpleName();
     NativeCam camFrag;
-    private String  profile_name;
+    private String profile_name;
     private int profile_Id;
-    DbHelper db ;
+    DbHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.camera_view);
-        DbHelper db = DbHelper.getInstance(this);
+        db = DbHelper.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
@@ -39,11 +48,11 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     }
 
 
-    public void afterPictureTaken(){
-        Intent intent = new Intent(this,ProfileView.class);
+    public void afterPictureTaken() {
+        Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
-       // finish();
+        // finish();
     }
 
     @Override
@@ -54,5 +63,11 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }
