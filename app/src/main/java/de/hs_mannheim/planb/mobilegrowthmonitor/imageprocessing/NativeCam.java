@@ -27,12 +27,17 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.core.MatOfPoint;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -282,7 +287,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p/>
+     * <p>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
     class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -295,6 +300,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         // Flash modes supported by this camera
         private List<String> mSupportedFlashModes;
+
+        // List of supported preview sizes
+        private List<Camera.Size> mSupportedPreviewSizes;
 
         public CameraPreview(Context context, Camera camera, View cameraView) {
             super(context);
@@ -332,6 +340,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
@@ -401,10 +410,19 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
-
-                parameters.setPreviewSize(1920, 1080);
-                parameters.setPictureSize(1920, 1080);
-
+            
+                int maxWidth = mSupportedPreviewSizes.get(0).width;
+                int maxHeight = mSupportedPreviewSizes.get(0).height;
+                for (Camera.Size size : mSupportedPreviewSizes) {
+                    Log.i("width= ", ""+maxWidth);
+                    double ratio = (double) size.width / size.height;
+                    if (ratio < 1.8 && ratio > 1.7 && size.width>maxWidth) {
+                        maxWidth = size.width;
+                        maxHeight = size.height;
+                    }
+                }
+                parameters.setPreviewSize(maxWidth, maxHeight);
+                parameters.setPictureSize(maxWidth, maxHeight);
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
             } catch (Exception e) {
