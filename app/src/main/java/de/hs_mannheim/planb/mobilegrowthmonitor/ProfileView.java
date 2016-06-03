@@ -298,4 +298,13 @@ public class ProfileView extends BaseActivity {
         super.onDestroy();
         dbHelper.close();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this,MainView.class);
+        startActivity(i);
+
+    }
+
 }
