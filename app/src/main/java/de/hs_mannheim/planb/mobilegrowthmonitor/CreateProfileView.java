@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -21,7 +20,6 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
  * Needed to create a new Profile.
- *
  */
 public class CreateProfileView extends BaseActivity {
 
@@ -30,11 +28,9 @@ public class CreateProfileView extends BaseActivity {
     EditText lastname, firstname;
     RadioButton sex_male, sex_female;
     DatePicker birthday;
-    Button btn_next;
     DbHelper dbHelper;
 
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -45,14 +41,14 @@ public class CreateProfileView extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_create_profile_view);
         setSupportActionBar(toolbar);
 
-        dbHelper = DbHelper.getInstance(this);
+        dbHelper = DbHelper.getInstance(getApplicationContext());
         lastname = (EditText) findViewById(R.id.et_lastname);
         firstname = (EditText) findViewById(R.id.et_firstname);
         sex_male = (RadioButton) findViewById(R.id.rb_sex_male);
         sex_female = (RadioButton) findViewById(R.id.rb_sex_female);
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
-        birthday.setMaxDate(System.currentTimeMillis()+10);
-        birthday.updateDate(2010,0,1);
+        birthday.setMaxDate(System.currentTimeMillis() + 10);
+        birthday.updateDate(2010, 0, 1);
 
     }
 
@@ -68,7 +64,7 @@ public class CreateProfileView extends BaseActivity {
      *
      * @return Dateobject which contains date from DatePicker
      */
-    private Date getDateFromDatePicker(){
+    private Date getDateFromDatePicker() {
         int year = birthday.getYear();
         int monthOfYear = birthday.getMonth();
         int dayOfMonth = birthday.getDayOfMonth();
@@ -96,12 +92,11 @@ public class CreateProfileView extends BaseActivity {
 
             if (firstname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs firstname!", Toast.LENGTH_LONG).show();
-           
             } else if (lastname.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Please enter the childs lastname!", Toast.LENGTH_LONG).show();
             } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
                 Toast.makeText(this, "Please choose the gender!", Toast.LENGTH_LONG).show();
-            } else if(dateFromDatePicker.after(today.getTime())){
+            } else if (dateFromDatePicker.after(today.getTime())) {
                 Toast.makeText(this, "Please choose a reasonable birthday!", Toast.LENGTH_LONG).show();
             } else {
                 ProfileData profileData = new ProfileData();
@@ -124,12 +119,12 @@ public class CreateProfileView extends BaseActivity {
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
     }
 

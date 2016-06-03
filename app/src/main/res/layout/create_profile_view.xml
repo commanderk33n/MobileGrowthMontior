@@ -46,6 +46,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginTop="30dp"
                 android:hint="@string/enter_firstname"
+                android:inputType="textCapSentences"
                 android:lines="1"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -61,7 +62,9 @@
                 android:hint="@string/enter_lastname"
                 android:lines="1"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="textCapSentences"
+                android:layout_alignParentLeft="false" />
 
             <TextView
                 android:id="@+id/tv_gender"

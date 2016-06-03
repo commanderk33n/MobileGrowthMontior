@@ -73,7 +73,7 @@ public class ProfileView extends BaseActivity {
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 90));
+            mProfileImage.setImageBitmap(resizedBitmap);
         }
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +105,8 @@ public class ProfileView extends BaseActivity {
             age = today.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
             if (today.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
                 age--;
-            } else if (today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
+            } else if (today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                    today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
                 age--;
             }
         } catch (ParseException e) {
@@ -156,9 +157,13 @@ public class ProfileView extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
-                    // TODO: startCam
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, 1);
+                    }
                 } else if (options[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -188,7 +193,6 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
-            dbHelper = DbHelper.getInstance(getApplicationContext());
             dbHelper.deleteProfile(profile_Id);
             onBackPressed();
         }
@@ -206,7 +210,19 @@ public class ProfileView extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                // TODO: get and save image from cam
+                Bundle extras = data.getExtras();
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                Bitmap originalBitmap = (Bitmap) extras.get("data");
+                dbHelper.setProfilePic(profile_Id, picturePath);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
+                mProfileImage.setImageBitmap(resizedBitmap);
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -216,7 +232,6 @@ public class ProfileView extends BaseActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
-                dbHelper =  DbHelper.getInstance(getApplicationContext());
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
@@ -280,19 +295,6 @@ public class ProfileView extends BaseActivity {
         startActivity(intent);
     }
 
-    /**
-     * Rotates Bitmap
-     *
-     * @param source bitmap to be rotated
-     * @param angle angle that the picture has to be rotated
-     * @return rotated bitmap
-     */
-    public static Bitmap rotateBitmap(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -304,7 +306,6 @@ public class ProfileView extends BaseActivity {
         super.onBackPressed();
         Intent i = new Intent(this,MainView.class);
         startActivity(i);
-
     }
 
 }

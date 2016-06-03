@@ -3,7 +3,6 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 public class MeasurementView extends BaseActivity {
 
     private EditText height, weight;
-    private Button save;
     private DbHelper dbHelper;
     private int profile_Id;
     private int age;
@@ -83,7 +81,7 @@ public class MeasurementView extends BaseActivity {
             bmiCategory = (TextView) findViewById(R.id.tv_bmi_category);
             bmiCategory.setVisibility(View.VISIBLE);
 
-            bmi.setText(String.format("The BMI is: %.2f.",  bmi_value));
+            bmi.setText(String.format("The BMI is: %.2f.", bmi_value));
 
             if (age < 19 && age > 7) {
                 bmiCategory.setText("The child " + bmiCategorizeChild(age, bmi_value, profile.sex));
@@ -97,12 +95,12 @@ public class MeasurementView extends BaseActivity {
 
 
     // Tabellen von http://www.bmi-rechner.net/
-    public String bmiCategorizeChild(int age, double bmi, int sex) {
+    private String bmiCategorizeChild(int age, double bmi, int sex) {
         String result = "";
         System.out.println("name: " + profile.lastname);
         System.out.println("Gender : " + profile.sex);
-        if(sex == 0 ){
-            double[][] perzentileFemale = {{8, 12.2, 13.2, 15.9, 18.8, 22.3},
+        if (sex == 0) {
+            double[][] percentileFemale = {{8, 12.2, 13.2, 15.9, 18.8, 22.3},
                     {9, 13.0, 13.7, 16.4, 19.8, 23.4},
                     {10, 13.4, 14.2, 16.9, 20.7, 23.4},
                     {11, 13.8, 14.6, 17.7, 20.8, 22.9},
@@ -114,31 +112,31 @@ public class MeasurementView extends BaseActivity {
                     {17, 17.1, 17.8, 20.5, 23.4, 25.7},
                     {18, 17.6, 18.3, 20.6, 23.5, 25.0}};
             int i = 0;
-            while (perzentileFemale[i][0] != age) {
+            while (percentileFemale[i][0] != age) {
                 i += 1;
             }
 
-            if(bmi < perzentileFemale[i][1]){
+            if (bmi < percentileFemale[i][1]) {
                 result = "is serverly underweight!";
                 setBackgroundColor(1);
-            } else if(bmi < perzentileFemale[i][2]){
+            } else if (bmi < percentileFemale[i][2]) {
                 result = "is underweight weight!";
                 setBackgroundColor(2);
-            } else if (bmi > perzentileFemale[i][2] && bmi < perzentileFemale[i][4]){ //3
+            } else if (bmi > percentileFemale[i][2] && bmi < percentileFemale[i][4]) { //3
                 result = "has normal weight!";
                 setBackgroundColor(4);
-            }else if(bmi > perzentileFemale[i][4] && bmi < perzentileFemale[i][5]){
+            } else if (bmi > percentileFemale[i][4] && bmi < percentileFemale[i][5]) {
                 result = "is overweight!";
                 setBackgroundColor(2);
-            }else {
+            } else {
                 result = "is severely overweight";
                 setBackgroundColor(1);
             }
 
 
-        }else {
+        } else {
 
-            double[][] perzentileMale = {{8, 12.5, 14.2, 16.4, 19.3, 22.6},
+            double[][] percentileMale = {{8, 12.5, 14.2, 16.4, 19.3, 22.6},
                     {9, 12.8, 13.7, 17.1, 19.4, 21.6},
                     {10, 13.9, 14.6, 17.1, 21.4, 25.0},
                     {11, 14.0, 14.3, 17.8, 21.2, 23.1},
@@ -151,24 +149,24 @@ public class MeasurementView extends BaseActivity {
                     {18, 17.6, 18.6, 21.8, 24.0, 26.8}};
 
             int i = 0;
-            while (perzentileMale[i][0] != age) {
+            while (percentileMale[i][0] != age) {
                 i += 1;
             }
             System.out.println("Zeile: " + i);
 
-            if(bmi < perzentileMale[i][1]){
+            if (bmi < percentileMale[i][1]) {
                 result = "is serverly underweight!";
                 setBackgroundColor(1);
-            } else if(bmi < perzentileMale[i][2]){
+            } else if (bmi < percentileMale[i][2]) {
                 result = "is underweight weight!";
                 setBackgroundColor(2);
-            } else if (bmi > perzentileMale[i][2] && bmi < perzentileMale[i][4]){ //3
+            } else if (bmi > percentileMale[i][2] && bmi < percentileMale[i][4]) { //3
                 result = "has normal weight!";
                 setBackgroundColor(4);
-            }else if(bmi > perzentileMale[i][4] && bmi < perzentileMale[i][5]){
+            } else if (bmi > percentileMale[i][4] && bmi < percentileMale[i][5]) {
                 result = "is overweight!";
                 setBackgroundColor(2);
-            }else {
+            } else {
                 result = "is severely overweight";
                 setBackgroundColor(1);
             }
@@ -227,8 +225,8 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
-    public void setBackgroundColor(int color){
-        switch (color){
+    public void setBackgroundColor(int color) {
+        switch (color) {
             case 1:
                 bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
                 break;
@@ -247,7 +245,7 @@ public class MeasurementView extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         dbHelper.close();
     }

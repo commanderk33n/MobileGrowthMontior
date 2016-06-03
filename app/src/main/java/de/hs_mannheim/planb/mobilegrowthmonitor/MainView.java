@@ -20,21 +20,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-
 import java.io.File;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
-import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.LockManager;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 
 public class MainView extends BaseActivity implements Listener {
     public static final String TAG = MainView.class.getSimpleName();
@@ -46,24 +40,7 @@ public class MainView extends BaseActivity implements Listener {
 
     private MenuItem onOffPinLock;
     private MenuItem changePin;
-    private MenuItem camera;
-    private MenuItem gallery;
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i(TAG, "OpenCV loaded successfully");
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
-                break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +61,14 @@ public class MainView extends BaseActivity implements Listener {
         File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
         if (!(folder.exists())) {
             folder.mkdirs();
-            //Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Success! Folder created!");
         }
 
         // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
         folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
         if (!(folder.exists())) {
             folder.mkdirs();
-            Toast.makeText(MainView.this, "Success! Folder created!", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Success! Folder created!");
         }
 
 
@@ -111,13 +88,6 @@ public class MainView extends BaseActivity implements Listener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
     }
 
     @Override
@@ -125,8 +95,6 @@ public class MainView extends BaseActivity implements Listener {
         getMenuInflater().inflate(R.menu.menu_main_view, menu);
         onOffPinLock = menu.getItem(0);
         changePin = menu.getItem(1);
-        camera = menu.getItem(2);
-        gallery = menu.getItem(3);
         updateMenu();
         return true;
     }
@@ -148,20 +116,6 @@ public class MainView extends BaseActivity implements Listener {
                     getString(R.string.enter_old_passcode));
             startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
         }
-        // StartCamera TODO: move this to specific profile view
-        if (id == R.id.start_cam) {
-            Intent intent = new Intent(this, CameraView.class);
-            intent.putExtra("profile_name", "test");
-            startActivity(intent);
-        }
-        // OpenGallery TODO: move this to specific profile view
-        if (id == R.id.open_gallery) {
-
-            Intent intent = new Intent(this, GalleryView.class);
-            intent.putExtra("profile_name", "test");
-            startActivity(intent);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -220,7 +174,7 @@ public class MainView extends BaseActivity implements Listener {
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         dbHelper.close();
     }

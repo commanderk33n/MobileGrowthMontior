@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -396,7 +397,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 // preview surface does not exist
                 return;
             }
-            
+
             try {
                 Camera.Parameters parameters = mCamera.getParameters();
 
@@ -512,7 +513,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 public void run() {
                     Log.i("Thread", "started");
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    final Bitmap turnedBitmap = ProfileView.rotateBitmap(bitmap, 90);
+                    final Bitmap turnedBitmap = rotateBitmap(bitmap, 90);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     turnedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                     turnedBitmap.recycle();
@@ -555,5 +556,19 @@ public class NativeCam extends Fragment implements SensorEventListener {
         Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Profile...", Toast.LENGTH_LONG)
                 .show();
         return testFile;
+    }
+
+
+    /**
+     * Rotates Bitmap
+     *
+     * @param source bitmap to be rotated
+     * @param angle angle that the picture has to be rotated
+     * @return rotated bitmap
+     */
+    private  Bitmap rotateBitmap(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 }
