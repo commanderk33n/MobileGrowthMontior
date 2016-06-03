@@ -422,7 +422,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
 
-
                 // Preview height must exist.
                 if (mPreviewSize != null) {
                     Camera.Size previewSize = mPreviewSize;
