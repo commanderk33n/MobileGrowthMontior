@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -504,12 +505,27 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         fos = new FileOutputStream(pictureFile);
                         fos.write(byteArray);
                         fos.close();
+                        Looper.prepare();
+                        final double size = new ImageProcess(mActivity.getApplicationContext()).sizeMeasurement(pictureFile.getPath());
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(),"Success your kid is"+ size +"cm tall", Toast.LENGTH_LONG).show();                            }
+                        });
+
+
                         Log.i("Thread", "finished");
                         NativeCam.this.onDestroy();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }catch (IllegalArgumentException e){
+                        e.printStackTrace();
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(),"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                        });
+
                     }
                 }
 

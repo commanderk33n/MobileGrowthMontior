@@ -100,19 +100,9 @@ public class ImageProcess {
                     return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
             });
-            int i = 0;
-            for (MatOfPoint m : rectContour) {
 
-                Rect temp = Imgproc.boundingRect(m);
 
-                if (temp.y+temp.height < source.height() / 2 && temp.y+temp.height
-                        > source.height() / 10.0) { //refernce object upper half and under 90 %
-             //   if (Imgproc.boundingRect(m).y < source.height() / 2) { //reference object should be in the upper half
-                    Imgproc.drawContours(source, rectContour, i, new Scalar(0, 255, 0), 2);
-                    heightReferenceObject = Imgproc.boundingRect(m).height;
-                    break;
-                }
-            }
+            heightReferenceObject = heightReferenceObject(contours,source).height;
 
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
@@ -303,19 +293,10 @@ public class ImageProcess {
             });
 
             // Find Contour of ReferenceObject in middle of left side of the picture
-            int i = 0;
-            for (MatOfPoint m : contours) {
-                Rect temp = Imgproc.boundingRect(m);
 
-                if (temp.y+temp.height < original.height() / 2 && temp.y+temp.height
-                        > original.height() / 10.0) {
-                    Imgproc.drawContours(original, contours, i, new Scalar(0, 255, 0), 2);
-                    heightReferenceObject = temp.height;
-                    break;
-                }
-                i++;
-            }
-            rect_small = Imgproc.boundingRect(contours.get(i));
+
+            rect_small = heightReferenceObject(contours,original);
+            heightReferenceObject = rect_small.height;
             Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 50; j < destination.rows() * 2 / 3; j++) {
@@ -355,4 +336,15 @@ public class ImageProcess {
         return heightOfPerson;
     }
 
+    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original){
+        for (MatOfPoint m : contours) {
+            Rect temp = Imgproc.boundingRect(m);
+
+            if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
+                    > original.height() / 10.0) {
+                return temp;
+            }
+        }
+        return null; //// TODO: 03.06.2016 throw exception
+    }
 }
