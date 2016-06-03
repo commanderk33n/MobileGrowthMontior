@@ -426,25 +426,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 mCamera.startPreview();
             } catch (Exception e) {
                 e.printStackTrace();
-                try{
-                    Camera.Parameters parameters = mCamera.getParameters();
-                    parameters.setPreviewSize(1280, 720);
-                    parameters.setPictureSize(1280, 720);
-
-                    mCamera.setParameters(parameters);
-                    mCamera.startPreview();
-                }catch(Exception f){
-                    try{  Camera.Parameters parameters = mCamera.getParameters();
-                        parameters.setPreviewSize(768, 432);
-                        parameters.setPictureSize(768, 432);
-
-                        mCamera.setParameters(parameters);
-                        mCamera.startPreview();
-
-                    }catch (Exception g){
-
-                    }
-                }
             }
         }
 
