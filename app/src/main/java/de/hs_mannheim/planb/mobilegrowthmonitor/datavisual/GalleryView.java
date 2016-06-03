@@ -25,8 +25,8 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 public class GalleryView extends AppCompatActivity {
     public static final String TAG = GalleryView.class.getSimpleName();
     private static final String PREFS_NAME = "lengthList";
-    static ArrayList<Bitmap> bitmapList = new ArrayList<>();
-    public static ArrayList<String> pathList = new ArrayList<>();
+    static ArrayList<Bitmap> bitmapList;
+    public static ArrayList<String> pathList;
     GridView imageGrid;
     String profile_name;
     int profile_Id;
@@ -42,7 +42,7 @@ public class GalleryView extends AppCompatActivity {
         this.profile_Id = extras.getInt("profile_Id");
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        hashList = settings.getInt("hash" ,0);
+        hashList = settings.getInt("hash", 0);
 
     }
 
@@ -54,45 +54,52 @@ public class GalleryView extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        //  onWindowFocusChanged(true);
 
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i("Gallery", "onFocusChanged");
-
+        if(bitmapList==null) {
+            bitmapList = new ArrayList<>();
+        }if(pathList == null){
+            pathList = new ArrayList<>(
+            );
+        }
         if (hasFocus) {
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
             File[] listFile = folder.listFiles();
+            Log.i("Gallery", "hashList " + hashList);
+            Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
+            Log.i("Gallery","bitmapList length"+ bitmapList.size());
+            if (Arrays.hashCode(listFile) != hashList) {
 
-            if (Arrays.hashCode(folder.listFiles()) != hashList) {
+                Log.i("Gallery", "folder length" + listFile.length);
 
-                Log.i("Gallery","folder length" + folder.listFiles().length);
-            Log.i("Gallery","hashList "+hashList);
-            Log.i("Gallery","hash of List " + Arrays.hashCode(folder.listFiles()));
-            if (folder.isDirectory()) {
+                if (folder.isDirectory()) {
                     bitmapList.clear();
 
                     pathList.clear();
                     refreshView();
                 }
-            }else{
+            } else {
                 imageGrid = (GridView) findViewById(R.id.gridview);
 
-                imageGrid.setAdapter(new ImageAdapter(this, bitmapList,pathList));
+                imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
 
             }
         }
     }
 
     public void refreshView() {
-        imageGrid = (GridView) findViewById(R.id.gridview);
-       // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+        // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 
-        bitmapList = new ArrayList<>();
+      //  bitmapList = new ArrayList<>();
         getFromSdCard();
+        imageGrid = (GridView) findViewById(R.id.gridview);
 
-        imageGrid.setAdapter(new ImageAdapter(this, bitmapList,pathList));
+        imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
     }
 
     public void getFromSdCard() {
@@ -106,18 +113,20 @@ public class GalleryView extends AppCompatActivity {
 
         if (folder.isDirectory()) {
             File[] listFile = folder.listFiles();
-
+            pathList.clear();
+            bitmapList.clear();
             for (int i = 0; i < listFile.length; i++) {
 
                 try {
                     // TODO: this check is inaccurate. Consider using an Id or something else
                     // if (pathList.get(i).contains(profile_name)) {
+
                     pathList.add(listFile[i].getAbsolutePath());
 
                     bitmapList.add(urlImageToBitmap(pathList.get(i), false));
                     // }
                     hashList = Arrays.hashCode(listFile);
-                    editor.putInt("hash",hashList);
+                    editor.putInt("hash", hashList);
                     editor.commit();
                 } catch (Exception e) {
                     e.printStackTrace();
