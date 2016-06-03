@@ -303,20 +303,20 @@ public class NativeCam extends Fragment implements SensorEventListener {
         // Camera Sizing (For rotation, orientation changes)
         private Camera.Size mPreviewSize;
 
+
         // List of supported preview sizes
         private List<Camera.Size> mSupportedPreviewSizes;
+
 
         // Flash modes supported by this camera
         private List<String> mSupportedFlashModes;
 
-        // View holding this camera.
-        private View mCameraView;
+
 
         public CameraPreview(Context context, Camera camera, View cameraView) {
             super(context);
 
             // Capture the context
-            mCameraView = cameraView;
             mContext = context;
             setCamera(camera);
 
@@ -351,6 +351,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
             mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+
             mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
@@ -421,12 +422,13 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
-
                 // Preview height must exist.
                 if (mPreviewSize != null) {
                     Camera.Size previewSize = mPreviewSize;
                     parameters.setPreviewSize(previewSize.width, previewSize.height);
                 }
+
+                parameters.setPictureSize(1920, 1080);
 
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
@@ -447,18 +449,15 @@ public class NativeCam extends Fragment implements SensorEventListener {
             final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
             final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
             setMeasuredDimension(width, height);
-
             if (mSupportedPreviewSizes != null) {
-                //mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
                 mPreviewSize = getBestPreviewSize(width, height);
             }
         }
 
-
         private Camera.Size getBestPreviewSize(int width, int height) {
             Camera.Size result = null;
             Camera.Parameters p = mCamera.getParameters();
-            for (Camera.Size size : p.getSupportedPreviewSizes()) {
+            for (Camera.Size size : mSupportedPreviewSizes) {
                 if (size.width <= width && size.height <= height) {
                     if (result == null) {
                         result = size;
@@ -478,7 +477,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
     // get Correct CameraView Orientation for rotation
     public int getCorrectCameraOrientation(Camera.CameraInfo info) {
-
         int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
 
@@ -523,43 +521,37 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         .show();
                 return;
             }
-
-              new Thread(new Runnable() {
-                    public void run() {
-                        Log.i("Thread","started");
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                       final Bitmap turnedBitmap = ProfileView.rotateBitmap(bitmap, 90);
-
-                                // TODO: find another possibilty to rotate image before saving picture
-
-
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                turnedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-                                turnedBitmap.recycle();
-                                byte[] byteArray = stream.toByteArray();
-                                FileOutputStream fos = null;
-                                try {
-                                    fos = new FileOutputStream(pictureFile);
-                                    fos.write(byteArray);
-                                    fos.close();
-                                    Log.i("Thread","finished");
-                                    NativeCam.this.onDestroy();
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+            new Thread(new Runnable() {
+                public void run() {
+                    Log.i("Thread", "started");
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    final Bitmap turnedBitmap = ProfileView.rotateBitmap(bitmap, 90);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    turnedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                    turnedBitmap.recycle();
+                    byte[] byteArray = stream.toByteArray();
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(pictureFile);
+                        fos.write(byteArray);
+                        fos.close();
+                        Log.i("Thread", "finished");
+                        NativeCam.this.onDestroy();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
 
-                }).start();
+            }).start();
 
 
-                ((CameraView) getActivity()).afterPictureTaken();
+            ((CameraView) getActivity()).afterPictureTaken();
 
         }
     };
-
 
     /**
      * Used to return the camera File output.
@@ -577,5 +569,4 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 .show();
         return testFile;
     }
-
 }
