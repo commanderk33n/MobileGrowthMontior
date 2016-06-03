@@ -13,4 +13,9 @@ public class MeasurementData implements Serializable {
     public double weight, height;
     public String image, date;
 
+    @Override
+    public String toString(){
+        return index + ","+ date + "," + height + "," + weight + "," +image;
+    }
+
 }

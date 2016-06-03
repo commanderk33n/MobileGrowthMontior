@@ -81,7 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
      * picture value
      *
      * @param index index of profile where the profile picture has to be set
-     * @param path path to location of profile picture
+     * @param path  path to location of profile picture
      */
     public void setProfilePic(int index, String path) {
         SQLiteDatabase db = getWritableDatabase();
@@ -112,7 +112,7 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL("delete from " + DbContract.FeedProfile.TABLE_NAME + " where " +
                     DbContract.FeedProfile.COLUMN_NAME_ID + " ='" + index + "'");
             db.execSQL("delete from " + DbContract.FeedMeasurement.TABLE_NAME + " where " +
-                    DbContract.FeedMeasurement.COLUMN_NAME_ID +  " ='" + index + "'");
+                    DbContract.FeedMeasurement.COLUMN_NAME_ID + " ='" + index + "'");
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, "Error while trying to delete profile from db");
@@ -184,14 +184,12 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Takes the index of the profile to which the latest measurement has to be returned
+     * Returns all measurements for a specific profile, which is described by the passed index
      *
-     * @param index index of profile where the latest measurement has to be returned
-     * @return MeasurementData Object with data of latest measurement associated to the profile
-     * with the commited index
+     * @param index id to pick profile
+     * @return ArrayList contains all measurements for profile with ID index
      */
-    public MeasurementData getLatestMeasurement(int index){
-
+    public ArrayList<MeasurementData> getAllMeasurements(int index) {
         ArrayList<MeasurementData> profileDataList = new ArrayList<>();
         String q = "SELECT * FROM " + DbContract.FeedMeasurement.TABLE_NAME +
                 " WHERE " + DbContract.FeedMeasurement.COLUMN_NAME_ID + " = '" + index + "'";
@@ -210,7 +208,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     data.weight = cursor.getDouble(cursor.getColumnIndex(DbContract.FeedMeasurement.COLUMN_NAME_WEIGHT));
                     profileDataList.add(data);
                 } while (cursor.moveToNext());
-            }else{
+            } else {
                 return null;
             }
         } catch (Exception e) {
@@ -220,22 +218,39 @@ public class DbHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+        return profileDataList;
+    }
 
-        int indexLatestMeasurement = 0;
-        for(int i = 0, j = 1; i < profileDataList.size() - 1; i++, j++){
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                Date latestDate = format.parse(profileDataList.get(i).date);
-                Date dateToCompare = format.parse(profileDataList.get(j).date);
-                if(dateToCompare.after(latestDate)){
-                    indexLatestMeasurement = j;
+    /**
+     * Takes the index of the profile to which the latest measurement has to be returned
+     *
+     * @param index index of profile where the latest measurement has to be returned
+     * @return MeasurementData Object with data of latest measurement associated to the profile
+     * with the commited index
+     */
+    public MeasurementData getLatestMeasurement(int index) {
+
+        ArrayList<MeasurementData> profileDataList = getAllMeasurements(index);
+        if (profileDataList != null) {
+            int indexLatestMeasurement = 0;
+            for (int i = 0, j = 1; i < profileDataList.size() - 1; i++, j++) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date latestDate = format.parse(profileDataList.get(i).date);
+                    Date dateToCompare = format.parse(profileDataList.get(j).date);
+                    if (dateToCompare.after(latestDate)) {
+                        indexLatestMeasurement = j;
+                    }
+                } catch (java.text.ParseException e) {
+                    Log.e(TAG, "Error while trying to determine the latest Measurement Date!");
                 }
-            } catch (java.text.ParseException e) {
-                Log.e(TAG, "Error while trying to determine the latest Measurement Date!");
             }
+            return profileDataList.get(indexLatestMeasurement);
+        }else{
+            return null;
         }
 
-        return profileDataList.get(indexLatestMeasurement);
+
     }
 
     /**

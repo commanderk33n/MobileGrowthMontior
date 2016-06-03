@@ -258,14 +258,14 @@ public class ImageProcess {
 
     /**
      * This function is called when our first size Measurement doesnt wield any results
-     * @param source
+     * @param original
+     * @param destination
      * @return
      */
     public double sizeMeasurement2(Mat destination,Mat original) {
 
        // Mat destination = source.clone();
         Mat hierarchy = new Mat();
-        Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
         int erosion_size = 5;
         int dilation_size = 5;

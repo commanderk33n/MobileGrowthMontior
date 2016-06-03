@@ -29,6 +29,7 @@ import java.util.GregorianCalendar;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.ExportView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
@@ -60,12 +61,11 @@ public class ProfileView extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
         setSupportActionBar(toolbar);
 
-        dbHelper = DbHelper.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
-        DbHelper dbHelper = DbHelper.getInstance(this);
+        dbHelper = DbHelper.getInstance(getApplicationContext());
         profile = dbHelper.getProfile(profile_Id);
-        dbHelper.close();
+
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname + ",");
 
@@ -123,7 +123,6 @@ public class ProfileView extends BaseActivity {
     private void setMeasurementTextViews() {
 
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
-
         if (measurementData != null) {
             TextView tvLastMeasurement = (TextView) findViewById(R.id.tv_date_last_measurement);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -189,6 +188,7 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
+            dbHelper = DbHelper.getInstance(getApplicationContext());
             dbHelper.deleteProfile(profile_Id);
             onBackPressed();
         }
@@ -216,6 +216,7 @@ public class ProfileView extends BaseActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
+                dbHelper =  DbHelper.getInstance(getApplicationContext());
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
@@ -270,6 +271,16 @@ public class ProfileView extends BaseActivity {
     }
 
     /**
+     * onClick method to start ExportView Activity
+     * @param view
+     */
+    public void startExport(View view) {
+        Intent intent = new Intent(this, ExportView.class);
+        intent.putExtra("profile_Id", profile_Id);
+        startActivity(intent);
+    }
+
+    /**
      * Rotates Bitmap
      *
      * @param source bitmap to be rotated
@@ -282,4 +293,9 @@ public class ProfileView extends BaseActivity {
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }
