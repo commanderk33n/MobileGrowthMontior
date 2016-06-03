@@ -410,23 +410,19 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
-                
-                Collections.sort(mSupportedPreviewSizes, new Comparator<Camera.Size>() {
-                    @Override
-                    public int compare(Camera.Size lhs, Camera.Size rhs) {
-                        return rhs.width - lhs.width;
-                    }
-                });
-
+            
+                int maxWidth = mSupportedPreviewSizes.get(0).width;
+                int maxHeight = mSupportedPreviewSizes.get(0).height;
                 for (Camera.Size size : mSupportedPreviewSizes) {
+                    Log.i("width= ", ""+maxWidth);
                     double ratio = (double) size.width / size.height;
-                    if (ratio < 1.8 && ratio > 1.7) {
-                        parameters.setPreviewSize(size.width, size.height);
-                        parameters.setPictureSize(size.width, size.height);
-                        break;
+                    if (ratio < 1.8 && ratio > 1.7 && size.width>maxWidth) {
+                        maxWidth = size.width;
+                        maxHeight = size.height;
                     }
                 }
-
+                parameters.setPreviewSize(maxWidth, maxHeight);
+                parameters.setPictureSize(maxWidth, maxHeight);
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
             } catch (Exception e) {
