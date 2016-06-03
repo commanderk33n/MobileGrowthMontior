@@ -46,7 +46,6 @@ public class MeasurementView extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
-        DbHelper dbHelper = DbHelper.getInstance(this);
         profile = dbHelper.getProfile(profile_Id);
 
 
@@ -245,6 +244,12 @@ public class MeasurementView extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        dbHelper.close();
     }
 
 }

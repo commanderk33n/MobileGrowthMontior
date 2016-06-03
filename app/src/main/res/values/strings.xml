@@ -34,4 +34,6 @@
     <string name="last_measurement">Last measurement:</string>
     <string name="in_kg">in kg</string>
     <string name="template_age">years old</string>
+    <string name="export_data">Do you want to export the data?</string>
+    <string name="yes">YES</string>
 </resources>

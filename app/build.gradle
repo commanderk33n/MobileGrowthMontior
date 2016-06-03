@@ -27,5 +27,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile project(':openCVLibrary310')
     testCompile 'junit:junit:4.12'
-    compile "com.androidplot:androidplot-core:0.9.8"
+    compile 'com.androidplot:androidplot-core:0.9.8'
+    compile project(':opencsv-3.7')
 }

@@ -132,5 +132,9 @@ public class CreateProfileView extends BaseActivity {
         super.onResume();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }
