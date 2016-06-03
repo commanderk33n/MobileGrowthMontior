@@ -59,10 +59,14 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        Point size = new Point();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(this.context);
-            imageView.setLayoutParams(new GridView.LayoutParams(115, 115));
+            imageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenHeight/3));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
