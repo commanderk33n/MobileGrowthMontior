@@ -36,4 +36,7 @@
     <string name="template_age">years old</string>
     <string name="export_data">Do you want to export the data?</string>
     <string name="yes">YES</string>
+    <string name="request_permission_cam">This app needs camera permission.</string>
+    <string name="request_permission_read_storage">This app needs permission to read external storage.</string>
+    <string name="cancel">CANCEL</string>
 </resources>
