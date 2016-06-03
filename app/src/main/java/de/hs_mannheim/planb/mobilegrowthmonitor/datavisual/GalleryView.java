@@ -1,18 +1,22 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
@@ -20,11 +24,14 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 public class GalleryView extends AppCompatActivity {
     public static final String TAG = GalleryView.class.getSimpleName();
+    private static final String PREFS_NAME = "lengthList";
     static ArrayList<Bitmap> bitmapList = new ArrayList<>();
     public static ArrayList<String> pathList = new ArrayList<>();
     GridView imageGrid;
     String profile_name;
     int profile_Id;
+    int hashList;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,10 @@ public class GalleryView extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         this.profile_Id = extras.getInt("profile_Id");
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        hashList = settings.getInt("hash" ,0);
+
     }
 
     @Override
@@ -46,19 +57,38 @@ public class GalleryView extends AppCompatActivity {
 
 
     }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.i("Gallery","onFocusChanged");
-        bitmapList.clear();
-        pathList.clear();
+        Log.i("Gallery", "onFocusChanged");
+
         if (hasFocus) {
-            refreshView();
+            File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+            File[] listFile = folder.listFiles();
+
+            if (Arrays.hashCode(folder.listFiles()) != hashList) {
+
+                Log.i("Gallery","folder length" + folder.listFiles().length);
+            Log.i("Gallery","hashList "+hashList);
+            Log.i("Gallery","hash of List " + Arrays.hashCode(folder.listFiles()));
+            if (folder.isDirectory()) {
+                    bitmapList.clear();
+
+                    pathList.clear();
+                    refreshView();
+                }
+            }else{
+                imageGrid = (GridView) findViewById(R.id.gridview);
+
+                imageGrid.setAdapter(new ImageAdapter(this, bitmapList,pathList));
+
+            }
         }
     }
 
     public void refreshView() {
         imageGrid = (GridView) findViewById(R.id.gridview);
+       // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+
         bitmapList = new ArrayList<>();
         getFromSdCard();
 
@@ -66,6 +96,9 @@ public class GalleryView extends AppCompatActivity {
     }
 
     public void getFromSdCard() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
 
         // TODO: change this to Internal again after height measurement is finished
         //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
@@ -81,9 +114,11 @@ public class GalleryView extends AppCompatActivity {
                     // if (pathList.get(i).contains(profile_name)) {
                     pathList.add(listFile[i].getAbsolutePath());
 
-                    bitmapList.add(urlImageToBitmap(pathList.get(i),false));
+                    bitmapList.add(urlImageToBitmap(pathList.get(i), false));
                     // }
-
+                    hashList = Arrays.hashCode(listFile);
+                    editor.putInt("hash",hashList);
+                    editor.commit();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -91,16 +126,16 @@ public class GalleryView extends AppCompatActivity {
         }
     }
 
-    protected static Bitmap urlImageToBitmap(String imageUrl,boolean hiRes) throws Exception {
+    protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
         Bitmap result = null;
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            if(hiRes) {
+            if (hiRes) {
                 options.inSampleSize = 1;
-            }else{
-                options.inSampleSize = 30;
-             //   options.outHeight = 250;
-               //         options.outWidth =250;
+            } else {
+                options.inSampleSize = 20;
+                //   options.outHeight = 250;
+                //         options.outWidth =250;
 
 
             }

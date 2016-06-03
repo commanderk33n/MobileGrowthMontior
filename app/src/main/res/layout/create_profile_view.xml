@@ -112,7 +112,6 @@
                 android:layout_marginTop="10dp"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
-                android:startYear="2010"
                 android:padding="5dp"
                 android:spinnersShown="true"/>
 
