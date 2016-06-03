@@ -73,6 +73,7 @@ public class GalleryView extends AppCompatActivity {
             Log.i("Gallery", "hashList " + hashList);
             Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
             Log.i("Gallery","bitmapList length"+ bitmapList.size());
+
             if (Arrays.hashCode(listFile) != hashList) {
 
                 Log.i("Gallery", "folder length" + listFile.length);
@@ -82,6 +83,9 @@ public class GalleryView extends AppCompatActivity {
                     refreshView();
                 }
             } else {
+                if(bitmapList.size()==0){
+                    refreshView();
+                }
                 imageGrid = (GridView) findViewById(R.id.gridview);
 
                 imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
