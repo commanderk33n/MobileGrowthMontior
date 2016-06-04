@@ -52,7 +52,7 @@ public class ImageProcess {
     public double sizeMeasurement(String path) throws IllegalArgumentException {
         // init
         Mat source = Imgcodecs.imread(path);
-        Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
+       // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
 
 
         Mat hierarchy = new Mat();

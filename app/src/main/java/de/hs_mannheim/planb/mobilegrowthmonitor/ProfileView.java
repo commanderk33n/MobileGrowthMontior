@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -118,9 +119,9 @@ public class ProfileView extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
-            Bitmap originalBitmap = BitmapFactory.decodeFile(profile.profilepic);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
-            rotateBitmap(resizedBitmap, 180);
+            Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
+            resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
+            //rotateBitmap(resizedBitmap, 180);
             mProfileImage.setImageBitmap(resizedBitmap);
         }
     }
@@ -227,8 +228,10 @@ public class ProfileView extends BaseActivity {
                 cursor.close();
                 dbHelper.setProfilePic(profile_Id, pictureCamPath);
                 Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
-                Bitmap resizedCamBitmap = Bitmap.createScaledBitmap(camBitmap, 200, 200, false);
+                Bitmap resizedCamBitmap = getTheProperThumbnailBitmap(camBitmap);
+
                 mProfileImage.setImageBitmap(resizedCamBitmap);
+
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -240,13 +243,31 @@ public class ProfileView extends BaseActivity {
                 cursor.close();
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 200, 200, false);
+                Bitmap resizedBitmap = getTheProperThumbnailBitmap(originalBitmap);
                 mProfileImage.setImageBitmap(resizedBitmap);
+
+
 
             }
         } else if (requestCode == 3) {
             setMeasurementTextViews();
         }
+    }
+
+
+    public int getSquareCropDimensionForBitmap(Bitmap bitmap)
+    {
+        //use the smallest dimension of the image to crop to
+        return Math.min(bitmap.getWidth(), bitmap.getHeight());
+    }
+
+    public Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap){
+        int dimension = getSquareCropDimensionForBitmap(originalBitmap);
+
+        Bitmap resizedBitmap = ThumbnailUtils.extractThumbnail(originalBitmap, dimension, dimension);
+
+        resizedBitmap = Bitmap.createScaledBitmap(resizedBitmap, 200, 200, false);
+return resizedBitmap;
     }
 
     /**

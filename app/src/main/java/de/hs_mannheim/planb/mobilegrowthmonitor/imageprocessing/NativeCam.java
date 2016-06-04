@@ -411,10 +411,12 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
 
-                int maxWidth = mSupportedPreviewSizes.get(0).width;
-                int maxHeight = mSupportedPreviewSizes.get(0).height;
+                int maxWidth = 0;
+                int maxHeight = 0;
                 for (Camera.Size size : mSupportedPreviewSizes) {
+
                     Log.i("width= ", "" + maxWidth);
+
                     double ratio = (double) size.width / size.height;
                     if (ratio < 1.8 && ratio > 1.7 && size.width > maxWidth) {
                         maxWidth = size.width;
@@ -513,7 +515,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         });
 
 
-                        Log.i("Thread", "finished");
+                        Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -546,7 +548,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         String fileName = Environment.getExternalStorageDirectory().getPath() +
-                "/growpics/" + timeStamp + "_filter.jpg";
+                "/growpics/" + timeStamp+".jpg";
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
