@@ -33,7 +33,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.camera_view);
-        db = DbHelper.getInstance(this);
+        db = DbHelper.getInstance(getApplicationContext());
 
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");

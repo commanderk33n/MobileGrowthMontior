@@ -47,6 +47,7 @@ public class MeasurementView extends BaseActivity {
         profile = dbHelper.getProfile(profile_Id);
 
 
+
     }
 
     /**
