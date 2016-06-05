@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.GridView;
 
@@ -137,14 +138,14 @@ public class GalleryView extends AppCompatActivity {
         }
     }
 
-    protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
+        protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
         Bitmap result = null;
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             if (hiRes) {
                 options.inSampleSize = 1;
             } else {
-                options.inSampleSize = 3;
+                options.inSampleSize = 12;
 
 
             }
