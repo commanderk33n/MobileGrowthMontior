@@ -122,8 +122,7 @@ public class ProfileView extends BaseActivity {
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
             resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
-            //rotateBitmap(resizedBitmap, 180);
-            mProfileImage.setImageBitmap(resizedBitmap);
+            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
         }
     }
 
@@ -228,7 +227,7 @@ public class ProfileView extends BaseActivity {
                 Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
                 Bitmap resizedCamBitmap = getTheProperThumbnailBitmap(camBitmap);
 
-                mProfileImage.setImageBitmap(resizedCamBitmap);
+                mProfileImage.setImageBitmap(rotateBitmap(resizedCamBitmap, 270));
 
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
@@ -242,7 +241,7 @@ public class ProfileView extends BaseActivity {
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = getTheProperThumbnailBitmap(originalBitmap);
-                mProfileImage.setImageBitmap(resizedBitmap);
+                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
             }
         } else if (requestCode == 3) {

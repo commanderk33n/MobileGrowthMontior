@@ -120,6 +120,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
+        captureButton.bringToFront();
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -515,8 +516,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                             public void run() {
                                 Toast.makeText(getActivity(),"Success your kid is"+ size +"cm tall", Toast.LENGTH_LONG).show();                            }
                         });
-
-
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
                     } catch (FileNotFoundException e) {

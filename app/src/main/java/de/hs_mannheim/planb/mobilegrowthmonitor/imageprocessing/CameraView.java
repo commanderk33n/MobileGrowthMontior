@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
@@ -51,8 +52,10 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
         inflater = LayoutInflater.from(getBaseContext());
         View view = inflater.inflate(R.layout.camera_overlay, null);
-        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.FILL_PARENT);
+        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         this.addContentView(view, layoutParamsControl);
+
     }
 
 
@@ -60,7 +63,6 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
-        // finish();
     }
 
     @Override
