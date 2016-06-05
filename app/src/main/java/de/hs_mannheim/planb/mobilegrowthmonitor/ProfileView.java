@@ -121,8 +121,14 @@ public class ProfileView extends BaseActivity {
         super.onResume();
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
-            resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
-            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
+            if(resizedBitmap.getWidth()>resizedBitmap.getHeight()) {
+                resizedBitmap = rotateBitmap(resizedBitmap, 270);
+            }else{
+                resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
+
+            }
+
+            mProfileImage.setImageBitmap(resizedBitmap);
         }
     }
 
