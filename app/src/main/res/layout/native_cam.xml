@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent_red"
             android:textSize="27sp" />
-        +
 
         <TextView
             android:id="@+id/roll"

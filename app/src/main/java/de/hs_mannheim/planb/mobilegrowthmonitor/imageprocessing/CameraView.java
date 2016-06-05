@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -22,6 +24,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     private String profile_name;
     private int profile_Id;
     DbHelper db;
+    LayoutInflater inflater = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,11 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
+
+        inflater = LayoutInflater.from(getBaseContext());
+        View view = inflater.inflate(R.layout.camera_overlay, null);
+        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.FILL_PARENT);
+        this.addContentView(view, layoutParamsControl);
     }
 
 
