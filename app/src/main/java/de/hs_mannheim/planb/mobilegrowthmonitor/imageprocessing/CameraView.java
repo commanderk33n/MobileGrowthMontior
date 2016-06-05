@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
@@ -44,20 +45,19 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
         profile_name = db.getProfile(profile_Id).firstname;
 
+        inflater = LayoutInflater.from(getApplicationContext());
+        View view = inflater.inflate(R.layout.camera_overlay, null);
+        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        addContentView(view, layoutParamsControl);
+
         camFrag = NativeCam.newInstance(profile_name);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
 
-        inflater = LayoutInflater.from(getBaseContext());
-        View view = inflater.inflate(R.layout.camera_overlay, null);
-            WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
-                (WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        this.addContentView(view, layoutParamsControl);
-
     }
-
 
     public void afterPictureTaken() {
         Intent intent = new Intent(this, ProfileView.class);

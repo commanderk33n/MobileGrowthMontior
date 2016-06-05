@@ -16,21 +16,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.opencv.core.MatOfPoint;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,8 +33,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +43,8 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
  * Created by eikood on 09.05.2016.
  */
 public class NativeCam extends Fragment implements SensorEventListener {
+
+    private static final String TAG = NativeCam.class.getSimpleName();
 
     // part of the name for the picture
     String profileName;
@@ -120,13 +115,13 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
-        captureButton.bringToFront();
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
+                       Log.i(TAG, "onClick");
                     }
                 }
         );
@@ -138,6 +133,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         } else {
             Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
         }
+
 
         return view;
     }
