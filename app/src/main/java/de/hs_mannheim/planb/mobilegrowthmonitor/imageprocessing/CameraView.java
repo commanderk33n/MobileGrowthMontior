@@ -52,8 +52,8 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
         inflater = LayoutInflater.from(getBaseContext());
         View view = inflater.inflate(R.layout.camera_overlay, null);
-        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
-                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+                (WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         this.addContentView(view, layoutParamsControl);
 
     }
