@@ -42,7 +42,7 @@ public class Filereader {
         int zeile = 0;
         reader.nextLine();
         while (reader.hasNextDouble()) {
-            values[zeile / 10][zeile % 10] = reader.nextDouble();
+            values[zeile / 10][zeile % 10] = reader.nextDouble()/1000;
             zeile++;
         }
         return values;
@@ -60,7 +60,7 @@ public class Filereader {
     public int deviation(double[] ageArray, double height) throws IllegalArgumentException {
 
         for (int i = 0; i < ageArray.length; i++) {
-            if (ageArray[i + 1] > height || ageArray[ageArray.length - i] < height) {
+            if (ageArray[i + 1] > height || ageArray[ageArray.length - i-1] < height) {
                 int sign = height < ageArray[i + 1] ? -1 : 1; //positive or negative deviation
                 return (5 - i) * sign;
             }
