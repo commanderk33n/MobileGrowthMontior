@@ -11,8 +11,13 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
@@ -33,13 +38,26 @@ public class GraphView extends BaseActivity {
         dbHelper = DbHelper.getInstance(this);
         Bundle extras = getIntent().getExtras();
         profileId = extras.getInt("profile_Id");
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         ArrayList<MeasurementData> measurements = dbHelper.getAllMeasurements(profileId);
+
         List<Double> bmi = new ArrayList<>();
         for (MeasurementData md : measurements) {
             bmi.add(md.height * md.weight);
-        }
 
+            /*
+            Calendar date = new GregorianCalendar();
+            try {
+                date.setTime(format.parse(md.date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long l = date.getTimeInMillis();
+            bmi.add(Double.longBitsToDouble(l));
+            System.out.println("TimeStamp: " + l);
+            */
+
+        }
 
         // initialize our XYPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);
@@ -69,7 +87,7 @@ public class GraphView extends BaseActivity {
         // add a new series' to the xyplot:
         plot.addSeries(bmiSeries, bmiFormat);
 
-
+ 
         // reduce the number of range labels
         plot.setTicksPerRangeLabel(3);
 
