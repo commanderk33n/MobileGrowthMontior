@@ -1,6 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -41,8 +42,10 @@ public class Filereader {
         //  int spalte = 0;
         int zeile = 0;
         reader.nextLine();
+        reader.useLocale(Locale.US);
+
         while (reader.hasNextDouble()) {
-            values[zeile / 10][zeile % 10] = reader.nextDouble()/1000;
+            values[zeile / 10][zeile % 10] = reader.nextDouble();
             zeile++;
         }
         return values;
