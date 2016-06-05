@@ -5,7 +5,7 @@
     android:layout_width="match_parent">
 
     <com.androidplot.xy.XYPlot
-        style="@style/APDefacto.Dark"
+        style="@style/APDefacto.Light"
         android:id="@+id/plot"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
