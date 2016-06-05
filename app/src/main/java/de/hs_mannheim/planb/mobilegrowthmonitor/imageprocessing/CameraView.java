@@ -6,8 +6,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
@@ -22,6 +25,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     private String profile_name;
     private int profile_Id;
     DbHelper db;
+    LayoutInflater inflater = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.camera_view);
-        db = DbHelper.getInstance(this);
+        db = DbHelper.getInstance(getApplicationContext());
 
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
@@ -45,6 +49,13 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
+
+        inflater = LayoutInflater.from(getBaseContext());
+        View view = inflater.inflate(R.layout.camera_overlay, null);
+        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        this.addContentView(view, layoutParamsControl);
+
     }
 
 
@@ -52,7 +63,6 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
-        // finish();
     }
 
     @Override

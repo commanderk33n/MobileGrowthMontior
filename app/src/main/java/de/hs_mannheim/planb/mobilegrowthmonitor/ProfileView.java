@@ -53,6 +53,7 @@ public class ProfileView extends BaseActivity {
     /**
      * Support is set to toolbar. Profile is fetched from database. Profile data is set to text
      * views.
+     *
      * @param savedInstanceState
      */
     @Override
@@ -121,8 +122,7 @@ public class ProfileView extends BaseActivity {
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
             resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
-            //rotateBitmap(resizedBitmap, 180);
-            mProfileImage.setImageBitmap(resizedBitmap);
+            mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
         }
     }
 
@@ -182,7 +182,6 @@ public class ProfileView extends BaseActivity {
     }
 
     /**
-     *
      * @param menu
      * @return
      */
@@ -193,7 +192,6 @@ public class ProfileView extends BaseActivity {
     }
 
     /**
-     *
      * @param item
      * @return
      */
@@ -208,7 +206,6 @@ public class ProfileView extends BaseActivity {
     }
 
     /**
-     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -230,7 +227,7 @@ public class ProfileView extends BaseActivity {
                 Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
                 Bitmap resizedCamBitmap = getTheProperThumbnailBitmap(camBitmap);
 
-                mProfileImage.setImageBitmap(resizedCamBitmap);
+                mProfileImage.setImageBitmap(rotateBitmap(resizedCamBitmap, 270));
 
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
@@ -244,9 +241,7 @@ public class ProfileView extends BaseActivity {
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = getTheProperThumbnailBitmap(originalBitmap);
-                mProfileImage.setImageBitmap(resizedBitmap);
-
-
+                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
             }
         } else if (requestCode == 3) {
@@ -254,24 +249,23 @@ public class ProfileView extends BaseActivity {
         }
     }
 
-
-    public int getSquareCropDimensionForBitmap(Bitmap bitmap)
-    {
+    public int getSquareCropDimensionForBitmap(Bitmap bitmap) {
         //use the smallest dimension of the image to crop to
         return Math.min(bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap){
+    public Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
         int dimension = getSquareCropDimensionForBitmap(originalBitmap);
 
         Bitmap resizedBitmap = ThumbnailUtils.extractThumbnail(originalBitmap, dimension, dimension);
 
         resizedBitmap = Bitmap.createScaledBitmap(resizedBitmap, 200, 200, false);
-return resizedBitmap;
+        return resizedBitmap;
     }
 
     /**
      * OnClick method to start CameraView Activity
+     *
      * @param view
      */
     public void startCamera(View view) {
@@ -282,9 +276,10 @@ return resizedBitmap;
 
     /**
      * OnClick method to start GraphView Activity
+     *
      * @param view
      */
-    public void startGraph(View view){
+    public void startGraph(View view) {
         Intent intent = new Intent(this, GraphView.class);
         intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
@@ -292,6 +287,7 @@ return resizedBitmap;
 
     /**
      * OnClick method to start GalleryView Activity
+     *
      * @param view
      */
     public void startGallery(View view) {
@@ -302,6 +298,7 @@ return resizedBitmap;
 
     /**
      * OnClick method to start MeasurementView Activity
+     *
      * @param view
      */
     public void startMeasurement(View view) {
@@ -314,6 +311,7 @@ return resizedBitmap;
 
     /**
      * onClick method to start ExportView Activity
+     *
      * @param view
      */
     public void startExport(View view) {
@@ -331,7 +329,7 @@ return resizedBitmap;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(this,MainView.class);
+        Intent i = new Intent(this, MainView.class);
         startActivity(i);
     }
 

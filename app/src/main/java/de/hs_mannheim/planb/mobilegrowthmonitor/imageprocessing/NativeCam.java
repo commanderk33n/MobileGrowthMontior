@@ -63,8 +63,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private Activity mActivity;
 
     private Button captureButton;
-
-
     private SensorManager mSensorManager;
     private Sensor mRotationSensor;
 
@@ -122,6 +120,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
+        captureButton.bringToFront();
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -138,7 +137,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
             mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
-            captureButton.setVisibility(View.VISIBLE);
         }
 
         return view;
@@ -196,11 +194,16 @@ public class NativeCam extends Fragment implements SensorEventListener {
         ((TextView) mActivity.findViewById(R.id.roll)).setText("Roll: " + Math.round(roll));
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
-            captureButton.setVisibility(View.VISIBLE);
+            captureButton.isClickable();
+            captureButton.setBackgroundColor(getResources().getColor(R.color.transparent_green));
+            ((TextView) mActivity.findViewById(R.id.pitch)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
+            ((TextView) mActivity.findViewById(R.id.roll)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
 
         } else {
-
-            captureButton.setVisibility(View.INVISIBLE);
+            captureButton.setClickable(false);
+            captureButton.setBackgroundColor(getResources().getColor(R.color.transparent_red));
+            ((TextView) mActivity.findViewById(R.id.pitch)).setBackgroundColor(getResources().getColor(R.color.transparent_red));
+            ((TextView) mActivity.findViewById(R.id.roll)).setBackgroundColor(getResources().getColor(R.color.transparent_red));
         }
     }
 
@@ -513,8 +516,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                             public void run() {
                                 Toast.makeText(getActivity(),"Success your kid is"+ size +"cm tall", Toast.LENGTH_LONG).show();                            }
                         });
-
-
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
                     } catch (FileNotFoundException e) {

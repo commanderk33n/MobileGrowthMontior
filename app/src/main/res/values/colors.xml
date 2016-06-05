@@ -9,4 +9,7 @@
     <color name="dark_green">#a5b758</color>
     <color name="light_green">#cde28f</color>
     <color name="deep_dark_green">#667818</color>
+    <color name="red">#ff0000</color>
+    <color name="transparent_red">#66FF0000</color>
+    <color name="transparent_green">#80a5b758</color>
 </resources>

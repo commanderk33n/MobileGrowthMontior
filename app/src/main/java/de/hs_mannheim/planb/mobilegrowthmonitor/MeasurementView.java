@@ -46,7 +46,6 @@ public class MeasurementView extends BaseActivity {
         age = extras.getInt("profileAge");
         profile = dbHelper.getProfile(profile_Id);
 
-
     }
 
     /**

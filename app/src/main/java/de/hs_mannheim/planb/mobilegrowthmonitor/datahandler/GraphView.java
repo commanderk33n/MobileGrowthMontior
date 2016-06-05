@@ -23,7 +23,7 @@ public class GraphView extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph_view);
+        setContentView(R.layout.graph_view);
 
         // initialize our XYPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);

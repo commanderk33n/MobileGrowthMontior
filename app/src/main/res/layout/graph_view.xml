@@ -9,8 +9,8 @@
         android:id="@+id/plot"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        ap:label="A Simple XY Plot"
-        ap:rangeLabel="range"
-        ap:domainLabel="domain"/>
+        ap:label="Evaluation"
+        ap:rangeLabel="BMI"
+        ap:domainLabel="Run of the curve"/>
 
 </LinearLayout>
