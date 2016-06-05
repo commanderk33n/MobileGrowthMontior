@@ -47,9 +47,9 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
     private MenuItem onOffPinLock;
     private MenuItem changePin;
 
+    private static final int PERMISSIONS_REQUEST = 1;
     private static final int PERMISSIONS_REQUEST_CAMERA = 1;
-    private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE =2;
-
+    private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
 
 
     @Override
@@ -60,33 +60,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                    DialogFragment newFragment =  new PermissionDialogFragment();
-                    Bundle args = new Bundle();
-                    args.putInt("permission", PERMISSIONS_REQUEST_CAMERA);
-                    newFragment.setArguments(args);
-                    newFragment.show(getFragmentManager(), "permissionDialog");
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                            PERMISSIONS_REQUEST_CAMERA);
-                }
-                return;
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    DialogFragment newFragment =  new PermissionDialogFragment();
-                    Bundle args = new Bundle();
-                    args.putInt("permission", PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    newFragment.setArguments(args);
-                    newFragment.show(getFragmentManager(), "permissionDialog");
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-                return;
-            }
+            getPermissions();
         }
 
 
@@ -96,20 +70,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         listAdapter = new ListAdapter(this, dbHelper.getAllProfiles());
         recyclerView.setAdapter(listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-        File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
-        if (!(folder.exists())) {
-            folder.mkdirs();
-            Log.i(TAG, "Success! Folder created!");
-        }
-
-        // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
-        folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
-        if (!(folder.exists())) {
-            folder.mkdirs();
-            Log.i(TAG, "Success! Folder created!");
-        }
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -222,22 +182,20 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         final int permission = dialog.getArguments().getInt("permission");
-        switch(permission){
+        switch (permission) {
             case PERMISSIONS_REQUEST_CAMERA:
-                ActivityCompat.requestPermissions(getParent(),
+                ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA},
                         PERMISSIONS_REQUEST_CAMERA);
                 break;
             case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                ActivityCompat.requestPermissions(getParent(),
+                ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 break;
             default:
                 break;
         }
-
-
 
     }
 
@@ -246,6 +204,84 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         Activity activity = getParent();
         if (activity != null) {
             activity.finish();
+        }
+    }
+
+    private void getPermissions() {
+
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                DialogFragment newFragment = new PermissionDialogFragment();
+                Bundle args = new Bundle();
+                args.putInt("permission", PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "permissionDialog");
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                    DialogFragment newFragment2 = new PermissionDialogFragment();
+                    Bundle args2 = new Bundle();
+                    args2.putInt("permission", PERMISSIONS_REQUEST_CAMERA);
+                    newFragment2.setArguments(args);
+                    newFragment2.show(getFragmentManager(), "permissionDialog");
+
+                }
+            } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                DialogFragment newFragment = new PermissionDialogFragment();
+                Bundle args = new Bundle();
+                args.putInt("permission", PERMISSIONS_REQUEST_CAMERA);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "permissionDialog");
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                        PERMISSIONS_REQUEST);
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
+                    if (!(folder.exists())) {
+                        folder.mkdirs();
+                        Log.i(TAG, "Success! Folder created!");
+                    }
+
+                    // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
+                    folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+                    if (!(folder.exists())) {
+                        folder.mkdirs();
+                        Log.i(TAG, "Success! Folder created!");
+                    }
+
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                        DialogFragment newFragment = new PermissionDialogFragment();
+                        Bundle args = new Bundle();
+                        args.putInt("permission", PERMISSIONS_REQUEST_CAMERA);
+                        newFragment.setArguments(args);
+                        newFragment.show(getFragmentManager(), "permissionDialog");
+                    }
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        DialogFragment newFragment = new PermissionDialogFragment();
+                        Bundle args = new Bundle();
+                        args.putInt("permission", PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        newFragment.setArguments(args);
+                        newFragment.show(getFragmentManager(), "permissionDialog");
+
+                    }
+                    break;
+                }
+            }
         }
     }
 }
