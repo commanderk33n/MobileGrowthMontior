@@ -247,13 +247,22 @@ public class ProfileView extends BaseActivity {
                 dbHelper.setProfilePic(profile_Id, picturePath);
                 Bitmap originalBitmap = BitmapFactory.decodeFile(picturePath);
                 Bitmap resizedBitmap = getTheProperThumbnailBitmap(originalBitmap);
-                mProfileImage.setImageBitmap(rotateBitmap(resizedBitmap, 270));
 
-            }
+                if (resizedBitmap.getWidth() > resizedBitmap.getHeight()) {
+                    resizedBitmap = rotateBitmap(resizedBitmap, 270);
+                } else {
+                    resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
+
+                }
+
+                mProfileImage.setImageBitmap(resizedBitmap);
+
+
+
         } else if (requestCode == 3) {
             setMeasurementTextViews();
         }
-    }
+    }}
 
     public int getSquareCropDimensionForBitmap(Bitmap bitmap) {
         //use the smallest dimension of the image to crop to
