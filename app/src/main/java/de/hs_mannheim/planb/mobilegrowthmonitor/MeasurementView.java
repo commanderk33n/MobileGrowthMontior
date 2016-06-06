@@ -243,6 +243,7 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
