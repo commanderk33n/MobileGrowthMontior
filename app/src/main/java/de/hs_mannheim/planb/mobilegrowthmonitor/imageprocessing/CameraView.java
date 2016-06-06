@@ -54,6 +54,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
+        //finish();
     }
 
     @Override
