@@ -6,18 +6,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class CameraView extends BaseActivity implements SensorEventListener {
@@ -26,7 +21,6 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     private String profile_name;
     private int profile_Id;
     DbHelper db;
-    LayoutInflater inflater = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +39,14 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
         profile_name = db.getProfile(profile_Id).firstname;
 
-        inflater = LayoutInflater.from(getApplicationContext());
-        View view = inflater.inflate(R.layout.camera_overlay, null);
-        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
-                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        addContentView(view, layoutParamsControl);
-
         camFrag = NativeCam.newInstance(profile_name);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
+
+
+
 
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <ImageView
@@ -11,6 +11,8 @@
         android:layout_gravity="center_horizontal"
         android:alpha="0.2"
         android:scaleType="fitXY"
-        android:src="@drawable/overlay" />
+        android:src="@drawable/overlay"
+        android:contentDescription="@string/camera_overlay_image"
+        />
 
 </RelativeLayout>

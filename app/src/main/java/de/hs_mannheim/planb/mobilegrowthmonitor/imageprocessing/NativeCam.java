@@ -22,8 +22,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
+
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 /**
@@ -60,6 +62,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private Button captureButton;
     private SensorManager mSensorManager;
     private Sensor mRotationSensor;
+
+    private FrameLayout mFrameLayout;
 
     // used to convert radiant to degree
     private static final int FROM_RADS_TO_DEGS = -57;
@@ -105,6 +109,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                              final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.native_cam, container, false);
 
+
         // Create our Preview view and set it as the content of our activity.
         boolean opened = safeCameraOpenInView(view);
 
@@ -112,16 +117,21 @@ public class NativeCam extends Fragment implements SensorEventListener {
             Log.d("CameraGuide", "Error, Camera failed to open");
             return view;
         }
+        mFrameLayout = (FrameLayout) view.findViewById(R.id.camera_preview);
+        View overLay = inflater.inflate(R.layout.camera_overlay, null);
+        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+                (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        mFrameLayout.addView(overLay,layoutParamsControl);
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
+        captureButton.bringToFront();
         captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
                         mCamera.takePicture(null, null, mPicture);
-                       Log.i(TAG, "onClick");
                     }
                 }
         );

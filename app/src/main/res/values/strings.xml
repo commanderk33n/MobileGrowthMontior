@@ -39,4 +39,5 @@
     <string name="request_permission_cam">This app needs camera permission.</string>
     <string name="request_permission_read_storage">This app needs permission to read external storage.</string>
     <string name="cancel">CANCEL</string>
+    <string name="camera_overlay_image">Camera Overlay-Image</string>
 </resources>
