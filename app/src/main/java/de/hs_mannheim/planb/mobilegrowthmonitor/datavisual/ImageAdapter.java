@@ -7,8 +7,11 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -18,6 +21,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -242,7 +249,7 @@ public class ImageAdapter extends BaseAdapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
-                    try {
+                  /*  try {
                         double size = imageProcess.sizeMeasurement(path);
                         DecimalFormat df = new DecimalFormat("####0.00");
                         String resultString = df.format(size);
@@ -252,7 +259,42 @@ public class ImageAdapter extends BaseAdapter {
 
                     }catch (IllegalArgumentException e){
                         Toast.makeText(context, "No reference Object found, please take a new picture", Toast.LENGTH_LONG).show();
-                    }
+                    }*/
+                    new Thread(new Runnable() {
+                        public void run() {
+                            Log.i("Thread", "started");
+
+                            try {
+
+                                Looper.prepare();
+                                final double size = new ImageProcess(context.getApplicationContext()).sizeMeasurement(path);
+                                ((Activity)context).runOnUiThread(new Runnable() {
+
+                                    public void run() {
+                                        DecimalFormat df = new DecimalFormat("####0.00");
+                                        String resultString = df.format(size);
+                                        Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
+
+                                        ((Activity) context).onWindowFocusChanged(true);                                };
+                              //  Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
+
+                                });
+                            }
+                            catch (IllegalArgumentException e){
+                                e.printStackTrace();
+                                ((Activity)context).runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(context,"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                                });
+
+                            }
+                        }
+
+
+                    }).start();
+
+
+
                     break;
             }
         }
