@@ -51,7 +51,7 @@ public class ImageProcess {
     public double sizeMeasurement(String path) throws IllegalArgumentException {
         // init
         Mat source = Imgcodecs.imread(path);
-       // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
+        Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
 
 
         Mat hierarchy = new Mat();
@@ -343,6 +343,8 @@ public class ImageProcess {
 
             if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
                     > original.height() / 10.0) {
+                Imgproc.rectangle(original, new Point(temp.x, temp.y), new Point(temp.x +
+                        temp.width, temp.y + temp.height), new Scalar(0, 255, 0), 3);
                 return temp;
             }
         }

@@ -5,6 +5,7 @@
     <string name="enter_old_passcode">Enter old passcode</string>
     <string name="reenter_passcode">Re-enter passcode</string>
     <string name="change_passcode">Change passcode</string>
+    <string name="unlock_passcode">Unlock Passcode</string>
     <string name="setup_passcode">Setup Passcode</string>
     <string name="passcode_wrong">Wrong passcode, please try again.</string>
     <string name="disable_passcode">Disable passcode</string>
@@ -35,9 +36,37 @@
     <string name="in_kg">in kg</string>
     <string name="template_age">years old</string>
     <string name="export_data">Do you want to export the data?</string>
-    <string name="yes">YES</string>
+    <string name="yes">Yes</string>
     <string name="request_permission_cam">This app needs camera permission.</string>
     <string name="request_permission_read_storage">This app needs permission to read external storage.</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="camera_overlay_image">Camera Overlay-Image</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="add_picture">Add Photo!</string>
+    <string name="toast_enter_firstname">Please enter the childs firstname!</string>
+    <string name="toast_enter_lastname">Please enter the childs lastname!</string>
+    <string name="toast_choose_gender">Please choose the gender!</string>
+    <string name="toast_choose_birthday">Please choose a reasonable birthday!</string>
+    <string name="snackbar_create_profile">Create a new Profile?</string>
+    <string name="bmi">The BMI is: %.2f.</string>
+    <string name="bmi_category_weight_child">The child %s</string>
+    <string name="bmi_category_weight_adult">You %s</string>
+    <string name="bmi_category_weight_not_valid">There is no valid BMI in this age class</string>
+    <string name="bmi_category_weight_child_severly_underweight">is severly underweight!</string>
+    <string name="bmi_category_weight_child_underweight">is underweight!</string>
+    <string name="bmi_category_weight_child_normal_weight">has normal weight!</string>
+    <string name="bmi_category_weight_child_overweight">is overweight!</string>
+    <string name="bmi_category_weight_child_severly_overweight">is severly overweight!</string>
+    <string name="bmi_category_weight_adult_underweight">are underweight!</string>
+    <string name="bmi_category_weight_adult_normal_weight">have normal weight!</string>
+    <string name="bmi_category_weight_adult_overweight">are overweight!</string>
+    <string name="bmi_category_weight_adult_obesity">have obesity!</string>
+    <string name="bmi_category_weight_adult_sever_obesity">have sever obesity!</string>
+    <string name="enter_height">Please enter the childs height!</string>
+    <string name="enter_weight">Please enter the childs weight!</string>
+    <string name="weight_in_kg">weight in kg</string>
+    <string name="height_in_cm">height in cm</string>
+    <string name="app_needs_permission">App needs permission.</string>
+
 </resources>

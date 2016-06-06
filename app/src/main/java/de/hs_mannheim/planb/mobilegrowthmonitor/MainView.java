@@ -77,7 +77,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Create a new Profile?", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, R.string.snackbar_create_profile, Snackbar.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), CreateProfileView.class);
                     startActivity(intent);
                 }

@@ -2,16 +2,11 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.GridView;
 
@@ -161,7 +156,7 @@ public class GalleryView extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, ProfileView.class);
-        intent.putExtra("profile_Id", 1);
+        intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
 
     }

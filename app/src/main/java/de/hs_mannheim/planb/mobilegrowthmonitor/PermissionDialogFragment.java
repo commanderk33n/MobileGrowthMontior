@@ -49,7 +49,7 @@ public class PermissionDialogFragment extends DialogFragment {
                 permissionString = getString(R.string.request_permission_read_storage);
                 break;
             default:
-                permissionString = "App needs permission";
+                permissionString = getString(R.string.app_needs_permission);
         }
 
         builder.setMessage(permissionString)

@@ -106,16 +106,16 @@ public class AppLockView extends BaseActivity {
         switch (type) {
 
             case AbstractAppLock.DISABLE_PASSLOCK:
-                this.setTitle("Disable Passcode");
+                this.setTitle(getString(R.string.disable_passcode));
                 break;
             case AbstractAppLock.ENABLE_PASSLOCK:
-                this.setTitle("Enable Passcode");
+                this.setTitle(getString(R.string.enable_passcode));
                 break;
             case AbstractAppLock.CHANGE_PASSWORD:
-                this.setTitle("Change Passcode");
+                this.setTitle(getString(R.string.change_passcode));
                 break;
             case AbstractAppLock.UNLOCK_PASSWORD:
-                this.setTitle("Unlock Passcode");
+                this.setTitle(getString(R.string.unlock_passcode));
                 break;
         }
     }
