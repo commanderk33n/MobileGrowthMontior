@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
@@ -242,7 +243,11 @@ public class ImageAdapter extends BaseAdapter {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
                     try {
-                        imageProcess.sizeMeasurement(path);
+                        double size = imageProcess.sizeMeasurement(path);
+                        DecimalFormat df = new DecimalFormat("####0.00");
+                        String resultString = df.format(size);
+                        Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
+
                         ((Activity) context).onWindowFocusChanged(true);
 
                     }catch (IllegalArgumentException e){

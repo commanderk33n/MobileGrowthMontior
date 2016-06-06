@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;
@@ -100,9 +99,14 @@ public class ImageProcess {
                     return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
             });
+            for(MatOfPoint m : rectContour){
+                Rect c = Imgproc.boundingRect(m);
+                Log.i("boundingrect","width = "+c.width+"height = "+c.height+"x = "+c.x);
+                Imgproc.rectangle(source, new Point(c.x, c.y), new Point(c.x +
+                        c.width, c.y + c.height), new Scalar(0, 255, 0), 3);
+            }
 
-
-            heightReferenceObject = heightReferenceObject(contours,source).height;
+            heightReferenceObject = heightReferenceObject(rectContour,source).height;
 
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
@@ -127,11 +131,8 @@ public class ImageProcess {
             // TODO: change to alertDialog
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
-            DecimalFormat df = new DecimalFormat("####0.00");
-            String resultString = df.format(heightOfPerson);
-            Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
-            Log.i("Size = ", resultString);
-            Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
+
+             Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(source, bmp);
 
@@ -324,7 +325,6 @@ public class ImageProcess {
             String resultString = df.format(heightOfPerson);
             Log.i("Size = ", resultString);
 
-            Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
             Imgproc.cvtColor(original, original, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(original.cols(), original.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(original, bmp);
