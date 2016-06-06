@@ -145,7 +145,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     }
                 }
         );
-        view.setOnClickListener(
+       /* view.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -153,7 +153,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         mCamera.takePicture(null, null, mPicture);
                     }
                 }
-        );
+        );*/
         return view;
     }
 
@@ -209,7 +209,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         ((TextView) mActivity.findViewById(R.id.roll)).setText("Roll: " + Math.round(roll));
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
-            captureButton.isClickable();
+            captureButton.setClickable(true);
             captureButton.setBackgroundColor(getResources().getColor(R.color.transparent_green));
             ((TextView) mActivity.findViewById(R.id.pitch)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
             ((TextView) mActivity.findViewById(R.id.roll)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
