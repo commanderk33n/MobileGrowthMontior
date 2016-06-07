@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
@@ -145,7 +143,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         if (mRotationSensor != null) {
             mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
-            Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, getString(R.string.sensor_not_found), Toast.LENGTH_LONG).show();
         }
 
 
@@ -200,8 +198,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         float pitch = orientation[1] * FROM_RADS_TO_DEGS;
         float roll = orientation[2] * FROM_RADS_TO_DEGS;
-        ((TextView) mActivity.findViewById(R.id.pitch)).setText("Pitch: " + Math.round(pitch));
-        ((TextView) mActivity.findViewById(R.id.roll)).setText("Roll: " + Math.round(roll));
+        ((TextView) mActivity.findViewById(R.id.pitch)).setText(String.format(getString(R.string.pitch),  Math.round(pitch)));
+        ((TextView) mActivity.findViewById(R.id.roll)).setText(String.format(getString(R.string.roll), Math.round(roll)));
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
             captureButton.setClickable(true);
@@ -502,7 +500,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         public void onPictureTaken(final byte[] data, Camera camera) {
             final File pictureFile = getOutputMediaFile();
             if (pictureFile == null) {
-                Toast.makeText(getActivity(), "Image retrieval failed.", Toast.LENGTH_SHORT)
+                Toast.makeText(getActivity(), R.string.image_retrieval_failed, Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
@@ -524,7 +522,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         final double size = new ImageProcess(mActivity.getApplicationContext(),heightReference).sizeMeasurement(pictureFile.getPath());
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(),"Success your kid is"+ size +"cm tall", Toast.LENGTH_LONG).show();                            }
+                                Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), size), Toast.LENGTH_LONG).show();                            }
                         });
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
@@ -536,7 +534,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         e.printStackTrace();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(),"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                                Toast.makeText(getActivity(),getString(R.string.error), Toast.LENGTH_LONG).show();                            }
                         });
 
                     }
@@ -563,7 +561,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity(), "Success! Your picture has been saved! Loading Profile...", Toast.LENGTH_LONG)
+        Toast.makeText(getActivity(), getString(R.string.image_saving_success), Toast.LENGTH_LONG)
                 .show();
         return testFile;
     }

@@ -45,7 +45,8 @@
         <activity android:name=".MeasurementView" />
         <activity android:name=".datahandler.GraphView" />
         <activity android:name=".datahandler.ExportView" />
-        <activity android:name=".imageprocessing.PreCameraView"></activity>
+        <activity android:name=".imageprocessing.PreCameraView"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

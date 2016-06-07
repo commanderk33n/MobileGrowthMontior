@@ -243,6 +243,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     }
                 } catch (java.text.ParseException e) {
                     Log.e(TAG, "Error while trying to determine the latest Measurement Date!");
+                    e.printStackTrace();
                 }
             }
             return profileDataList.get(indexLatestMeasurement);

@@ -68,6 +68,13 @@
     <string name="weight_in_kg">weight in kg</string>
     <string name="height_in_cm">height in cm</string>
     <string name="app_needs_permission">App needs permission.</string>
+    <string name="image_retrieval_failed">Image retrieval failed.</string>
+    <string name="measurement_success">Success, your kid is %f cm tall</string>
+    <string name="error">There seems to be an error</string>
+    <string name="image_saving_success">Success! Your picture has been saved! Loading Profile...</string>
+    <string name="sensor_not_found">Sensor not found!</string>
+    <string name="pitch">Pitch: %d</string>
+    <string name="roll" translatable="false">Roll: %d</string>
     <string name="heightReference">height of Reference Object in cm</string>
 
 

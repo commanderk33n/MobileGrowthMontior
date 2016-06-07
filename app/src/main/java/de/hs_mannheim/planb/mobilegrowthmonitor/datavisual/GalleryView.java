@@ -10,9 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -163,7 +161,7 @@ public class GalleryView extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public byte[] generateGIF() {
+    /*public byte[] generateGIF() {
         ArrayList<Bitmap> bitmaps = bitmapList;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
@@ -184,5 +182,5 @@ public class GalleryView extends AppCompatActivity {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 }
