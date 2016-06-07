@@ -123,16 +123,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mFrameLayout.addView(overLay,layoutParamsControl);
 
-
-
-        mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
-        mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        if (mRotationSensor != null) {
-            mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
-        }
-
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
         captureButton.bringToFront();
@@ -145,15 +135,16 @@ public class NativeCam extends Fragment implements SensorEventListener {
                     }
                 }
         );
-       /* view.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // get an image from the camera
-                        mCamera.takePicture(null, null, mPicture);
-                    }
-                }
-        );*/
+
+        mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
+        mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        if (mRotationSensor != null) {
+            mSensorManager.registerListener((SensorEventListener) mActivity, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            Toast.makeText(mActivity, "Sensor not found!", Toast.LENGTH_LONG).show();
+        }
+
+
         return view;
     }
 

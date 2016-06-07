@@ -114,16 +114,8 @@ public class GraphView extends BaseActivity {
 
                 }
             }
-
-
         }
 
-
-
-
-
-
-//////////////////////////////////
 
         final Date[] dateArray = dateList.toArray(new Date[dateList.size()]);
         final Double[] optimalArray = optimal.toArray(new Double[optimal.size()]);
@@ -168,13 +160,10 @@ public class GraphView extends BaseActivity {
         sd1Format.configure(getApplicationContext(),
                 R.xml.line_point_formatter_with_labels_2);
 
-
         // just for fun, add some smoothing to the lines:
         // see: http://androidplot.com/smooth-curves-and-androidplot/
         sd1Format.setInterpolationParams(
                 new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
-
 
         // add a new series' to the xyplot:
         mPlot.addSeries(bmiSeries, bmiFormat);
@@ -209,9 +198,6 @@ public class GraphView extends BaseActivity {
             }
         });
 
-
-
-
         // reduce the number of range labels
         mPlot.setTicksPerRangeLabel(2);
         mPlot.setTicksPerDomainLabel(2);
@@ -219,9 +205,6 @@ public class GraphView extends BaseActivity {
         // rotate domain labels 45 degrees to make them more compact horizontally:
         mPlot.getGraphWidget().setDomainLabelOrientation(-45);
         mPlot.getGraphWidget().setRangeTickLabelWidth(50);
-
-
-
     }
 
     @Override

@@ -13,8 +13,8 @@ import android.support.v7.app.AlertDialog;
 public class PermissionDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogPositiveClick(DialogFragment dialog);
+        void onDialogNegativeClick(DialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events
@@ -41,7 +41,7 @@ public class PermissionDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final int permission = getArguments().getInt("permission");
         String permissionString;
-        switch(permission){
+        switch (permission) {
             case 1:
                 permissionString = getString(R.string.request_permission_cam);
                 break;

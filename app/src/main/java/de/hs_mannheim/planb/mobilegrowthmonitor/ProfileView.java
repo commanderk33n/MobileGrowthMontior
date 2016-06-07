@@ -72,7 +72,6 @@ public class ProfileView extends BaseActivity {
         TextView tvFirstname = (TextView) findViewById(R.id.tv_firstname);
         tvFirstname.setText(profile.firstname + ",");
 
-
         mProfileImage = (ImageButton) findViewById(R.id.ib_profilepic);
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +79,6 @@ public class ProfileView extends BaseActivity {
                 selectImage();
             }
         });
-
 
         ImageView imGender = (ImageView) findViewById(R.id.iv_gender);
         if (profile.sex == 0) {

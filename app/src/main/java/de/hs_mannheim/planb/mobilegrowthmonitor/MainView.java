@@ -64,7 +64,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             getPermissions();
         }
 
-
         dbHelper = DbHelper.getInstance(getApplicationContext());
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_profileList);
@@ -170,9 +169,8 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
 
     @Override
     public void onBackPressed() {
-        updateMenu();
-
         super.onBackPressed();
+        updateMenu();
     }
 
     @Override

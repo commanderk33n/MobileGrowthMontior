@@ -44,17 +44,12 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
-
-
-
-
     }
 
-    public void afterPictureTaken() {
+    protected void afterPictureTaken() {
         Intent intent = new Intent(this, ProfileView.class);
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
-        //finish();
     }
 
     @Override

@@ -56,7 +56,7 @@ public class MeasurementView extends BaseActivity {
      *
      * @param view
      */
-    public void saveMeasurement(View view) {
+    private void saveMeasurement(View view) {
 
         if (validate()) {
             double height = Double.parseDouble(this.height.getText().toString()) / 100.0;
@@ -176,7 +176,7 @@ public class MeasurementView extends BaseActivity {
         return result;
     }
 
-    public String bmiCategorize(double bmi, int sex) {
+    private String bmiCategorize(double bmi, int sex) {
         if (sex == 0) {
             if (bmi < 19) {
                 setBackgroundColor(1);
@@ -214,7 +214,7 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
-    public boolean validate() {
+    private boolean validate() {
         if (height.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, R.string.enter_height, Toast.LENGTH_LONG).show();
             return false;
@@ -226,7 +226,7 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
-    public void setBackgroundColor(int color) {
+    private void setBackgroundColor(int color) {
         switch (color) {
             case 1:
                 bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
