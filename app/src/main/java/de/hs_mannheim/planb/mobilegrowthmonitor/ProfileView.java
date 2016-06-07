@@ -121,9 +121,9 @@ public class ProfileView extends BaseActivity {
         super.onResume();
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
-            if(resizedBitmap.getWidth()>resizedBitmap.getHeight()) {
+            if (resizedBitmap.getWidth() > resizedBitmap.getHeight()) {
                 resizedBitmap = rotateBitmap(resizedBitmap, 270);
-            }else{
+            } else {
                 resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
 
             }
@@ -164,22 +164,22 @@ public class ProfileView extends BaseActivity {
      * choose a picture from the gallery or cancel action.
      */
     private void selectImage() {
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileView.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(getString(R.string.add_picture));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
+                if (options[item].equals(getString(R.string.take_photo))) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, 1);
                     }
-                } else if (options[item].equals("Choose from Gallery")) {
+                } else if (options[item].equals(getString(R.string.choose_from_gallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
-                } else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -258,11 +258,11 @@ public class ProfileView extends BaseActivity {
                 mProfileImage.setImageBitmap(resizedBitmap);
 
 
-
-        } else if (requestCode == 3) {
+            }
+        }else if (requestCode == 3) {
             setMeasurementTextViews();
         }
-    }}
+    }
 
     public int getSquareCropDimensionForBitmap(Bitmap bitmap) {
         //use the smallest dimension of the image to crop to

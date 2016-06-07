@@ -91,13 +91,13 @@ public class CreateProfileView extends BaseActivity {
             Date dateFromDatePicker = getDateFromDatePicker();
 
             if (firstname.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, "Please enter the childs firstname!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.toast_enter_firstname, Toast.LENGTH_LONG).show();
             } else if (lastname.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, "Please enter the childs lastname!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.toast_enter_lastname, Toast.LENGTH_LONG).show();
             } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
-                Toast.makeText(this, "Please choose the gender!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.toast_choose_gender, Toast.LENGTH_LONG).show();
             } else if (dateFromDatePicker.after(today.getTime())) {
-                Toast.makeText(this, "Please choose a reasonable birthday!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.toast_choose_birthday, Toast.LENGTH_LONG).show();
             } else {
                 ProfileData profileData = new ProfileData();
                 profileData.lastname = lastname.getText().toString();

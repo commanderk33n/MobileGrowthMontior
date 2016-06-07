@@ -82,14 +82,14 @@ public class MeasurementView extends BaseActivity {
             bmiCategory = (TextView) findViewById(R.id.tv_bmi_category);
             bmiCategory.setVisibility(View.VISIBLE);
 
-            bmi.setText(String.format("The BMI is: %.2f.", bmi_value));
+            bmi.setText(String.format(getString(R.string.bmi), bmi_value));
 
             if (age < 19 && age > 7) {
-                bmiCategory.setText("The child " + bmiCategorizeChild(age, bmi_value, profile.sex));
+                bmiCategory.setText(String.format(getString(R.string.bmi_category_weight_child), bmiCategorizeChild(age, bmi_value, profile.sex)));
             } else if (age > 19) {
-                bmiCategory.setText("You " + bmiCategorize(bmi_value, profile.sex));
+                bmiCategory.setText(String.format(getString(R.string.bmi_category_weight_adult), bmiCategorize(bmi_value, profile.sex)));
             } else {
-                bmiCategory.setText("There is no valid BMI in this age class");
+                bmiCategory.setText(R.string.bmi_category_weight_not_valid);
             }
         }
     }
@@ -118,19 +118,19 @@ public class MeasurementView extends BaseActivity {
             }
 
             if (bmi < percentileFemale[i][1]) {
-                result = "is serverly underweight!";
+                result = getString(R.string.bmi_category_weight_child_severly_underweight);
                 setBackgroundColor(1);
             } else if (bmi < percentileFemale[i][2]) {
-                result = "is underweight weight!";
+                result = getString(R.string.bmi_category_weight_child_underweight);
                 setBackgroundColor(2);
             } else if (bmi > percentileFemale[i][2] && bmi < percentileFemale[i][4]) { //3
-                result = "has normal weight!";
+                result = getString(R.string.bmi_category_weight_child_normal_weight);
                 setBackgroundColor(4);
             } else if (bmi > percentileFemale[i][4] && bmi < percentileFemale[i][5]) {
-                result = "is overweight!";
+                result = getString(R.string.bmi_category_weight_child_overweight);
                 setBackgroundColor(2);
             } else {
-                result = "is severely overweight";
+                result = getString(R.string.bmi_category_weight_child_severly_overweight);
                 setBackgroundColor(1);
             }
 
@@ -156,19 +156,19 @@ public class MeasurementView extends BaseActivity {
             System.out.println("Zeile: " + i);
 
             if (bmi < percentileMale[i][1]) {
-                result = "is serverly underweight!";
+                result = getString(R.string.bmi_category_weight_child_severly_underweight);
                 setBackgroundColor(1);
             } else if (bmi < percentileMale[i][2]) {
-                result = "is underweight weight!";
+                result = getString(R.string.bmi_category_weight_child_underweight);
                 setBackgroundColor(2);
             } else if (bmi > percentileMale[i][2] && bmi < percentileMale[i][4]) { //3
-                result = "has normal weight!";
+                result = getString(R.string.bmi_category_weight_child_normal_weight);
                 setBackgroundColor(4);
             } else if (bmi > percentileMale[i][4] && bmi < percentileMale[i][5]) {
-                result = "is overweight!";
+                result = getString(R.string.bmi_category_weight_child_overweight);
                 setBackgroundColor(2);
             } else {
-                result = "is severely overweight";
+                result = getString(R.string.bmi_category_weight_child_severly_overweight);
                 setBackgroundColor(1);
             }
         }
@@ -180,46 +180,46 @@ public class MeasurementView extends BaseActivity {
         if (sex == 0) {
             if (bmi < 19) {
                 setBackgroundColor(1);
-                return "are underweight!";
+                return getString(R.string.bmi_category_weight_adult_underweight);
             } else if (bmi < 25) {
                 setBackgroundColor(4);
-                return "have normal weight!";
+                return getString(R.string.bmi_category_weight_adult_normal_weight);
             } else if (bmi < 31) {
                 setBackgroundColor(2);
-                return "are overweight!";
+                return getString(R.string.bmi_category_weight_adult_overweight);
             } else if (bmi < 41) {
                 setBackgroundColor(3);
-                return "have obesity!";
+                return getString(R.string.bmi_category_weight_adult_obesity);
             } else {
                 setBackgroundColor(1);
-                return "have severe Obesity!";
+                return getString(R.string.bmi_category_weight_adult_sever_obesity);
             }
         } else {
             if (bmi < 20) {
                 setBackgroundColor(1);
-                return "are underweight!";
+                return getString(R.string.bmi_category_weight_adult_underweight);
             } else if (bmi < 26) {
                 setBackgroundColor(4);
-                return "have normal weight!";
+                return getString(R.string.bmi_category_weight_adult_normal_weight);
             } else if (bmi < 31) {
                 setBackgroundColor(2);
-                return "are overweight!";
+                return getString(R.string.bmi_category_weight_adult_overweight);
             } else if (bmi < 41) {
                 setBackgroundColor(3);
-                return "have obesity!";
+                return getString(R.string.bmi_category_weight_adult_obesity);
             } else {
                 setBackgroundColor(1);
-                return "have severe Obesity!";
+                return getString(R.string.bmi_category_weight_adult_sever_obesity);
             }
         }
     }
 
     public boolean validate() {
         if (height.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter the childs height!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.enter_height, Toast.LENGTH_LONG).show();
             return false;
         } else if (weight.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter the childs weight!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
             return false;
         } else {
             return true;
