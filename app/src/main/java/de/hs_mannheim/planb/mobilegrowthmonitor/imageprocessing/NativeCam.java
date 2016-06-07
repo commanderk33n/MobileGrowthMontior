@@ -361,9 +361,10 @@ public class NativeCam extends Fragment implements SensorEventListener {
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
-            parameters.setRotation(getCorrectCameraOrientation(mCameraInfo));
+            mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
 
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                 parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }

@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,7 +41,6 @@ public class GalleryView extends AppCompatActivity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
         hashList = settings.getInt("hash", 0);
-
     }
 
     @Override
@@ -69,6 +70,8 @@ public class GalleryView extends AppCompatActivity {
             Log.i("Gallery", "hashList " + hashList);
             Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
             Log.i("Gallery","bitmapList length"+ bitmapList.size());
+           // writeGif();
+
 
             if (Arrays.hashCode(listFile) != hashList) {
 
@@ -119,9 +122,9 @@ public class GalleryView extends AppCompatActivity {
                     // TODO: this check is inaccurate. Consider using an Id or something else
                     // if (pathList.get(i).contains(profile_name)) {
 
-                    pathList.add(listFile[i].getAbsolutePath());
+                    pathList.add(0,listFile[i].getAbsolutePath());
 
-                    bitmapList.add(urlImageToBitmap(pathList.get(i), false));
+                    bitmapList.add(0,urlImageToBitmap(pathList.get(0), false));
                     // }
                     hashList = Arrays.hashCode(listFile);
                     editor.putInt("hash", hashList);
@@ -159,5 +162,27 @@ public class GalleryView extends AppCompatActivity {
         intent.putExtra("profile_Id", profile_Id);
         startActivity(intent);
 
+    }
+    public byte[] generateGIF() {
+        ArrayList<Bitmap> bitmaps = bitmapList;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+        encoder.setRepeat(0);
+        encoder.start(bos);
+        for (Bitmap bitmap : bitmaps) {
+            encoder.addFrame(bitmap);
+        }
+        encoder.finish();
+        return bos.toByteArray();
+    }
+    public void writeGif(){
+        FileOutputStream outStream = null;
+        try{
+            outStream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath()+ "/growpics/gif.gif");
+            outStream.write(generateGIF());
+            outStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
