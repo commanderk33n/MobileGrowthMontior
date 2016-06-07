@@ -17,8 +17,9 @@ import java.util.Date;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
-public class PreCameraView extends AppCompatActivity {
+public class PreCameraView extends BaseActivity {
 private EditText etWeight,etHeightReference;
     private int profile_Id;
     Bundle extras;
