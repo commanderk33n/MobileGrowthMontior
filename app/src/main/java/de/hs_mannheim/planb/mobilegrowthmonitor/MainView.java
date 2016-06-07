@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
@@ -83,6 +84,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                 }
             });
         }
+
     }
 
     @Override

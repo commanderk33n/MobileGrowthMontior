@@ -61,7 +61,12 @@ public class GraphView extends BaseActivity {
 
         if (measurements != null && measurements.size() >= 3) {
             for (MeasurementData md : measurements) {
-                bmiList.add(md.weight / md.height / md.height);
+
+                double bmi = md.weight / md.height / md.height;
+                bmi = bmi*100;
+                bmi = bmi-bmi%10;
+                bmi = bmi/100;
+                bmiList.add(bmi);
                 System.out.println("Height: " + md.height + "Weight: " + md.weight);
                 Calendar calendar = new GregorianCalendar();
                 try {
@@ -133,17 +138,30 @@ public class GraphView extends BaseActivity {
 
         // create formatters to use for drawing a series using LineAndPointRenderer
         // and configure them from xml:
+        LineAndPointFormatter sd0Format = new LineAndPointFormatter();
+        sd0Format.setPointLabelFormatter(new PointLabelFormatter());
+        sd0Format.configure(getApplicationContext(),
+                R.xml.line_point_formatter_with_labels);
+
+
+        // just for fun, add some smoothing to the lines:
+        // see: http://androidplot.com/smooth-curves-and-androidplot/
+        sd0Format.setInterpolationParams(
+                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
+
+
+        // create formatters to use for drawing a series using LineAndPointRenderer
+        // and configure them from xml:
         LineAndPointFormatter bmiFormat = new LineAndPointFormatter();
         bmiFormat.setPointLabelFormatter(new PointLabelFormatter());
         bmiFormat.configure(getApplicationContext(),
-                R.xml.line_point_formatter_with_labels);
+                R.xml.line_point_formatter_with_labels3);
 
 
         // just for fun, add some smoothing to the lines:
         // see: http://androidplot.com/smooth-curves-and-androidplot/
         bmiFormat.setInterpolationParams(
                 new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
 
         LineAndPointFormatter sd1Format = new LineAndPointFormatter();
         sd1Format.setPointLabelFormatter(new PointLabelFormatter());
@@ -160,7 +178,7 @@ public class GraphView extends BaseActivity {
 
         // add a new series' to the xyplot:
         mPlot.addSeries(bmiSeries, bmiFormat);
-        mPlot.addSeries(optimalSeries,bmiFormat);
+        mPlot.addSeries(optimalSeries,sd0Format);
         mPlot.addSeries(sdm1Series,sd1Format);
         mPlot.addSeries(sdp1Series,sd1Format);
 

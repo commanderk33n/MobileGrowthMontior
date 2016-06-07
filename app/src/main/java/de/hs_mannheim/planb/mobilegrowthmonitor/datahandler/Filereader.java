@@ -90,9 +90,9 @@ public class Filereader {
 
                 }else{
                     if(!male){
-                        table = readBMIScore(R.raw.bmi_girls_z_who2007_exp,false);
+                        table = readBMIScore(R.raw.bmi_girls_z_who2007_exp,true);
                     }else {
-                        table = readBMIScore(R.raw.bmi_boys_z_who2007_exp, false);
+                        table = readBMIScore(R.raw.bmi_boys_z_who2007_exp, true);
                     }
                 }
 

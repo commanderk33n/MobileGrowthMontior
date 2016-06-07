@@ -10,6 +10,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
@@ -45,7 +46,8 @@ public class MeasurementView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
         profile = dbHelper.getProfile(profile_Id);
-
+        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        dbDummyData.addData(profile_Id);
     }
 
     /**
