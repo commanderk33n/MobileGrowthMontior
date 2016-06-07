@@ -49,7 +49,6 @@ public class CreateProfileView extends BaseActivity {
         birthday = (DatePicker) findViewById(R.id.dp_birthday);
         birthday.setMaxDate(System.currentTimeMillis() + 10);
         birthday.updateDate(2010, 0, 1);
-
     }
 
 

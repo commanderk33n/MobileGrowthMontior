@@ -21,7 +21,6 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,24 +35,18 @@ public class ImageProcess {
 
     private static final String TAG = "ImageProcess";
 
-    private static Context context;
-    private double REFERENCEOBJECTHEIGHT=14.9;
+    private double REFERENCEOBJECTHEIGHT = 14.9;
     private final double PERSONPOSITION = 3;
 
-    public ImageProcess(Context c,double height)
-    {REFERENCEOBJECTHEIGHT =height;
-
-        context = c;
+    public ImageProcess(double height) {
+        REFERENCEOBJECTHEIGHT = height;
     }
-
-
 
     // this is our prototype function!!
     public double sizeMeasurement(String path) throws IllegalArgumentException {
         // init
         Mat source = Imgcodecs.imread(path);
         Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
-
 
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
@@ -75,15 +68,15 @@ public class ImageProcess {
             Imgproc.GaussianBlur(destination, destination, size, 0);
             Imgproc.Canny(destination, destination, 50, 100);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            if(contours.size() == 0){
+            if (contours.size() == 0) {
                 throw new IllegalArgumentException("No Objects found");
             }
 
             List<MatOfPoint> rectContour = getRectContour(contours);
             if (rectContour == null) {
-                Log.i(TAG,"calculate 2");
-                double calculatedWith2 = sizeMeasurement2(destination,source);
-                if(calculatedWith2 < 20|| calculatedWith2 >250){
+                Log.i(TAG, "calculate 2");
+                double calculatedWith2 = sizeMeasurement2(destination, source);
+                if (calculatedWith2 < 20 || calculatedWith2 > 250) {
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
 
                 }
@@ -102,7 +95,7 @@ public class ImageProcess {
             });
 
 
-            heightReferenceObject = heightReferenceObject(rectContour,source).height;
+            heightReferenceObject = heightReferenceObject(rectContour, source).height;
 
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
@@ -124,11 +117,10 @@ public class ImageProcess {
             Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
                     new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
             // Height of ReferenceObject and SizeMeasurement
-            // TODO: change to alertDialog
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
 
-             Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
+            Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(source, bmp);
 
@@ -214,7 +206,7 @@ public class ImageProcess {
                         x2 = vec[2],
                         y2 = vec[3];
 
-                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI ))<5) {
+                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
                     //   if (source.width() / 4.0 < x2 && x2 < source.width() * 3.0 / 4.0 && y1 > miny && y1 < source.height()) {
                     if (y1 > miny && y1 < source.height()) {
 
@@ -254,13 +246,14 @@ public class ImageProcess {
 
     /**
      * This function is called when our first size Measurement doesnt wield any results
+     *
      * @param original
      * @param destination
      * @return
      */
-    public double sizeMeasurement2(Mat destination,Mat original) {
+    public double sizeMeasurement2(Mat destination, Mat original) {
 
-       // Mat destination = source.clone();
+        // Mat destination = source.clone();
         Mat hierarchy = new Mat();
         List<MatOfPoint> contours = new ArrayList<>();
         int erosion_size = 5;
@@ -279,7 +272,7 @@ public class ImageProcess {
         boolean breakForLoop = false;
         try {
 
-            yCoordinateHorizontalLine =  getYLowerHorizontalLine(destination);
+            yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -291,14 +284,12 @@ public class ImageProcess {
             });
 
             // Find Contour of ReferenceObject in middle of left side of the picture
-
-
-            rect_small = heightReferenceObject(contours,original);
+            rect_small = heightReferenceObject(contours, original);
             heightReferenceObject = rect_small.height;
             Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
             for (int j = destination.rows() / 50; j < destination.rows() * 2 / 3; j++) {
-                for(int k =(int)(destination.cols()/PERSONPOSITION);k<destination.cols()*2/PERSONPOSITION;k++){
+                for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
                     if (destination.get(j, k)[0] > 0) {
                         yCoordinateHighestPoint = j;
                         xCoordinateHighestPoint = k;
@@ -308,7 +299,7 @@ public class ImageProcess {
                     }
 
                 }
-                if(breakForLoop){
+                if (breakForLoop) {
                     break;
                 }
             }
@@ -319,7 +310,7 @@ public class ImageProcess {
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
 
-            Log.i("Size = ", ""+heightOfPerson);
+            Log.i("Size = ", "" + heightOfPerson);
 
             Imgproc.cvtColor(original, original, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(original.cols(), original.rows(), Bitmap.Config.ARGB_8888);
@@ -332,7 +323,7 @@ public class ImageProcess {
         return heightOfPerson;
     }
 
-    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original){
+    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original) {
         for (MatOfPoint m : contours) {
             Rect temp = Imgproc.boundingRect(m);
 

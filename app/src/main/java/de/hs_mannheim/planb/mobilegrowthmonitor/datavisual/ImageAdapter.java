@@ -46,7 +46,7 @@ public class ImageAdapter extends BaseAdapter {
     public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList,ArrayList<String> pathlist ){
         this.context = context;
         this.bitmapList = bitmapList;
-        imageProcess = new ImageProcess(context,14.9);
+        imageProcess = new ImageProcess(14.9);
         this.pathlist = pathlist;
     }
 
@@ -249,17 +249,6 @@ public class ImageAdapter extends BaseAdapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
-                  /*  try {
-                        double size = imageProcess.sizeMeasurement(path);
-                        DecimalFormat df = new DecimalFormat("####0.00");
-                        String resultString = df.format(size);
-                        Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
-
-                        ((Activity) context).onWindowFocusChanged(true);
-
-                    }catch (IllegalArgumentException e){
-                        Toast.makeText(context, "No reference Object found, please take a new picture", Toast.LENGTH_LONG).show();
-                    }*/
                     new Thread(new Runnable() {
                         public void run() {
                             Log.i("Thread", "started");
@@ -267,7 +256,7 @@ public class ImageAdapter extends BaseAdapter {
                             try {
 
                                 Looper.prepare();
-                                final double size = new ImageProcess(context.getApplicationContext(),14.9).sizeMeasurement(path);
+                                final double size = new ImageProcess(14.9).sizeMeasurement(path);
                                 ((Activity)context).runOnUiThread(new Runnable() {
 
                                     public void run() {
@@ -292,9 +281,6 @@ public class ImageAdapter extends BaseAdapter {
 
 
                     }).start();
-
-
-
                     break;
             }
         }

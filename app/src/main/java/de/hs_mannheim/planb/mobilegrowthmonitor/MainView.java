@@ -195,7 +195,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             default:
                 break;
         }
-
     }
 
     @Override
@@ -235,9 +234,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                         PERMISSIONS_REQUEST);
             }
-
         }
-
     }
 
     @Override
@@ -261,7 +258,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                         folder.mkdirs();
                         Log.i(TAG, "Success! Folder created!");
                     }
-
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                         DialogFragment newFragment = new PermissionDialogFragment();
@@ -276,7 +272,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                         args.putInt("permission", PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                         newFragment.setArguments(args);
                         newFragment.show(getFragmentManager(), "permissionDialog");
-
                     }
                     break;
                 }

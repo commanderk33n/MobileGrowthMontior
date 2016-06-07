@@ -28,7 +28,7 @@ public class PreCameraView extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pre_camera_view);
+        setContentView(R.layout.pre_cam_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_pre_camera_view);
         setSupportActionBar(toolbar);

@@ -61,7 +61,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private SensorManager mSensorManager;
     private Sensor mRotationSensor;
 
-    private FrameLayout mFrameLayout;
+    protected FrameLayout mFrameLayout;
     float heightReference;
     float weight;
 
@@ -519,7 +519,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         fos.write(byteArray);
                         fos.close();
                         Looper.prepare();
-                        final double size = new ImageProcess(mActivity.getApplicationContext(),heightReference).sizeMeasurement(pictureFile.getPath());
+                        final double size = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), size), Toast.LENGTH_LONG).show();                            }
@@ -542,8 +542,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
 
             }).start();
-
-
             ((CameraView) getActivity()).afterPictureTaken();
 
         }

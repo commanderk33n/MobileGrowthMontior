@@ -16,7 +16,7 @@ public abstract class AbstractAppLock {
     public static final String MESSAGE = "message";
     public static final String TYPE = "type";
 
-    public static final int DEFAULT_TIMEOUT = 60000; // timeout in milliseconds
+    public static final int DEFAULT_TIMEOUT = 1000; // timeout in milliseconds
 
     protected int lockTimeOut;
     protected HashSet<String> ignoredActivities;
