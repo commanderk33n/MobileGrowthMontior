@@ -48,7 +48,7 @@ private EditText etWeight,etHeightReference;
 
     }
     public void startMeasurement(View view){
-        if (etWeight.getText().toString().trim().isEmpty()) {
+        if (etWeight.getText().toString().trim().isEmpty() || Float.parseFloat(etWeight.getText().toString())<0) {
             Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
         } else if (etHeightReference.getText().toString().trim().isEmpty()) {
 

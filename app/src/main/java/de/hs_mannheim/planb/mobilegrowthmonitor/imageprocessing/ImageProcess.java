@@ -100,12 +100,7 @@ public class ImageProcess {
                     return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
             });
-            for(MatOfPoint m : rectContour){
-                Rect c = Imgproc.boundingRect(m);
-                Log.i("boundingrect","width = "+c.width+"height = "+c.height+"x = "+c.x);
-                Imgproc.rectangle(source, new Point(c.x, c.y), new Point(c.x +
-                        c.width, c.y + c.height), new Scalar(0, 255, 0), 3);
-            }
+
 
             heightReferenceObject = heightReferenceObject(rectContour,source).height;
 
@@ -323,9 +318,8 @@ public class ImageProcess {
             // TODO: change to alertDialog
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
-            DecimalFormat df = new DecimalFormat("####0.00");
-            String resultString = df.format(heightOfPerson);
-            Log.i("Size = ", resultString);
+
+            Log.i("Size = ", ""+heightOfPerson);
 
             Imgproc.cvtColor(original, original, Imgproc.COLOR_BGR2RGB);
             bmp = Bitmap.createBitmap(original.cols(), original.rows(), Bitmap.Config.ARGB_8888);

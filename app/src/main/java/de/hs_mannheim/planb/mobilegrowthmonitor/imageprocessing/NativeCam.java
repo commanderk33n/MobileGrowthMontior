@@ -355,15 +355,15 @@ public class NativeCam extends Fragment implements SensorEventListener {
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
-            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-            mSupportedFlashModes = mCamera.getParameters().getSupportedFlashModes();
+            Camera.Parameters  parameters = mCamera.getParameters();
+            mSupportedPreviewSizes = parameters.getSupportedPreviewSizes();
+            mSupportedFlashModes = parameters.getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(0, mCameraInfo);
             mCamera.setDisplayOrientation(getCorrectCameraOrientation(mCameraInfo));
-            mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
+            parameters.setRotation(getCorrectCameraOrientation(mCameraInfo));
 
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
-                Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
@@ -420,7 +420,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
                 // if-statement added so old smartphones are supported, checks whether
                 // focus_mode_continous_picture is supported and only then sets the mode
-                if (mCamera.getParameters().getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
 
@@ -428,7 +428,6 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 int maxHeight = 0;
                 for (Camera.Size size : mSupportedPreviewSizes) {
 
-                    Log.i("width= ", "" + maxWidth);
 
                     double ratio = (double) size.width / size.height;
                     if (ratio < 1.8 && ratio > 1.7 && size.width > maxWidth) {
