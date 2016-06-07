@@ -34,7 +34,7 @@
         <activity
             android:name=".imageprocessing.CameraView"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateProfileView"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -45,6 +45,7 @@
         <activity android:name=".MeasurementView" />
         <activity android:name=".datahandler.GraphView" />
         <activity android:name=".datahandler.ExportView" />
+        <activity android:name=".imageprocessing.PreCameraView"></activity>
     </application>
 
 </manifest>

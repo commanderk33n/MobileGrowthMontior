@@ -35,6 +35,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
@@ -282,7 +283,7 @@ public class ProfileView extends BaseActivity {
      * @param view
      */
     public void startCamera(View view) {
-        Intent intent = new Intent(this, CameraView.class);
+        Intent intent = new Intent(this, PreCameraView.class);
         intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
     }

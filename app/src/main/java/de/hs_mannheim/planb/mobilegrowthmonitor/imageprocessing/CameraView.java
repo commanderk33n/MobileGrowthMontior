@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -20,6 +21,8 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     NativeCam camFrag;
     private String profile_name;
     private int profile_Id;
+    private float weight;
+    private float heightReference;
     DbHelper db;
 
     @Override
@@ -36,10 +39,15 @@ public class CameraView extends BaseActivity implements SensorEventListener {
 
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
+        heightReference = extras.getFloat("heightReference");
+        weight = extras.getFloat("weight");
+        Log.i(TAG,"weight = " + weight);
+        Log.i(TAG,"height=" + heightReference);
+
 
         profile_name = db.getProfile(profile_Id).firstname;
 
-        camFrag = NativeCam.newInstance(profile_name);
+        camFrag = NativeCam.newInstance(profile_name,heightReference,weight);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)

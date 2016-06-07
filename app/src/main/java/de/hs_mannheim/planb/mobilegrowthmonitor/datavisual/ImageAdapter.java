@@ -46,7 +46,7 @@ public class ImageAdapter extends BaseAdapter {
     public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList,ArrayList<String> pathlist ){
         this.context = context;
         this.bitmapList = bitmapList;
-        imageProcess = new ImageProcess(context);
+        imageProcess = new ImageProcess(context,14.9);
         this.pathlist = pathlist;
     }
 
@@ -267,7 +267,7 @@ public class ImageAdapter extends BaseAdapter {
                             try {
 
                                 Looper.prepare();
-                                final double size = new ImageProcess(context.getApplicationContext()).sizeMeasurement(path);
+                                final double size = new ImageProcess(context.getApplicationContext(),14.9).sizeMeasurement(path);
                                 ((Activity)context).runOnUiThread(new Runnable() {
 
                                     public void run() {

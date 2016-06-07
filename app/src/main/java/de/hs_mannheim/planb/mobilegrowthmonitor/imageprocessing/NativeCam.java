@@ -64,6 +64,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private Sensor mRotationSensor;
 
     private FrameLayout mFrameLayout;
+    float heightReference;
+    float weight;
 
     // used to convert radiant to degree
     private static final int FROM_RADS_TO_DEGS = -57;
@@ -82,8 +84,10 @@ public class NativeCam extends Fragment implements SensorEventListener {
      *
      * @return
      */
-    public static NativeCam newInstance(String profile_name) {
+    public static NativeCam newInstance(String profile_name,float heightReference,float weight) {
         NativeCam fragment = new NativeCam();
+        fragment.heightReference = heightReference;
+        fragment.weight = weight;
         fragment.profileName = profile_name;
         return fragment;
     }
@@ -517,7 +521,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         fos.write(byteArray);
                         fos.close();
                         Looper.prepare();
-                        final double size = new ImageProcess(mActivity.getApplicationContext()).sizeMeasurement(pictureFile.getPath());
+                        final double size = new ImageProcess(mActivity.getApplicationContext(),heightReference).sizeMeasurement(pictureFile.getPath());
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(getActivity(),"Success your kid is"+ size +"cm tall", Toast.LENGTH_LONG).show();                            }

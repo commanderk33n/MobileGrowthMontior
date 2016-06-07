@@ -70,4 +70,6 @@
     <string name="weight_in_kg">Gewicht in kg</string>
     <string name="height_in_cm">Größe in cm</string>
     <string name="app_needs_permission">Die App benötigt Berechtigungen.</string>
+    <string name="heightReference">Höhe Referenzobjekt in cm</string>
+
 </resources>

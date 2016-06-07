@@ -37,15 +37,16 @@ public class ImageProcess {
     private static final String TAG = "ImageProcess";
 
     private static Context context;
-    private final double REFERENCEOBJECTHEIGHT = 14.9;
+    private double REFERENCEOBJECTHEIGHT=14.9;
     private final double PERSONPOSITION = 3;
 
-    public ImageProcess(Context c) {
+    public ImageProcess(Context c,double height)
+    {REFERENCEOBJECTHEIGHT =height;
+
         context = c;
     }
 
-    public ImageProcess() {
-    }
+
 
     // this is our prototype function!!
     public double sizeMeasurement(String path) throws IllegalArgumentException {
@@ -82,7 +83,7 @@ public class ImageProcess {
             if (rectContour == null) {
                 Log.i(TAG,"calculate 2");
                 double calculatedWith2 = sizeMeasurement2(destination,source);
-                if(calculatedWith2 < 50|| calculatedWith2 >250){
+                if(calculatedWith2 < 20|| calculatedWith2 >250){
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
 
                 }

@@ -61,12 +61,16 @@
     <string name="bmi_category_weight_adult_underweight">are underweight!</string>
     <string name="bmi_category_weight_adult_normal_weight">have normal weight!</string>
     <string name="bmi_category_weight_adult_overweight">are overweight!</string>
-    <string name="bmi_category_weight_adult_obesity">have obesity!</string>
-    <string name="bmi_category_weight_adult_sever_obesity">have sever obesity!</string>
+    <string name="bmi_category_weight_adult_obesity">are obese!</string>
+    <string name="bmi_category_weight_adult_sever_obesity">are severely obese!</string>
     <string name="enter_height">Please enter the childs height!</string>
     <string name="enter_weight">Please enter the childs weight!</string>
     <string name="weight_in_kg">weight in kg</string>
     <string name="height_in_cm">height in cm</string>
     <string name="app_needs_permission">App needs permission.</string>
+    <string name="heightReference">height of Reference Object in cm</string>
+
+
+
 
 </resources>
