@@ -262,12 +262,12 @@ public class ProfileView extends BaseActivity {
         }
     }
 
-    public int getSquareCropDimensionForBitmap(Bitmap bitmap) {
+    private int getSquareCropDimensionForBitmap(Bitmap bitmap) {
         //use the smallest dimension of the image to crop to
         return Math.min(bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
+   private Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
         int dimension = getSquareCropDimensionForBitmap(originalBitmap);
 
         Bitmap resizedBitmap = ThumbnailUtils.extractThumbnail(originalBitmap, dimension, dimension);
@@ -314,7 +314,7 @@ public class ProfileView extends BaseActivity {
      *
      * @param view
      */
-    public void startMeasurement(View view) {
+   public void startMeasurement(View view) {
         Intent intent = new Intent(this, MeasurementView.class);
         Log.v("ProfileView -> Measu", " " + profile_Id);
         intent.putExtra("profile_Id", profile_Id);
@@ -345,7 +345,6 @@ public class ProfileView extends BaseActivity {
         Intent i = new Intent(this, MainView.class);
         startActivity(i);
     }
-
 
     /**
      * Rotates Bitmap

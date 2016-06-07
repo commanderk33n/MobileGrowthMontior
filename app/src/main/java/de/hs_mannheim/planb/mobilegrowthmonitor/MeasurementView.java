@@ -56,7 +56,7 @@ public class MeasurementView extends BaseActivity {
      *
      * @param view
      */
-    private void saveMeasurement(View view) {
+    public void saveMeasurement(View view) {
 
         if (validate()) {
             double height = Double.parseDouble(this.height.getText().toString()) / 100.0;
