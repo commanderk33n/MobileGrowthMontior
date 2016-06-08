@@ -14,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.Filereader;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -87,7 +91,7 @@ public class MeasurementView extends BaseActivity {
             measurementData.height = height;
             measurementData.weight = weight;
             measurementData.index = profile_Id;
-            if(!image.isEmpty()){
+            if(! (image== null)){
                 measurementData.image = image;
             } else {
                 measurementData.image = "";
@@ -107,16 +111,58 @@ public class MeasurementView extends BaseActivity {
 
             bmi.setText(String.format(getString(R.string.bmi), bmi_value));
 
-            if (age < 19 && age > 7) {
+
+            boolean gender = profile.sex == 1;
+Date birthday=null;
+            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                birthday = format2.parse(profile.birthday);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            double[][] data = new Filereader(getApplicationContext()).giveMeTheData(1,birthday,gender);
+            bmiCategory.setText(getText(data,birthday,bmi_value));
+      /*      if (age < 19 && age > 7) {
                 bmiCategory.setText(String.format(getString(R.string.bmi_category_weight_child), bmiCategorizeChild(age, bmi_value, profile.sex)));
             } else if (age > 19) {
                 bmiCategory.setText(String.format(getString(R.string.bmi_category_weight_adult), bmiCategorize(bmi_value, profile.sex)));
             } else {
                 bmiCategory.setText(R.string.bmi_category_weight_not_valid);
             }
-        }
+        }*/
+    }
     }
 
+private String getText(double[][] data, Date birthday,double bmi){
+
+    Calendar calendar = new GregorianCalendar();
+    calendar.setTime(Calendar.getInstance().getTime());
+    Calendar measuredDay = Calendar.getInstance();
+    calendar.setTime(birthday);
+    age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
+    age *= 12;
+    age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
+    if(age>228){
+        return bmiCategorize(bmi,profile.sex);
+    }else{
+        for(int i = 0;i<data.length;i++){
+            if((int)data[i][0]==age){
+                //  optimal.add(data[i][data[0].length / 2]);
+                double sdMinus1 = (data[i][data[0].length / 2-1]);
+                double sdPlus1 = (data[i][data[0].length / 2+1]);
+                if(bmi>sdPlus1){
+                    return "ayy fatty";
+                }
+                if(bmi<sdMinus1){
+                    return "eat more";
+                }
+                return "gut so";
+            }
+        }
+    }
+    return "error hehehehehehehe";
+    }
 
     // Tabellen von http://www.bmi-rechner.net/
     private String bmiCategorizeChild(int age, double bmi, int sex) {
