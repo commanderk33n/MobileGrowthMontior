@@ -2,10 +2,10 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 import android.annotation.SuppressLint;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;
@@ -28,6 +28,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
+
 /**
  * Created by eikood on 05.05.2016.
  */
@@ -37,14 +40,17 @@ public class ImageProcess {
 
     private double REFERENCEOBJECTHEIGHT = 14.9;
     private final double PERSONPOSITION = 3;
+   // private MeasurementData measurementData ;
 
     public ImageProcess(double height) {
         REFERENCEOBJECTHEIGHT = height;
+        //MeasurementData measurementData = new MeasurementData();
     }
 
     // this is our prototype function!!
-    public double sizeMeasurement(String path) throws IllegalArgumentException {
+    public MeasurementData sizeMeasurement(String path) throws IllegalArgumentException {
         // init
+        MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
         Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
 
@@ -75,12 +81,13 @@ public class ImageProcess {
             List<MatOfPoint> rectContour = getRectContour(contours);
             if (rectContour == null) {
                 Log.i(TAG, "calculate 2");
-                double calculatedWith2 = sizeMeasurement2(destination, source);
-                if (calculatedWith2 < 20 || calculatedWith2 > 250) {
+                measurementData = sizeMeasurement2(destination, source);
+                /*if (calculatedWith2 < 20 || calculatedWith2 > 250) {
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
 
-                }
-                return calculatedWith2;
+                }*/
+             //   measurementData.height =calculatedWith2;
+                return measurementData;
 
             }
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
@@ -127,8 +134,10 @@ public class ImageProcess {
         } catch (CvException e) {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
-        imageWriter(bmp);
-        return heightOfPerson;
+        measurementData.edited = imageWriter(bmp);
+        measurementData.height = heightOfPerson;
+
+        return measurementData;
     }
 
     public static boolean isContourRect(MatOfPoint thisContour) {
@@ -221,15 +230,17 @@ public class ImageProcess {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private void imageWriter(Bitmap bmp) {
+    private String imageWriter(Bitmap bmp) {
         FileOutputStream out = null;
+        String fileName="";
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             String timeStamp = sdf.format(new Date());
-            String fileName = Environment.getExternalStorageDirectory().getPath() +
+            fileName = Environment.getExternalStorageDirectory().getPath() +
                     "/growpics/" + timeStamp + "_filter.jpg";
             out = new FileOutputStream(fileName, true);
             bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -241,18 +252,19 @@ public class ImageProcess {
                 e.printStackTrace();
             }
         }
+        return fileName;
     }
 
 
     /**
      * This function is called when our first size Measurement doesnt wield any results
      *
-     * @param original
      * @param destination
+     * @param original
      * @return
      */
-    public double sizeMeasurement2(Mat destination, Mat original) throws IllegalArgumentException {
-
+    public MeasurementData sizeMeasurement2(Mat destination, Mat original) throws IllegalArgumentException {
+        MeasurementData measurementData = new MeasurementData();
         // Mat destination = source.clone();
         Mat hierarchy = new Mat();
         List<MatOfPoint> contours = new ArrayList<>();
@@ -321,8 +333,9 @@ public class ImageProcess {
         } catch (CvException e) {
             Log.e("sizeMeasurement(): ", e.getMessage());
         }
-        imageWriter(bmp);
-        return heightOfPerson;
+        measurementData.height = heightOfPerson;
+        measurementData.edited = imageWriter(bmp);
+        return measurementData;
     }
 
     public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {

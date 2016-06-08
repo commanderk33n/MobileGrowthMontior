@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -37,7 +36,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**
  * Created by eikood on 09.05.2016.
@@ -63,7 +65,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
     protected FrameLayout mFrameLayout;
     float heightReference;
-    float weight;
+    double height;
+    MeasurementData measurementData;
 
     // used to convert radiant to degree
     private static final int FROM_RADS_TO_DEGS = -57;
@@ -82,10 +85,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
      *
      * @return
      */
-    public static NativeCam newInstance(int profileId,float heightReference,float weight) {
+    public static NativeCam newInstance(int profileId, float heightReference) {
         NativeCam fragment = new NativeCam();
         fragment.heightReference = heightReference;
-        fragment.weight = weight;
         fragment.profileId = profileId;
         return fragment;
     }
@@ -121,9 +123,9 @@ public class NativeCam extends Fragment implements SensorEventListener {
         }
         mFrameLayout = (FrameLayout) view.findViewById(R.id.camera_preview);
         View overLay = inflater.inflate(R.layout.camera_overlay, null);
-        WindowManager.LayoutParams layoutParamsControl= new WindowManager.LayoutParams
+        WindowManager.LayoutParams layoutParamsControl = new WindowManager.LayoutParams
                 (WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        mFrameLayout.addView(overLay,layoutParamsControl);
+        mFrameLayout.addView(overLay, layoutParamsControl);
 
         // Init the capture button.
         captureButton = (Button) view.findViewById(R.id.btn_capture);
@@ -199,7 +201,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
 
         float pitch = orientation[1] * FROM_RADS_TO_DEGS;
         float roll = orientation[2] * FROM_RADS_TO_DEGS;
-        ((TextView) mActivity.findViewById(R.id.pitch)).setText(String.format(getString(R.string.pitch),  Math.round(pitch)));
+        ((TextView) mActivity.findViewById(R.id.pitch)).setText(String.format(getString(R.string.pitch), Math.round(pitch)));
         ((TextView) mActivity.findViewById(R.id.roll)).setText(String.format(getString(R.string.roll), Math.round(roll)));
 
         if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
@@ -301,7 +303,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p>
+     * <p/>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
     class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -354,7 +356,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
             mCamera = camera;
-            Camera.Parameters  parameters = mCamera.getParameters();
+            Camera.Parameters parameters = mCamera.getParameters();
             mSupportedPreviewSizes = parameters.getSupportedPreviewSizes();
             mSupportedFlashModes = parameters.getSupportedFlashModes();
             Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
@@ -363,7 +365,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
             mCamera.getParameters().setRotation(getCorrectCameraOrientation(mCameraInfo));
 
             if (mSupportedFlashModes != null && mSupportedFlashModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
-                 parameters = mCamera.getParameters();
+                parameters = mCamera.getParameters();
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
@@ -510,44 +512,46 @@ public class NativeCam extends Fragment implements SensorEventListener {
             captureButton.setClickable(false);
             new Thread(new Runnable() {
                 public void run() {
+                    ((CameraView) getActivity()).afterPictureTaken(height);
                     Log.i("Thread", "started");
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    final Bitmap turnedBitmap = rotateBitmap(bitmap, 90);
+                    final Bitmap turnedBitmap = Utils.rotateBitmap(bitmap, 90);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     turnedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                     turnedBitmap.recycle();
                     byte[] byteArray = stream.toByteArray();
                     FileOutputStream fos = null;
+                    String path = "";
+
+
                     try {
                         fos = new FileOutputStream(pictureFile);
                         fos.write(byteArray);
                         fos.close();
                         Looper.prepare();
-                        final double size = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
-                        getActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), size), Toast.LENGTH_LONG).show();                            }
-                        });
-                        Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
-                        NativeCam.this.onDestroy();
+                       measurementData = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
+                        measurementData.image = pictureFile.getPath();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }catch (IllegalArgumentException e){
-                        e.printStackTrace();
+                    } finally {
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(),getString(R.string.error), Toast.LENGTH_LONG).show();                            }
+                                MeasurementView.setMeasurement(measurementData);
+
+                                //    Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), measurementData.height), Toast.LENGTH_LONG).show();
+                             //   ((EditText)getActivity().findViewById(R.id.et_height)).bringToFront();
+
+                            }
                         });
 
+
+                        Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
+                        NativeCam.this.onDestroy();
                     }
                 }
-
-
             }).start();
-            ((CameraView) getActivity()).afterPictureTaken();
-
         }
     };
 
@@ -559,7 +563,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         String fileName = Environment.getExternalStorageDirectory().getPath() +
-                "/growpics/" + timeStamp+".jpg";
+                "/growpics/" + timeStamp + ".jpg";
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
@@ -568,16 +572,4 @@ public class NativeCam extends Fragment implements SensorEventListener {
         return testFile;
     }
 
-    /**
-     * Rotates Bitmap
-     *
-     * @param source bitmap to be rotated
-     * @param angle  angle that the picture has to be rotated
-     * @return rotated bitmap
-     */
-    private Bitmap rotateBitmap(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
 }

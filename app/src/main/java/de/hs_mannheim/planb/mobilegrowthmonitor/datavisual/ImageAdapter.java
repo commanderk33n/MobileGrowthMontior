@@ -256,7 +256,7 @@ public class ImageAdapter extends BaseAdapter {
                             try {
 
                                 Looper.prepare();
-                                final double size = new ImageProcess(14.9).sizeMeasurement(path);
+                                final double size = new ImageProcess(14.9).sizeMeasurement(path).height;
                                 ((Activity)context).runOnUiThread(new Runnable() {
 
                                     public void run() {

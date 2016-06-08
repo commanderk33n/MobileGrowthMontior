@@ -90,27 +90,9 @@ public class ProfileView extends BaseActivity {
             imGender.setImageDrawable(dw);
         }
 
-
         TextView tvAge = (TextView) findViewById(R.id.tv_age);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-            Date tempDate = format.parse(profile.birthday);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(tempDate);
-            Calendar today = Calendar.getInstance();
-            age = today.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-            if (today.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
-                age--;
-            } else if (today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                    today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
-                age--;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        age =  Utils.getAge(profile.birthday);
         tvAge.setText(Integer.toString(age));
-
         setMeasurementTextViews();
 
     }
@@ -121,7 +103,7 @@ public class ProfileView extends BaseActivity {
         if (profile.profilepic != null) { // if profilepic is null it keeps the drawable
             Bitmap resizedBitmap = BitmapFactory.decodeFile(profile.profilepic);
             if (resizedBitmap.getWidth() > resizedBitmap.getHeight()) {
-                resizedBitmap = rotateBitmap(resizedBitmap, 270);
+                resizedBitmap = Utils.rotateBitmap(resizedBitmap, 270);
             } else {
                 resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
 
@@ -232,7 +214,7 @@ public class ProfileView extends BaseActivity {
                 Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
                 Bitmap resizedCamBitmap = getTheProperThumbnailBitmap(camBitmap);
 
-                mProfileImage.setImageBitmap(rotateBitmap(resizedCamBitmap, 270));
+                mProfileImage.setImageBitmap(Utils.rotateBitmap(resizedCamBitmap, 270));
 
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
@@ -248,7 +230,7 @@ public class ProfileView extends BaseActivity {
                 Bitmap resizedBitmap = getTheProperThumbnailBitmap(originalBitmap);
 
                 if (resizedBitmap.getWidth() > resizedBitmap.getHeight()) {
-                    resizedBitmap = rotateBitmap(resizedBitmap, 270);
+                    resizedBitmap = Utils.rotateBitmap(resizedBitmap, 270);
                 } else {
                     resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
 
@@ -346,18 +328,4 @@ public class ProfileView extends BaseActivity {
         Intent i = new Intent(this, MainView.class);
         startActivity(i);
     }
-
-    /**
-     * Rotates Bitmap
-     *
-     * @param source bitmap to be rotated
-     * @param angle  angle that the picture has to be rotated
-     * @return rotated bitmap
-     */
-    private Bitmap rotateBitmap(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
-
 }

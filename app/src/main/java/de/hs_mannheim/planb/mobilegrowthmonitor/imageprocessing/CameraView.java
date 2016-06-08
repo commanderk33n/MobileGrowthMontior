@@ -11,19 +11,22 @@ import android.view.Window;
 import android.view.WindowManager;
 
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class CameraView extends BaseActivity implements SensorEventListener {
     private static String TAG = CameraView.class.getSimpleName();
-    NativeCam camFrag;
-    private String profile_name;
+    private NativeCam camFrag;
     private int profile_Id;
-    private float weight;
-    private float heightReference;
-    DbHelper db;
+    private float weight, heightReference;
+    private DbHelper db;
+    private ProfileData profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +44,22 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         profile_Id = extras.getInt("profile_Id");
         heightReference = extras.getFloat("heightReference");
         weight = extras.getFloat("weight");
-        Log.i(TAG,"weight = " + weight);
-        Log.i(TAG,"height=" + heightReference);
+        profile = db.getProfile(profile_Id);
 
-
-        profile_name = db.getProfile(profile_Id).firstname;
-
-        camFrag = NativeCam.newInstance(profile_name,heightReference,weight);
+        camFrag = NativeCam.newInstance(profile_Id, heightReference);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
     }
 
-    protected void afterPictureTaken() {
-        Intent intent = new Intent(this, ProfileView.class);
+    protected void afterPictureTaken(double height) {
+        Intent intent = new Intent(this, MeasurementView.class);
+        int age = Utils.getAge(profile.birthday);
         intent.putExtra("profile_Id", profile_Id);
+        intent.putExtra("age", age);
+        intent.putExtra("weight", weight);
+        intent.putExtra("height", height);
         startActivity(intent);
     }
 

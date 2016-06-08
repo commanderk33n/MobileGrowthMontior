@@ -1,19 +1,26 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
@@ -21,12 +28,16 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
  */
 public class MeasurementView extends BaseActivity {
 
-    private EditText height, weight;
+    public static EditText eT_height, eT_weight;
+    private static ImageView mImageView;
     private DbHelper dbHelper;
-    private int profile_Id;
-    private int age;
+    private int profile_Id, age;
+    private double weight, height;
+    private static String image,edited;
     private ProfileData profile;
     private TextView bmi, bmiCategory;
+    private static Button undo;
+    public final String TAG = MeasurementView.class.getSimpleName();
 
     /**
      * Fetches Profile from database
@@ -38,16 +49,24 @@ public class MeasurementView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.measurement_view);
 
-        height = (EditText) findViewById(R.id.et_height);
-        weight = (EditText) findViewById(R.id.et_weight);
+        eT_height = (EditText) findViewById(R.id.et_height);
+        eT_weight = (EditText) findViewById(R.id.et_weight);
 
         dbHelper = DbHelper.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
+        weight = extras.getFloat("weight");
+        height = extras.getDouble("height");
+        eT_weight.setText(weight + "");
+        eT_height.setText(height + "");
+        Log.i(TAG, "weight = " + weight);
         profile = dbHelper.getProfile(profile_Id);
-       // DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-      //  dbDummyData.addData(profile_Id);
+        mImageView = (ImageView) findViewById(R.id.iv_result_pic);
+        mImageView.setVisibility(View.GONE);
+        undo = (Button) findViewById(R.id.btn_undo);
+        //DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        //dbDummyData.addData(profile_Id);
     }
 
     /**
@@ -59,8 +78,8 @@ public class MeasurementView extends BaseActivity {
     public void saveMeasurement(View view) {
 
         if (validate()) {
-            double height = Double.parseDouble(this.height.getText().toString()) / 100.0;
-            double weight = Double.parseDouble(this.weight.getText().toString());
+            double height = Double.parseDouble(this.eT_height.getText().toString()) / 100.0;
+            double weight = Double.parseDouble(this.eT_weight.getText().toString());
 
             double bmi_value = weight / (height * height);
 
@@ -68,7 +87,11 @@ public class MeasurementView extends BaseActivity {
             measurementData.height = height;
             measurementData.weight = weight;
             measurementData.index = profile_Id;
-            measurementData.image = ""; //TODO: picture-path needs to be saved here
+            if(!image.isEmpty()){
+                measurementData.image = image;
+            } else {
+                measurementData.image = "";
+            }
             Calendar today = Calendar.getInstance();
             today.getTime();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -176,6 +199,20 @@ public class MeasurementView extends BaseActivity {
         return result;
     }
 
+    public static void setMeasurement(MeasurementData measurementData) {
+        eT_height.setText("" + measurementData.height);
+        image = measurementData.image;
+        edited = measurementData.edited;
+        File imgFile = new File("" + measurementData.edited);
+        if (imgFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            mImageView.setImageBitmap(bitmap);
+            mImageView.setVisibility(View.VISIBLE);
+        }
+        undo.setVisibility(View.VISIBLE);
+    }
+
+
     private String bmiCategorize(double bmi, int sex) {
         if (sex == 0) {
             if (bmi < 19) {
@@ -215,10 +252,10 @@ public class MeasurementView extends BaseActivity {
     }
 
     private boolean validate() {
-        if (height.getText().toString().trim().isEmpty()) {
+        if (eT_height.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, R.string.enter_height, Toast.LENGTH_LONG).show();
             return false;
-        } else if (weight.getText().toString().trim().isEmpty()) {
+        } else if (eT_weight.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
             return false;
         } else {
@@ -245,6 +282,23 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
+    public void undo(View view){
+        File file = new File(image);
+        file.delete();
+        File fileOriginal = new File(edited);
+        fileOriginal.delete();
+        Intent intent = new Intent(this, PreCameraView.class);
+        intent.putExtra("profile_Id", profile.index);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ProfileView.class);
+        intent.putExtra("profile_Id", profile_Id);
+        startActivity(intent);
+    }
 
     @Override
     protected void onDestroy() {
