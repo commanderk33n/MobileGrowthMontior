@@ -88,7 +88,7 @@ public class Filereader {
                     }
 
 
-                }else{
+                }else {
                     if(!male){
                         table = readBMIScore(R.raw.bmi_girls_z_who2007_exp,true);
                     }else {

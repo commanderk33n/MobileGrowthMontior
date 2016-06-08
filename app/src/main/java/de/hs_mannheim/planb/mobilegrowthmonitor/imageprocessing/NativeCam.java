@@ -47,7 +47,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private static final String TAG = NativeCam.class.getSimpleName();
 
     // part of the name for the picture
-    String profileName;
+    int profileId;
 
     // Native camera.
     private Camera mCamera;
@@ -82,11 +82,11 @@ public class NativeCam extends Fragment implements SensorEventListener {
      *
      * @return
      */
-    public static NativeCam newInstance(String profile_name,float heightReference,float weight) {
+    public static NativeCam newInstance(int profileId,float heightReference,float weight) {
         NativeCam fragment = new NativeCam();
         fragment.heightReference = heightReference;
         fragment.weight = weight;
-        fragment.profileName = profile_name;
+        fragment.profileId = profileId;
         return fragment;
     }
 
@@ -182,6 +182,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
      *
      * @param vectors
      */
+    @SuppressLint("StringFormatInvalid")
     private synchronized void update(float[] vectors) {
 
         float[] rotationMatrix = new float[9];
@@ -497,13 +498,16 @@ public class NativeCam extends Fragment implements SensorEventListener {
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
-        public void onPictureTaken(final byte[] data, Camera camera) {
+        public synchronized void onPictureTaken(final byte[] data, Camera camera) {
             final File pictureFile = getOutputMediaFile();
             if (pictureFile == null) {
                 Toast.makeText(getActivity(), R.string.image_retrieval_failed, Toast.LENGTH_SHORT)
                         .show();
                 return;
+
             }
+
+            captureButton.setClickable(false);
             new Thread(new Runnable() {
                 public void run() {
                     Log.i("Thread", "started");

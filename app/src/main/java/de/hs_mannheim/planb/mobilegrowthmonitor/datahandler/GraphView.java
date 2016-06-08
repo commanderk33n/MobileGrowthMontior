@@ -85,7 +85,7 @@ public class GraphView extends BaseActivity {
         /*
         Find the Data with SD0 for the appropriate range
          */
-        List<Double> optimal = new ArrayList<>();
+       // List<Double> optimal = new ArrayList<>();
         List<Double> sdMinus1 = new ArrayList<>();
         List<Double> sdPlus1 = new ArrayList<>();
         Date birthday = null;
@@ -95,6 +95,11 @@ public class GraphView extends BaseActivity {
             e.printStackTrace();
         }
         int age = 0;
+
+        /*
+        If the person is over 19, the values are the same for both sexes & we don't have any data
+         */
+
         double[][] data = f.giveMeTheData(1, birthday, true);
 
         for (Date d : dateList) {
@@ -106,24 +111,31 @@ public class GraphView extends BaseActivity {
             age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
             age *= 12;
             age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
+
+            if(age<228){ //19 jahre
             for(int i = 0;i<data.length;i++){
                 if((int)data[i][0]==age){
-                    optimal.add(data[i][data[0].length / 2]);
+                  //  optimal.add(data[i][data[0].length / 2]);
                     sdMinus1.add(data[i][data[0].length / 2-1]);
                     sdPlus1.add(data[i][data[0].length / 2+1]);
 
                 }
             }
+
+        }else{
+                sdMinus1.add(18.5);
+                sdPlus1.add(25.0);
+            }
         }
 
 
         final Date[] dateArray = dateList.toArray(new Date[dateList.size()]);
-        final Double[] optimalArray = optimal.toArray(new Double[optimal.size()]);
+       // final Double[] optimalArray = optimal.toArray(new Double[optimal.size()]);
         // initialize our XYPlot reference:
         mPlot = (XYPlot) findViewById(R.id.plot);
 
         XYSeries bmiSeries = new SimpleXYSeries(bmiList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "BMI");
-        XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
+      //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
         XYSeries sdm1Series = new SimpleXYSeries(sdMinus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-1");
         XYSeries sdp1Series = new SimpleXYSeries(sdPlus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+1");
 
@@ -167,7 +179,7 @@ public class GraphView extends BaseActivity {
 
         // add a new series' to the xyplot:
         mPlot.addSeries(bmiSeries, bmiFormat);
-        mPlot.addSeries(optimalSeries,sd0Format);
+     // mPlot.addSeries(optimalSeries,sd0Format);
         mPlot.addSeries(sdm1Series,sd1Format);
         mPlot.addSeries(sdp1Series,sd1Format);
 

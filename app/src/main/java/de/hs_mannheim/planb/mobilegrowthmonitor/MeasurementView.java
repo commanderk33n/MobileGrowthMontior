@@ -46,8 +46,8 @@ public class MeasurementView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
         profile = dbHelper.getProfile(profile_Id);
-        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-        dbDummyData.addData(profile_Id);
+       // DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+      //  dbDummyData.addData(profile_Id);
     }
 
     /**

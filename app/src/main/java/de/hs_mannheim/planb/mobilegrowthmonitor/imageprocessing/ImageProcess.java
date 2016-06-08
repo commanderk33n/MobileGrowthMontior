@@ -251,7 +251,7 @@ public class ImageProcess {
      * @param destination
      * @return
      */
-    public double sizeMeasurement2(Mat destination, Mat original) {
+    public double sizeMeasurement2(Mat destination, Mat original) throws IllegalArgumentException {
 
         // Mat destination = source.clone();
         Mat hierarchy = new Mat();
@@ -285,6 +285,8 @@ public class ImageProcess {
 
             // Find Contour of ReferenceObject in middle of left side of the picture
             rect_small = heightReferenceObject(contours, original);
+
+
             heightReferenceObject = rect_small.height;
             Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
@@ -323,7 +325,7 @@ public class ImageProcess {
         return heightOfPerson;
     }
 
-    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original) {
+    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {
         for (MatOfPoint m : contours) {
             Rect temp = Imgproc.boundingRect(m);
 
@@ -334,6 +336,6 @@ public class ImageProcess {
                 return temp;
             }
         }
-        return null; //// TODO: 03.06.2016 throw exception
+        throw new IllegalArgumentException("no reference object found");
     }
 }
