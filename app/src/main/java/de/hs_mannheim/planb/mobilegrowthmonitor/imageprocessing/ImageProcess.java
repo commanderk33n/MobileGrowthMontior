@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;

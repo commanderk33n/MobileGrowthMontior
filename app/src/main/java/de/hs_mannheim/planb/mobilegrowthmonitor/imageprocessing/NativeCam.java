@@ -303,7 +303,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p/>
+     * <p>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
     class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -529,7 +529,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         fos.write(byteArray);
                         fos.close();
                         Looper.prepare();
-                       measurementData = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
+                        measurementData = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
                         measurementData.image = pictureFile.getPath();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -541,7 +541,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                                 MeasurementView.setMeasurement(measurementData);
 
                                 //    Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), measurementData.height), Toast.LENGTH_LONG).show();
-                             //   ((EditText)getActivity().findViewById(R.id.et_height)).bringToFront();
+                                //   ((EditText)getActivity().findViewById(R.id.et_height)).bringToFront();
 
                             }
                         });
