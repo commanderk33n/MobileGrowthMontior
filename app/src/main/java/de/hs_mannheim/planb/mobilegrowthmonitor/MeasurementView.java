@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
@@ -69,8 +70,8 @@ public class MeasurementView extends BaseActivity {
         mImageView = (ImageView) findViewById(R.id.iv_result_pic);
         mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
-        //DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-        //dbDummyData.addData(profile_Id);
+        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        dbDummyData.addData(profile_Id);
     }
 
     /**

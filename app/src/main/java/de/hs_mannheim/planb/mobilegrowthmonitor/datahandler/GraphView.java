@@ -1,9 +1,14 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
+import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
@@ -23,6 +28,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
@@ -30,20 +37,21 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
-public class GraphView extends BaseActivity {
+public class GraphView extends BaseActivity implements View.OnTouchListener {
 
     private static final String TAG = GraphView.class.getSimpleName();
 
     private XYPlot mPlot;
     private int profileId;
     private DbHelper dbHelper;
+    private PointF minXY;
+    private PointF maxXY;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         Filereader f = new Filereader(getApplicationContext());
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_view);
@@ -128,11 +136,12 @@ public class GraphView extends BaseActivity {
             }
         }
 
-
         final Date[] dateArray = dateList.toArray(new Date[dateList.size()]);
        // final Double[] optimalArray = optimal.toArray(new Double[optimal.size()]);
         // initialize our XYPlot reference:
         mPlot = (XYPlot) findViewById(R.id.plot);
+        //TODO fix zoom and pan
+      //  mPlot.setOnTouchListener(this);
 
         XYSeries bmiSeries = new SimpleXYSeries(bmiList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "BMI");
       //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
@@ -146,6 +155,7 @@ public class GraphView extends BaseActivity {
         sd0Format.setPointLabelFormatter(new PointLabelFormatter());
         sd0Format.configure(getApplicationContext(),
                 R.xml.line_point_formatter_with_labels);
+        Log.i("hallo","ballo");
 
 
         // just for fun, add some smoothing to the lines:
@@ -168,10 +178,13 @@ public class GraphView extends BaseActivity {
                 new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
         LineAndPointFormatter sd1Format = new LineAndPointFormatter();
+
         sd1Format.setPointLabelFormatter(new PointLabelFormatter());
+
         sd1Format.configure(getApplicationContext(),
                 R.xml.line_point_formatter_with_labels_2);
-
+        //sd1Format.setPointLabelFormatter(null);
+        sd1Format.setPointLabeler(null);
         // just for fun, add some smoothing to the lines:
         // see: http://androidplot.com/smooth-curves-and-androidplot/
         sd1Format.setInterpolationParams(
@@ -211,12 +224,20 @@ public class GraphView extends BaseActivity {
         });
 
         // reduce the number of range labels
-        mPlot.setTicksPerRangeLabel(2);
-        mPlot.setTicksPerDomainLabel(2);
+        mPlot.setTicksPerRangeLabel(1);
+        mPlot.setTicksPerDomainLabel(1);
 
         // rotate domain labels 45 degrees to make them more compact horizontally:
         mPlot.getGraphWidget().setDomainLabelOrientation(-45);
-        mPlot.getGraphWidget().setRangeTickLabelWidth(50);
+       mPlot.getGraphWidget().setRangeTickLabelWidth(25);
+      mPlot.getGraphWidget().setDomainGridLinePaint(null);
+
+        mPlot.redraw();
+
+        //Set of internal variables for keeping track of the boundaries
+        mPlot.calculateMinMaxVals();
+        minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
+        maxXY=new PointF(mPlot.getCalculatedMaxX().floatValue(),mPlot.getCalculatedMaxY().floatValue());
     }
 
     @Override
@@ -226,6 +247,100 @@ public class GraphView extends BaseActivity {
             dbHelper.close();
 
         }
+    }
+
+    // Definition of the touch states
+    static final int NONE = 0;
+    static final int ONE_FINGER_DRAG = 1;
+    static final int TWO_FINGERS_DRAG = 2;
+    int mode = NONE;
+
+    PointF firstFinger;
+    float lastScrolling;
+    float distBetweenFingers;
+    float lastZooming;
+
+    @Override
+    public boolean onTouch(View arg0, MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN: // Start gesture
+                firstFinger = new PointF(event.getX(), event.getY());
+                mode = ONE_FINGER_DRAG;
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                //When the gesture ends, a thread is created to give inertia to the scrolling and zoom
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        while(Math.abs(lastScrolling)>1f || Math.abs(lastZooming-1)<1.01){
+                            lastScrolling*=.8;
+                            scroll(lastScrolling);
+                            lastZooming+=(1-lastZooming)*.2;
+                            zoom(lastZooming);
+                            mPlot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.AUTO);
+                            mPlot.redraw();
+                            // the thread lives until the scrolling and zooming are imperceptible
+                        }
+                    }
+                }, 0);
+
+            case MotionEvent.ACTION_POINTER_DOWN: // second finger
+                distBetweenFingers = spacing(event);
+                // the distance check is done to avoid false alarms
+                if (distBetweenFingers > 5f) {
+                    mode = TWO_FINGERS_DRAG;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mode == ONE_FINGER_DRAG) {
+                    PointF oldFirstFinger=firstFinger;
+                    firstFinger=new PointF(event.getX(), event.getY());
+                    lastScrolling=oldFirstFinger.x-firstFinger.x;
+                    scroll(lastScrolling);
+                    lastZooming=(firstFinger.y-oldFirstFinger.y)/mPlot.getHeight();
+                    if (lastZooming<0)
+                        lastZooming=1/(1-lastZooming);
+                    else
+                        lastZooming+=1;
+                    zoom(lastZooming);
+                    mPlot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.AUTO);
+                    mPlot.redraw();
+
+                } else if (mode == TWO_FINGERS_DRAG) {
+                    float oldDist =distBetweenFingers;
+                    distBetweenFingers=spacing(event);
+                    lastZooming=oldDist/distBetweenFingers;
+                    zoom(lastZooming);
+                    mPlot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.AUTO);
+                    mPlot.redraw();
+                }
+                break;
+        }
+        return true;
+    }
+
+    private void zoom(float scale) {
+        float domainSpan = maxXY.x	- minXY.x;
+        float domainMidPoint = maxXY.x		- domainSpan / 2.0f;
+        float offset = domainSpan * scale / 2.0f;
+        minXY.x=domainMidPoint- offset;
+        maxXY.x=domainMidPoint+offset;
+    }
+
+    private void scroll(float pan) {
+        float domainSpan = maxXY.x	- minXY.x;
+        float step = domainSpan / mPlot.getWidth();
+        float offset = pan * step;
+        minXY.x+= offset;
+        maxXY.x+= offset;
+    }
+
+    private float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
     }
 }
 
