@@ -70,13 +70,13 @@
     <string name="weight_in_kg">Gewicht in kg</string>
     <string name="height_in_cm">Größe in cm</string>
     <string name="app_needs_permission">Die App benötigt Berechtigungen.</string>
-    <string name="heightReference">Höhe Referenzobjekt in cm</string>
+    <string name="heightReference">Geben Sie die Höhe des Referenzobjekt in cm ein:</string>
     <string name="error">Es scheint ein Fehler aufgetreten zu sein.</string>
     <string name="image_retrieval_failed">Das Laden des Bildes ist fehl geschlagen.</string>
     <string name="image_saving_success">Das Bild wurde erfolgreich gespeichert. Das Profil wird geladen...</string>
     <string name="measurement_success">Die Messung war erfolgreich. Ihr Kind ist %f cm groß.</string>
     <string name="pitch">Neigung: %d</string>
-    <string name="roll"></string>
+    <string name="roll">Roll: %d</string>
     <string name="sensor_not_found">Der Sonsor wurde nicht gefunden!</string>
 
 </resources>
