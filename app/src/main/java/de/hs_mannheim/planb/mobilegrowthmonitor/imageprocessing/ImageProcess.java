@@ -51,7 +51,7 @@ public class ImageProcess {
         // init
         MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
-        Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
+       // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
 
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);

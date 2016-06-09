@@ -202,19 +202,23 @@ public class ProfileView extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                Uri selectedCamImage = data.getData();
+              /*  Uri selectedCamImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedCamImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String pictureCamPath = cursor.getString(columnIndex);
-                cursor.close();
-                dbHelper.setProfilePic(profile_Id, pictureCamPath);
-                Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
-                Bitmap resizedCamBitmap = getTheProperThumbnailBitmap(camBitmap);
+                cursor.close();*/
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+              //  mImageView.setImageBitmap(imageBitmap);
 
-                mProfileImage.setImageBitmap(Utils.rotateBitmap(resizedCamBitmap, 270));
+           //     dbHelper.setProfilePic(profile_Id, pictureCamPath);
+                //Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
+                imageBitmap = getTheProperThumbnailBitmap(imageBitmap);
+
+                mProfileImage.setImageBitmap(imageBitmap);
 
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();

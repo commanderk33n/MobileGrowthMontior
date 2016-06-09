@@ -18,31 +18,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
  * Created by Morty on 25.05.2016.
  */
 public class Filereader {
-    private static  final String[] filenames = {
 
-            "bmi_boys_0_2_zcores.txt",
-            "bmi_girls_0_2_zscores.txt",
-
-            "bmi_girls_2_5_zscores.txt",
-            "bmi_boys_2_5_zscores.txt",
-
-            "bmi_boys_z_who2007_exp.txt",
-            "bmi_girls_z_who2007_exp.txt",
-
-            "lhfa_boys_z_exp.txt",
-            "lhfa_girls_z_exp.txt",
-
-
-            "hfa_boys_z_who2007_exp.txt",
-            "hfa_girls_z_who2007_exp.txt",
-
-
-            "wfa_boys_z_exp.txt",
-            "wfa_girls_z_exp.txt",
-
-            "wfa_boys_z_who2007_exp.txt",
-            "wfa_girls_z_who2007_exp.txt"
-    };
    private Context context;
     public Filereader(Context context){
         this.context = context;
@@ -107,9 +83,9 @@ public class Filereader {
 
                 }else{
                     if(!male){
-                        table = readZOver5(R.raw.hfa_girls_z_who2007_exp);
+                        table = readZOver5(R.raw.hfa_girls_z_who2007_exp,false);
                     }else {
-                        table = readZOver5(R.raw.hfa_boys_z_who2007_exp);
+                        table = readZOver5(R.raw.hfa_boys_z_who2007_exp,false);
                     }
                 }
                 break;
@@ -123,9 +99,9 @@ public class Filereader {
 
                 }else{
                     if(!male){
-                        table = readZOver5(R.raw.wfa_girls_z_who2007_exp);
+                        table = readZOver5(R.raw.wfa_girls_z_who2007_exp,true);
                     }else {
-                        table = readZOver5(R.raw.wfa_boys_z_who2007_exp);
+                        table = readZOver5(R.raw.wfa_boys_z_who2007_exp,true);
                     }
                 }
                 break;
@@ -155,28 +131,29 @@ public class Filereader {
 
 
 
+
         InputStream initialStream = context.getResources().openRawResource(path);
         byte[] buffer = new byte[8192];
-        int count = 0;
-        int n;
-        while ((n = initialStream.read(buffer)) > 0) {
-            for (int i = 0; i < n; i++) {
-                if (buffer[i] == '\n') count++;
-            }
-        }
-        initialStream.close();
 
-
-       // LineNumberReader lnr = new LineNumberReader(new FileReader(new File(path))); // to know the dimensions of the double array
-        //lnr.skip(Long.MAX_VALUE);
-        int lines = count;
+        int lines = 3000;
         double[][] values = new double[lines-1][10];
-     //   lnr.close();
-        //File file = new File(path);
-        Scanner reader = new Scanner(initialStream);
-        int zeile = 0;
-        reader.nextLine();
+
+        File outputDir = context.getCacheDir(); // context being the Activity pointer
+        final File outputFile = File.createTempFile("temp", "txt", outputDir);
+        outputFile.deleteOnExit();
+        FileOutputStream out = new FileOutputStream(outputFile) ;
+        int len = initialStream.read(buffer);
+        int columns = 10;
+        while (len != -1) {
+            out.write(buffer, 0, len);
+            len = initialStream.read(buffer);
+        }
+
+        Scanner reader = new Scanner(outputFile);
         reader.useLocale(Locale.US);
+
+
+int zeile = 0;
 
         while (reader.hasNextDouble()) {
             values[zeile / 10][zeile % 10] = reader.nextDouble();
@@ -188,22 +165,11 @@ public class Filereader {
     public  double[][] readBMIScore(int path,boolean over5) throws IOException {
         InputStream initialStream = context.getResources().openRawResource(path);
         byte[] buffer = new byte[8192];
-        int count = 0;
         int n;
-      /*  while ((n = initialStream.read(buffer)) > 0) {
-            for (int i = 0; i < n; i++) {
-                if (buffer[i] == '\n') count++;
-            }
-        }
-*/
 
-        // LineNumberReader lnr = new LineNumberReader(new FileReader(new File(path))); // to know the dimensions of the double array
-        //lnr.skip(Long.MAX_VALUE);
         int lines = 3000;
         int columns = over5? 10:8;
         double[][] values = new double[lines-1][10];
-       // File file = new File(path);
-
         File outputDir = context.getCacheDir(); // context being the Activity pointer
         final File outputFile = File.createTempFile("temp", "txt", outputDir);
         outputFile.deleteOnExit();
@@ -242,31 +208,40 @@ public class Filereader {
     }
 
 
-    public  double[][] readZOver5(int path ) throws IOException {
+    public  double[][] readZOver5(int path, boolean weight ) throws IOException {
+        int skip = weight ? 3 : 5;
+
+
         InputStream initialStream = context.getResources().openRawResource(path);
         byte[] buffer = new byte[8192];
-        int count = 0;
-        int n;
-        while ((n = initialStream.read(buffer)) > 0) {
-            for (int i = 0; i < n; i++) {
-                if (buffer[i] == '\n') count++;
-            }
-        }
-        initialStream.close();
 
+        int lines = 3000;
+        double[][] values = new double[lines-1][10];
 
-        // LineNumberReader lnr = new LineNumberReader(new FileReader(new File(path))); // to know the dimensions of the double array
-        //lnr.skip(Long.MAX_VALUE);
-        int lines = count;
+        File outputDir = context.getCacheDir(); // context being the Activity pointer
+        final File outputFile = File.createTempFile("temp", "txt", outputDir);
+        outputFile.deleteOnExit();
+        FileOutputStream out = new FileOutputStream(outputFile) ;
+        int len = initialStream.read(buffer);
         int columns = 10;
-        double[][] values = new double[lines-1][columns];
-        Scanner reader = new Scanner(initialStream);
+        while (len != -1) {
+            out.write(buffer, 0, len);
+            len = initialStream.read(buffer);
+        }
+
+        Scanner reader = new Scanner(outputFile);
+        reader.useLocale(Locale.US);
+
+
+
+
+
         int zeile = 0;
         reader.nextLine();
         reader.useLocale(Locale.US);
         int i = 0;
         while (reader.hasNextDouble()) {
-            if(i>0&&i<6){
+            if(i>0&&i<=skip){
                 i++;
                 reader.nextDouble();
                 continue;
