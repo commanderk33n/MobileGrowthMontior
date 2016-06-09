@@ -1,76 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="false">
 
-    <TextView
-        android:id="@+id/tv_enter_height"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/enter_height" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_height"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tv_enter_height"
-        android:layout_marginLeft="5dp"
-        android:ems="10"
-        android:hint="@string/height_in_cm"
-        android:inputType="number"
-        android:maxLength="6" />
 
-    <TextView
-        android:id="@+id/tv_enter_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_height"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/enter_weight" />
+        <TextView
+            android:id="@+id/tv_enter_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/enter_height" />
 
-    <EditText
-        android:id="@+id/et_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tv_enter_weight"
-        android:layout_marginLeft="5dp"
-        android:ems="10"
-        android:hint="@string/weight_in_kg"
-        android:inputType="number"
-        android:maxLength="6" />
+        <EditText
+            android:id="@+id/et_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_enter_height"
+            android:layout_marginLeft="5dp"
+            android:ems="10"
+            android:hint="@string/height_in_cm"
+            android:inputType="number"
+            android:maxLength="6" />
 
-    <Button
-        android:id="@+id/btn_enter_for_bmi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/et_weight"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:onClick="saveMeasurement"
-        android:text="Enter" />
+        <TextView
+            android:id="@+id/tv_enter_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_height"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/enter_weight" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_undo"
-        android:visibility="invisible"
-        android:text="Undo"
-        android:onClick="undo"
-        android:layout_alignBottom="@+id/tv_bmi"
-        android:layout_alignLeft="@+id/btn_enter_for_bmi"
-        android:layout_alignStart="@+id/btn_enter_for_bmi" />
+        <EditText
+            android:id="@+id/et_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_enter_weight"
+            android:layout_marginLeft="5dp"
+            android:ems="10"
+            android:hint="@string/weight_in_kg"
+            android:inputType="number"
+            android:maxLength="6" />
 
-    <TextView
+        <Button
+            android:id="@+id/btn_enter_for_bmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveMeasurement"
+            android:text="Enter"
+            android:layout_above="@+id/tv_bmi_category"
+            android:layout_toRightOf="@+id/tv_bmi_category"
+            android:layout_toEndOf="@+id/tv_bmi_category" />
+
+        <Button
+            android:id="@+id/btn_undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="undo"
+            android:text="Undo"
+            android:visibility="invisible"
+            android:layout_alignTop="@+id/btn_enter_for_bmi"
+            android:layout_alignRight="@+id/et_weight"
+            android:layout_alignEnd="@+id/et_weight" />
+
+        <TextView
         android:id="@+id/tv_bmi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,20 +86,32 @@
         android:text="The BMI is: "
         android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/tv_bmi_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_bmi"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/tv_bmi_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bmi"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/iv_result_pic"
-        android:layout_below="@id/tv_bmi_category"
-        />
+        <TextView
+            android:id="@+id/tv_result_pic"
+            android:layout_below="@id/tv_bmi_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Result Picture: "
+            android:visibility="invisible"
+            android:layout_centerHorizontal="true" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_result_pic"
+            android:layout_below="@id/tv_result_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:gravity="bottom|center_horizontal"
+          />
+
+    </RelativeLayout>
+</ScrollView>
