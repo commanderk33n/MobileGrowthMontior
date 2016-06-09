@@ -204,7 +204,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
         ((TextView) mActivity.findViewById(R.id.pitch)).setText(String.format(getString(R.string.pitch), Math.round(pitch)));
         ((TextView) mActivity.findViewById(R.id.roll)).setText(String.format(getString(R.string.roll), Math.round(roll)));
 
-        if (Math.round(pitch) < 5.0 && Math.round(pitch) > -5.0 && Math.round(roll) < 5.0 && Math.round(roll) > -5.0) {
+        if (Math.round(pitch) < 3.0 && Math.round(pitch) > -3.0 && Math.round(roll) < 3.0 && Math.round(roll) > -3.0) {
             captureButton.setClickable(true);
             captureButton.setBackgroundColor(getResources().getColor(R.color.transparent_green));
             ((TextView) mActivity.findViewById(R.id.pitch)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
