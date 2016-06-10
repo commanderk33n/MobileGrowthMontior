@@ -89,6 +89,7 @@ public class ImageProcess {
                 return measurementData;
 
             }
+            Log.i(TAG,"calculate 1");
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
 
             // Find Contour of ReferenceObject in middle of left side of the picture

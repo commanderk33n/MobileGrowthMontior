@@ -535,7 +535,14 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
+                    } catch(IllegalArgumentException e){
+                        e.printStackTrace();
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(),"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                        });
+                    }
+                    finally {
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
                                 MeasurementView.setMeasurement(measurementData);
