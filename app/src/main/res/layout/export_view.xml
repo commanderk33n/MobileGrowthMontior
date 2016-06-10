@@ -10,7 +10,9 @@
         android:layout_width="wrap_content"
         android:id="@+id/tv_data_export"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:textAlignment="center"/>
 
     <Button
         android:layout_width="wrap_content"

@@ -37,7 +37,7 @@
     <string name="template_age">Jahre alt</string>
     <string name="camera_overlay_image">Kamera Overlay-Bild</string>
     <string name="cancel">Abbrechen</string>
-    <string name="export_data">Möchten Sie die Daten wirklich exportieren?</string>
+    <string name="export_data">Möchten Sie die Daten wirklich exportieren und per Mail versenden?</string>
     <string name="request_permission_cam">Diese App benötigt die Berechtigung für die Kamera.</string>
     <string name="request_permission_read_storage">Diese App benötigt die Berechtigung externen Speicher zu lesen.</string>
     <string name="unlock_passcode">PIN entsperren</string>

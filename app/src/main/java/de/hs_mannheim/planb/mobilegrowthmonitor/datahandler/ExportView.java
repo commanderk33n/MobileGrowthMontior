@@ -1,5 +1,7 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.Toast;
 
 import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ public class ExportView extends BaseActivity {
 
             try {
                 writer = new CSVWriter(new FileWriter(Environment.getExternalStorageDirectory().getPath()
-                        + "/growpics/database" + profileId + ".csv"), ',');
+                        + "/growpics/database" + profileId + ".csv"), ';');
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -71,6 +74,15 @@ public class ExportView extends BaseActivity {
             }
 
             Toast.makeText(this, "Success! Your database has been exported!", Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");
+            intent.putExtra(Intent.EXTRA_TEXT, "Mail with a .csv-file that contains the measurement data for specific profile.");
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
+                    + "/growpics/database" + profileId + ".csv")));
+            intent.setType("application/csv");
+            startActivity(Intent.createChooser(intent, "Send mail"));
+
         }else{
             Toast.makeText(this, "There are no measurements to export!", Toast.LENGTH_LONG).show();
         }

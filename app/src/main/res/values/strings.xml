@@ -35,7 +35,7 @@
     <string name="last_measurement">Last measurement:</string>
     <string name="in_kg">in kg</string>
     <string name="template_age">years old</string>
-    <string name="export_data">Do you want to export the data?</string>
+    <string name="export_data">Do you want to export the data per email?</string>
     <string name="yes">Yes</string>
     <string name="request_permission_cam">This app needs camera permission.</string>
     <string name="request_permission_read_storage">This app needs permission to read external storage.</string>
@@ -77,8 +77,6 @@
     <string name="roll">Roll: %d</string>
     <string name="heightReference">Height of Reference Object in cm</string>
     <string name="enter_heightReference">Please enter the height of the reference object!</string>
-
-
 
 
 </resources>
