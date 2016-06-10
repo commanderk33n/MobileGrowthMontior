@@ -160,7 +160,7 @@ public class MeasurementView extends BaseActivity {
         double[][] heightData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
         heightCategory.setText(getTextHeight(heightData,birthday,height*100));
 
-        double[][] weightData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
+        double[][] weightData = new Filereader(getApplicationContext()).giveMeTheData(3,birthday,gender);
         weightCategory.setText(getTextWeight(weightData,birthday,weight));
 
 
@@ -240,9 +240,11 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
         age *= 12;
         age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
         if(age>120){
-return "keine who daten für dein alter digga";
+            return "keine who daten für dein alter digga";
+        }else if(age<61){
+            age*=30;
         }
-        age*=30;
+
 
         for(int i = 0;i<data.length;i++){
             if((int)data[i][0]==age){

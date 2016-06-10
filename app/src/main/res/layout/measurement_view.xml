@@ -96,8 +96,48 @@
             android:visibility="invisible" />
 
         <TextView
+            android:id="@+id/tv_heightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bmi"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:text="The height is: "
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_height_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_heightText"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_weightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_heightText"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:text="The weight: "
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_weight_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_weightText"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible" />
+
+
+
+        <TextView
             android:id="@+id/tv_result_pic"
-            android:layout_below="@id/tv_bmi_category"
+            android:layout_below="@id/tv_weight_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Result Picture: "
