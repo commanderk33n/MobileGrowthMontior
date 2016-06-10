@@ -70,7 +70,7 @@ public class GraphView extends BaseActivity implements View.OnTouchListener {
         if (measurements != null && measurements.size() >= 3) {
             for (MeasurementData md : measurements) {
 
-                double bmi = md.weight / md.height / md.height;
+                double bmi = md.weight / (md.height /100) / (md.height/100);
                 bmi = bmi*100;
                 bmi = bmi-bmi%10;
                 bmi = bmi/100;

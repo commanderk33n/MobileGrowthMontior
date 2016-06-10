@@ -50,6 +50,30 @@ public class MeasurementView extends BaseActivity {
     public static Context baseContext;
     private static volatile boolean startCallback;
     private static volatile boolean goBack;
+    double[][] weightData,heightData,bmiData;
+    private boolean gender;
+    private Date birthday;
+    private Thread dataGetter = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            Log.i("datagetter","start");
+
+            gender = profile.sex == 1;
+            birthday=null;
+            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                birthday = format2.parse(profile.birthday);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1,birthday,gender);
+            heightData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
+            weightData = new Filereader(getApplicationContext()).giveMeTheData(3,birthday,gender);
+            Log.i("datagetter","done");
+
+        }
+    });;
 
    private static Thread callbackWaiter;
     /**
@@ -71,19 +95,27 @@ public class MeasurementView extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
+        profile = dbHelper.getProfile(profile_Id);
+
 
         if(extras.containsKey("weight")){
             weight = extras.getFloat("weight");
         }else{
-            weight = dbHelper.getLatestMeasurement(profile_Id).weight;
+            if(dbHelper.getLatestMeasurement(profile_Id)!=null) {
 
+                weight = dbHelper.getLatestMeasurement(profile_Id).weight;
+            }
         }
         if(extras.containsKey("height")){
             height = extras.getDouble("height");
 
         }else{
-            height=dbHelper.getLatestMeasurement(profile_Id).height;
-        }
+            if(dbHelper.getLatestMeasurement(profile_Id)!=null){
+
+                height=dbHelper.getLatestMeasurement(profile_Id).height;
+        }}
+
+
 
         startCallback = extras.getBoolean("startCallback",false);
         goBack = false;
@@ -94,12 +126,13 @@ public class MeasurementView extends BaseActivity {
                 @Override
                 public void run() {
                     Log.i(TAG,"Thread started");
-                   while(startCallback){
-
+                    int i = 0;
+                   while(startCallback&&i<50){
+i++;
                        Log.i(TAG,"goBack= "+goBack);
                        Log.i(TAG,"startCallback = "+startCallback);
                        try {
-                           Thread.sleep(1000);
+                           Thread.sleep(2000);
                        } catch (InterruptedException e) {
                            if(goBack){
                                Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
@@ -115,8 +148,13 @@ public class MeasurementView extends BaseActivity {
             callbackWaiter.start();
 
 
+
+
+
         }
 
+
+        dataGetter.start();
 
         eT_weight.setText(weight + "");
         eT_height.setText(height + "");
@@ -139,10 +177,9 @@ public class MeasurementView extends BaseActivity {
     public void saveMeasurement(View view) {
 
         if (validate()) {
-            double height = Double.parseDouble(this.eT_height.getText().toString()) / 100.0;
+            double height = Double.parseDouble(this.eT_height.getText().toString());
             double weight = Double.parseDouble(this.eT_weight.getText().toString());
 
-            double bmi_value = weight / (height * height);
 
             MeasurementData measurementData = new MeasurementData();
             measurementData.height = height;
@@ -153,6 +190,7 @@ public class MeasurementView extends BaseActivity {
             } else {
                 measurementData.image = "";
             }
+            image =null;
             Calendar today = Calendar.getInstance();
             today.getTime();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -199,24 +237,17 @@ public class MeasurementView extends BaseActivity {
 
         weightCategory = (TextView) findViewById(R.id.tv_weight_category);
         weightCategory.setVisibility(View.VISIBLE);
-
-
-        boolean gender = profile.sex == 1;
-        Date birthday=null;
-        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-
         try {
-            birthday = format2.parse(profile.birthday);
-        } catch (ParseException e) {
+            dataGetter.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        double[][] bmiData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
+
+
         bmiCategory.setText(getTextBMI(bmiData,birthday,bmi_value));
 
-        double[][] heightData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
         heightCategory.setText(getTextHeight(heightData,birthday,height*100));
 
-        double[][] weightData = new Filereader(getApplicationContext()).giveMeTheData(3,birthday,gender);
         weightCategory.setText(getTextWeight(weightData,birthday,weight));
 
 

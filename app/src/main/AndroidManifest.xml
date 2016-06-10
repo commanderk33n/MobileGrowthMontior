@@ -3,15 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.hs_mannheim.planb.mobilegrowthmonitor">
 
+    <uses-sdk
+        android:minSdkVersion="15"
+        tools:ignore="GradleOverrides" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-sdk android:minSdkVersion="15"
-        tools:ignore="GradleOverrides" />
 
     <uses-feature android:name="android.hardware.camera" />
+
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -48,8 +52,10 @@
         <activity android:name=".MeasurementView" />
         <activity android:name=".datahandler.GraphView" />
         <activity android:name=".datahandler.ExportView" />
-        <activity android:name=".imageprocessing.PreCameraView"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".imageprocessing.PreCameraView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".datahandler.GraphListView"></activity>
     </application>
 
 </manifest>

@@ -234,7 +234,7 @@ public class ImageProcess {
         FileOutputStream out = null;
         String fileName="";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String timeStamp = sdf.format(new Date());
             fileName = Environment.getExternalStorageDirectory().getPath() +
                     "/growpics/" + timeStamp + "_filter.jpg";

@@ -129,9 +129,6 @@ public class Filereader {
     public  double[][] readZScore( int path) throws IOException {
 
 
-
-
-
         InputStream initialStream = context.getResources().openRawResource(path);
         byte[] buffer = new byte[8192];
 
@@ -151,10 +148,8 @@ public class Filereader {
 
         Scanner reader = new Scanner(outputFile);
         reader.useLocale(Locale.US);
-
-
-int zeile = 0;
-
+        int zeile = 0;
+reader.nextLine();
         while (reader.hasNextDouble()) {
             values[zeile / 10][zeile % 10] = reader.nextDouble();
             zeile++;
@@ -169,7 +164,7 @@ int zeile = 0;
 
         int lines = 3000;
         int columns = over5? 10:8;
-        double[][] values = new double[lines-1][10];
+        double[][] values = new double[lines-1][columns];
         File outputDir = context.getCacheDir(); // context being the Activity pointer
         final File outputFile = File.createTempFile("temp", "txt", outputDir);
         outputFile.deleteOnExit();
