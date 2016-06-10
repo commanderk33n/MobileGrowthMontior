@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,6 +41,8 @@ public class GalleryView extends AppCompatActivity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
         hashList = settings.getInt("hash", 0);
+      //  writeGif();
+
     }
 
     @Override
@@ -68,7 +72,6 @@ public class GalleryView extends AppCompatActivity {
             Log.i("Gallery", "hashList " + hashList);
             Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
             Log.i("Gallery","bitmapList length"+ bitmapList.size());
-           // writeGif();
 
 
             if (Arrays.hashCode(listFile) != hashList) {
@@ -161,8 +164,17 @@ public class GalleryView extends AppCompatActivity {
         startActivity(intent);
 
     }
-    /*public byte[] generateGIF() {
-        ArrayList<Bitmap> bitmaps = bitmapList;
+    public byte[] generateGIF() {
+        ArrayList<Bitmap> bitmaps =new ArrayList<>();
+        Log.i(TAG," pathlist"+pathList.size());
+        for(String s : pathList){
+            try {
+                Bitmap b = GalleryView.urlImageToBitmap(s,true);
+                bitmaps.add(b);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.setRepeat(0);
@@ -182,5 +194,5 @@ public class GalleryView extends AppCompatActivity {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }*/
+    }
 }
