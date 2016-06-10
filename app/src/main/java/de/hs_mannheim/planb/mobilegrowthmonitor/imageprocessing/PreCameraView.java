@@ -112,7 +112,7 @@ public class PreCameraView extends BaseActivity {
                 i.putExtra("profile_Id", profile_Id);
                 i.putExtra("weight", weight);
                 i.putExtra("heightReference", heightReference);
-                Log.i("Going to Camera","h ahhaah");
+
                 startActivity(i);
 
                 finish();

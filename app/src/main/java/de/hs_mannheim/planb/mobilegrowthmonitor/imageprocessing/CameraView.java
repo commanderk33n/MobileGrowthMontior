@@ -10,13 +10,10 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-
 import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
-import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -58,7 +55,6 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
                 .commit();
-        Log.i(TAG,"camera loaded");
     }
 
     protected void afterPictureTaken(double height) {

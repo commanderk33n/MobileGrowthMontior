@@ -1,15 +1,12 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -44,8 +41,21 @@ public class CreateProfileView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_profile_view);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_create_profile_view);
-        setSupportActionBar(toolbar);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_create_profile_view);
+            setSupportActionBar(toolbar);
+
+        }else{
+            //findViewById(R.id.save_profile).setVisibility(View.INVISIBLE);
+            Button btnSaveProfile = (Button) findViewById(R.id.btn_save_profile);
+            btnSaveProfile.setVisibility(View.VISIBLE);
+            btnSaveProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                 saveProfile();
+                }
+            });
+        }
 
         dbHelper = DbHelper.getInstance(getApplicationContext());
         lastname = (EditText) findViewById(R.id.et_lastname);
@@ -92,35 +102,39 @@ public class CreateProfileView extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.save_profile) {
 
-            Calendar today = Calendar.getInstance();
-            Date dateFromDatePicker = getDateFromDatePicker();
-
-            if (firstname.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, R.string.toast_enter_firstname, Toast.LENGTH_LONG).show();
-            } else if (lastname.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, R.string.toast_enter_lastname, Toast.LENGTH_LONG).show();
-            } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
-                Toast.makeText(this, R.string.toast_choose_gender, Toast.LENGTH_LONG).show();
-            } else if (dateFromDatePicker.after(today.getTime())) {
-                Toast.makeText(this, R.string.toast_choose_birthday, Toast.LENGTH_LONG).show();
-            } else {
-                ProfileData profileData = new ProfileData();
-                profileData.lastname = lastname.getText().toString();
-                profileData.firstname = firstname.getText().toString();
-
-                if (sex_male.isChecked() && !sex_female.isChecked()) {
-                    profileData.sex = 1;
-                } else {
-                    profileData.sex = 0;
-                }
-
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                profileData.birthday = simpleDateFormat.format(dateFromDatePicker);
-                dbHelper.addProfile(profileData);
-                finish();
-            }
+            saveProfile();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveProfile(){
+        Calendar today = Calendar.getInstance();
+        Date dateFromDatePicker = getDateFromDatePicker();
+
+        if (firstname.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, R.string.toast_enter_firstname, Toast.LENGTH_LONG).show();
+        } else if (lastname.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, R.string.toast_enter_lastname, Toast.LENGTH_LONG).show();
+        } else if (!(sex_female.isChecked() || sex_male.isChecked())) {
+            Toast.makeText(this, R.string.toast_choose_gender, Toast.LENGTH_LONG).show();
+        } else if (dateFromDatePicker.after(today.getTime())) {
+            Toast.makeText(this, R.string.toast_choose_birthday, Toast.LENGTH_LONG).show();
+        } else {
+            ProfileData profileData = new ProfileData();
+            profileData.lastname = lastname.getText().toString();
+            profileData.firstname = firstname.getText().toString();
+
+            if (sex_male.isChecked() && !sex_female.isChecked()) {
+                profileData.sex = 1;
+            } else {
+                profileData.sex = 0;
+            }
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            profileData.birthday = simpleDateFormat.format(dateFromDatePicker);
+            dbHelper.addProfile(profileData);
+            finish();
+        }
     }
 
     @Override
