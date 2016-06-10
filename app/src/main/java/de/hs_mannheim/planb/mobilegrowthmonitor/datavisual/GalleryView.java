@@ -153,6 +153,21 @@ public class GalleryView extends AppCompatActivity {
         }
         return result;
     }
+    protected static Bitmap urlImageToBitmapGif(String imageUrl) throws Exception {
+        Bitmap result = null;
+        if (imageUrl != null) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+                options.inSampleSize = 3;
+
+
+
+            result = BitmapFactory.decodeFile(imageUrl, options);
+
+        }
+        return result;
+    }
+
 
 
 
@@ -164,12 +179,32 @@ public class GalleryView extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public byte[] generateGIF() {
+    public static byte[] generateGIF() {
         ArrayList<Bitmap> bitmaps =new ArrayList<>();
-        Log.i(TAG," pathlist"+pathList.size());
+
+        if(pathList ==null){
+            File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+        pathList  = new ArrayList<>();
+            if (folder.isDirectory()) {
+                File[] listFile = folder.listFiles();
+                for (int i = 0; i < listFile.length; i++) {
+
+                    try {
+                        // TODO: this check is inaccurate. Consider using an Id or something else
+                        // if (pathList.get(i).contains(profile_name)) {
+
+                        pathList.add(0,listFile[i].getAbsolutePath());
+                        // }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        Log.i(TAG,"pathlist"+pathList.size());
         for(String s : pathList){
             try {
-                Bitmap b = GalleryView.urlImageToBitmap(s,true);
+                Bitmap b = GalleryView.urlImageToBitmapGif(s);
                 bitmaps.add(b);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -185,7 +220,7 @@ public class GalleryView extends AppCompatActivity {
         encoder.finish();
         return bos.toByteArray();
     }
-    public void writeGif(){
+    public static void writeGif(){
         FileOutputStream outStream = null;
         try{
             outStream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath()+ "/growpics/gif.gif");

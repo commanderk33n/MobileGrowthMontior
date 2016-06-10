@@ -136,7 +136,7 @@ public class ProfileView extends BaseActivity {
             tvWeight.setText(measurementData.weight + " kg");
 
             TextView tvHeight = (TextView) findViewById(R.id.tv_height);
-            tvHeight.setText(measurementData.height + " m");
+            tvHeight.setText(measurementData.height/100.0 + " m");
         }
 
     }

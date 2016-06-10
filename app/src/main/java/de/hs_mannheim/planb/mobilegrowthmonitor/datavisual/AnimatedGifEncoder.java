@@ -7,7 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
+/*
+As for the original version, code is free for any kind of usages, but you must refer to the Unisys
+LZW patent for restrictions on use of the associated LZWEncoder class.
+http://www.jappit.com/blog/2008/12/04/j2me-animated-gif-encoder/
+https://github.com/nbadal/android-gif-encoder
+ */
 public class AnimatedGifEncoder {
 
     protected int width; // image size
