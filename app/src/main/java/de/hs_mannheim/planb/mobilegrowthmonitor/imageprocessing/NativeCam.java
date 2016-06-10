@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +47,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 /**
  * Created by eikood on 09.05.2016.
  */
-public class NativeCam extends Fragment implements SensorEventListener {
+public class NativeCam extends Fragment implements SensorEventListener,Serializable {
 
     private static final String TAG = NativeCam.class.getSimpleName();
 
@@ -306,7 +309,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
      * <p>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
-    class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+    class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,Serializable {
 
         // SurfaceHolder
         private SurfaceHolder mHolder;
@@ -355,6 +358,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
          */
         private void setCamera(Camera camera) {
             // Source: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
+
             mCamera = camera;
             Camera.Parameters parameters = mCamera.getParameters();
             mSupportedPreviewSizes = parameters.getSupportedPreviewSizes();
@@ -369,6 +373,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
             }
+
             requestLayout();
         }
 
@@ -497,7 +502,7 @@ public class NativeCam extends Fragment implements SensorEventListener {
     /**
      * Picture Callback for handling a picture capture and saving it out to a file.
      */
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+    private class ourPictureCallBack implements Camera.PictureCallback,Serializable{
 
         @Override
         public synchronized void onPictureTaken(final byte[] data, Camera camera) {
@@ -510,6 +515,8 @@ public class NativeCam extends Fragment implements SensorEventListener {
             }
 
             captureButton.setClickable(false);
+
+
             new Thread(new Runnable() {
                 public void run() {
                     ((CameraView) getActivity()).afterPictureTaken(height);
@@ -531,16 +538,19 @@ public class NativeCam extends Fragment implements SensorEventListener {
                         Looper.prepare();
                         measurementData = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
                         measurementData.image = pictureFile.getPath();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    }catch (IOException e) {
+                        MeasurementView.goBack();
                         e.printStackTrace();
                     } catch(IllegalArgumentException e){
                         e.printStackTrace();
+
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(getActivity(),"There seems to be an error", Toast.LENGTH_LONG).show();                            }
                         });
+                        MeasurementView.goBack();
+
+
                     }
                     finally {
                         getActivity().runOnUiThread(new Runnable() {
@@ -553,14 +563,15 @@ public class NativeCam extends Fragment implements SensorEventListener {
                             }
                         });
 
-
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
                     }
                 }
             }).start();
+
         }
-    };
+    }
+    private Camera.PictureCallback mPicture = new ourPictureCallBack();
 
     /**
      * Used to return the camera File output.

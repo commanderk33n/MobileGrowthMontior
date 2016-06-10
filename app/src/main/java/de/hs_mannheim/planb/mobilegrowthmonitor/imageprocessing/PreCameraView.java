@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
@@ -24,6 +26,16 @@ public class PreCameraView extends BaseActivity {
     float weight, heightReference;
     SharedPreferences settings;
     final String PREFS_NAME = "Reference";
+    private NativeCam camFrag;
+    private Thread camFragLoader ;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ProfileView.class);
+        intent.putExtra("profile_Id", profile_Id);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +62,15 @@ public class PreCameraView extends BaseActivity {
         heightReference = settings.getFloat("heightReference", 10);
         etWeight.setText(weight + "");
         etHeightReference.setText(heightReference + "");
+        camFragLoader = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("Thread started","loading camFrag");
+                camFrag = NativeCam.newInstance(profile_Id, heightReference);
+
+            }
+        });
+        camFragLoader.start();
 
     }
 
@@ -78,9 +99,20 @@ public class PreCameraView extends BaseActivity {
                 editor.putFloat("heightReference", heightReference);
                 editor.commit();
                 Intent i = new Intent(getApplicationContext(), CameraView.class);
+               /* try {
+                    camFragLoader.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+                Log.i("Going to Camera",camFrag.toString());
+
+                if(camFrag!=null){
+                    i.putExtra("camFrag",camFrag);
+                }
                 i.putExtra("profile_Id", profile_Id);
                 i.putExtra("weight", weight);
                 i.putExtra("heightReference", heightReference);
+                Log.i("Going to Camera","h ahhaah");
                 startActivity(i);
 
                 finish();

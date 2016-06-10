@@ -46,8 +46,12 @@ public class MeasurementView extends BaseActivity {
     private ProfileData profile;
     private TextView bmi, bmiCategory,heightText,weightText,heightCategory,weightCategory;
     private static Button undo;
-    public final String TAG = MeasurementView.class.getSimpleName();
+    public static final String TAG = MeasurementView.class.getSimpleName();
     public static Context baseContext;
+    private static volatile boolean startCallback;
+    private static volatile boolean goBack;
+
+   private static Thread callbackWaiter;
     /**
      * Fetches Profile from database
      *
@@ -67,8 +71,53 @@ public class MeasurementView extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
         age = extras.getInt("profileAge");
-        weight = extras.getFloat("weight");
-        height = extras.getDouble("height");
+
+        if(extras.containsKey("weight")){
+            weight = extras.getFloat("weight");
+        }else{
+            weight = dbHelper.getLatestMeasurement(profile_Id).weight;
+
+        }
+        if(extras.containsKey("height")){
+            height = extras.getDouble("height");
+
+        }else{
+            height=dbHelper.getLatestMeasurement(profile_Id).height;
+        }
+
+        startCallback = extras.getBoolean("startCallback",false);
+        goBack = false;
+
+        Log.i(TAG,"startCallback before if"+startCallback);
+        if(startCallback){
+            callbackWaiter =  new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(TAG,"Thread started");
+                   while(startCallback){
+
+                       Log.i(TAG,"goBack= "+goBack);
+                       Log.i(TAG,"startCallback = "+startCallback);
+                       try {
+                           Thread.sleep(1000);
+                       } catch (InterruptedException e) {
+                           if(goBack){
+                               Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
+                               intent.putExtra("profile_Id", profile.index);
+                               startActivity(intent);
+                               startCallback=false;
+                           }
+                           e.printStackTrace();
+                       }
+                   }
+                }
+            });
+            callbackWaiter.start();
+
+
+        }
+
+
         eT_weight.setText(weight + "");
         eT_height.setText(height + "");
         Log.i(TAG, "weight = " + weight);
@@ -116,6 +165,13 @@ public class MeasurementView extends BaseActivity {
 
 
     }
+    }
+
+
+    public static void goBack(){
+        goBack = true;
+        callbackWaiter.interrupt();
+        Log.i(TAG,"goBack()");
     }
 
     private void showTexts(){
@@ -351,6 +407,8 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
            return;
            //todo: create toast
        }
+        goBack = false;
+        callbackWaiter.interrupt();
         eT_height.setText("" + measurementData.height);
         image = measurementData.image;
         edited = measurementData.edited;
