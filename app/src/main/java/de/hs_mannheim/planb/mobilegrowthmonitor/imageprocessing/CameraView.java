@@ -10,13 +10,10 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-
 import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
-import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -46,7 +43,14 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         weight = extras.getFloat("weight");
         profile = db.getProfile(profile_Id);
 
-        camFrag = NativeCam.newInstance(profile_Id, heightReference);
+        if(extras.containsKey("camFrag")){
+            Log.i(TAG,"camfrag found");
+            camFrag = (NativeCam) extras.getSerializable("camFrag");
+        }else{
+            Log.i(TAG,"camfrag not found, creating new");
+            camFrag = NativeCam.newInstance(profile_Id, heightReference);
+
+        }
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.cam_container, camFrag)
@@ -60,6 +64,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         intent.putExtra("age", age);
         intent.putExtra("weight", weight);
         intent.putExtra("height", height);
+        intent.putExtra("startCallback",true);
         startActivity(intent);
     }
 

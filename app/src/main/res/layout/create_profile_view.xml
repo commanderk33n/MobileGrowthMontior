@@ -109,7 +109,6 @@
                 android:id="@+id/dp_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_below="@+id/tv_birthdate"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
@@ -117,6 +116,16 @@
                 android:datePickerMode="spinner"
                 android:padding="5dp"
                 android:spinnersShown="true"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_save_profile"
+                android:layout_below="@id/dp_birthday"
+                android:text="@string/save"
+                android:visibility="invisible"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
 
