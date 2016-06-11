@@ -40,26 +40,26 @@ public class MeasurementView extends BaseActivity {
     public static EditText eT_height, eT_weight;
     private static ImageView mImageView;
     private DbHelper dbHelper;
-    private int profile_Id, age;
+    private int profile_Id, age,heightPosition,weightPosition;
     private double weight, height;
-    private static String image,edited;
+    private static String image, edited;
     private ProfileData profile;
-    private TextView bmi, bmiCategory,heightText,weightText,heightCategory,weightCategory;
+    private TextView bmi, bmiCategory, heightText, weightText, heightCategory, weightCategory;
     private static Button undo;
     public static final String TAG = MeasurementView.class.getSimpleName();
     public static Context baseContext;
     private static volatile boolean startCallback;
     private static volatile boolean goBack;
-    double[][] weightData,heightData,bmiData;
+    double[][] weightData, heightData, bmiData;
     private boolean gender;
     private Date birthday;
     private Thread dataGetter = new Thread(new Runnable() {
         @Override
         public void run() {
-            Log.i("datagetter","start");
+            Log.i("datagetter", "start");
 
             gender = profile.sex == 1;
-            birthday=null;
+            birthday = null;
             SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
@@ -67,15 +67,17 @@ public class MeasurementView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1,birthday,gender);
-            heightData = new Filereader(getApplicationContext()).giveMeTheData(2,birthday,gender);
-            weightData = new Filereader(getApplicationContext()).giveMeTheData(3,birthday,gender);
-            Log.i("datagetter","done");
+            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender);
+            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender);
+            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender);
+            Log.i("datagetter", "done");
 
         }
-    });;
+    });
+    ;
 
-   private static Thread callbackWaiter;
+    private static Thread callbackWaiter;
+
     /**
      * Fetches Profile from database
      *
@@ -98,57 +100,54 @@ public class MeasurementView extends BaseActivity {
         profile = dbHelper.getProfile(profile_Id);
 
 
-        if(extras.containsKey("weight")){
+        if (extras.containsKey("weight")) {
             weight = extras.getFloat("weight");
-        }else{
-            if(dbHelper.getLatestMeasurement(profile_Id)!=null) {
+        } else {
+            if (dbHelper.getLatestMeasurement(profile_Id) != null) {
 
                 weight = dbHelper.getLatestMeasurement(profile_Id).weight;
             }
         }
-        if(extras.containsKey("height")){
+        if (extras.containsKey("height")) {
             height = extras.getDouble("height");
 
-        }else{
-            if(dbHelper.getLatestMeasurement(profile_Id)!=null){
+        } else {
+            if (dbHelper.getLatestMeasurement(profile_Id) != null) {
 
-                height=dbHelper.getLatestMeasurement(profile_Id).height;
-        }}
+                height = dbHelper.getLatestMeasurement(profile_Id).height;
+            }
+        }
 
 
-
-        startCallback = extras.getBoolean("startCallback",false);
+        startCallback = extras.getBoolean("startCallback", false);
         goBack = false;
 
-        Log.i(TAG,"startCallback before if"+startCallback);
-        if(startCallback){
-            callbackWaiter =  new Thread(new Runnable() {
+        Log.i(TAG, "startCallback before if" + startCallback);
+        if (startCallback) {
+            callbackWaiter = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(TAG,"Thread started");
+                    Log.i(TAG, "Thread started");
                     int i = 0;
-                   while(startCallback&&i<50){
-i++;
-                       Log.i(TAG,"goBack= "+goBack);
-                       Log.i(TAG,"startCallback = "+startCallback);
-                       try {
-                           Thread.sleep(2000);
-                       } catch (InterruptedException e) {
-                           if(goBack){
-                               Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
-                               intent.putExtra("profile_Id", profile.index);
-                               startActivity(intent);
-                               startCallback=false;
-                           }
-                           e.printStackTrace();
-                       }
-                   }
+                    while (startCallback && i < 50) {
+                        i++;
+                        Log.i(TAG, "goBack= " + goBack);
+                        Log.i(TAG, "startCallback = " + startCallback);
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            if (goBack) {
+                                Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
+                                intent.putExtra("profile_Id", profile.index);
+                                startActivity(intent);
+                                startCallback = false;
+                            }
+                            e.printStackTrace();
+                        }
+                    }
                 }
             });
             callbackWaiter.start();
-
-
-
 
 
         }
@@ -164,8 +163,8 @@ i++;
         mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
 
-     //   DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-       // dbDummyData.addData(profile_Id);
+        //   DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        // dbDummyData.addData(profile_Id);
     }
 
     /**
@@ -175,7 +174,11 @@ i++;
      * @param view
      */
     public void saveMeasurement(View view) {
-
+        try {
+            dataGetter.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (validate()) {
             double height = Double.parseDouble(this.eT_height.getText().toString());
             double weight = Double.parseDouble(this.eT_weight.getText().toString());
@@ -185,12 +188,12 @@ i++;
             measurementData.height = height;
             measurementData.weight = weight;
             measurementData.index = profile_Id;
-            if(! (image== null)){
+            if (!(image == null)) {
                 measurementData.image = image;
             } else {
                 measurementData.image = "";
             }
-            image =null;
+            image = null;
             Calendar today = Calendar.getInstance();
             today.getTime();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -201,18 +204,17 @@ i++;
             showTexts();
 
 
-
+        }
     }
-    }
 
 
-    public static void goBack(){
+    public static void goBack() {
         goBack = true;
         callbackWaiter.interrupt();
-        Log.i(TAG,"goBack()");
+        Log.i(TAG, "goBack()");
     }
 
-    private void showTexts(){
+    private void showTexts() {
         double height = Double.parseDouble(this.eT_height.getText().toString()) / 100.0;
         double weight = Double.parseDouble(this.eT_weight.getText().toString());
 
@@ -237,55 +239,19 @@ i++;
 
         weightCategory = (TextView) findViewById(R.id.tv_weight_category);
         weightCategory.setVisibility(View.VISIBLE);
-        try {
-            dataGetter.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
 
-        bmiCategory.setText(getTextBMI(bmiData,birthday,bmi_value));
 
-        heightCategory.setText(getTextHeight(heightData,birthday,height*100));
+        bmiCategory.setText(getTextBMI(bmiData, birthday, bmi_value));
 
-        weightCategory.setText(getTextWeight(weightData,birthday,weight));
+        heightCategory.setText(getTextHeight(heightData, birthday, height * 100));
 
+        weightCategory.setText(getTextWeight(weightData, birthday, weight));
 
 
     }
 
-private String getTextBMI(double[][] data, Date birthday, double bmi){
-
-    Calendar calendar = new GregorianCalendar();
-    calendar.setTime(Calendar.getInstance().getTime());
-    Calendar measuredDay = Calendar.getInstance();
-    calendar.setTime(birthday);
-    age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-    age *= 12;
-    age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-    if(age>228){
-        return bmiCategorize(bmi,profile.sex);
-    }else{
-        for(int i = 0;i<data.length;i++){
-            if((int)data[i][0]==age){
-                //  optimal.add(data[i][data[0].length / 2]);
-                double sdMinus1 = (data[i][data[0].length / 2-1]);
-                double sdPlus1 = (data[i][data[0].length / 2+1]);
-                if(bmi>sdPlus1){
-                    return "ayy fatty";
-                }
-                if(bmi<sdMinus1){
-                    return "eat more";
-                }
-                return "gut so";
-            }
-        }
-    }
-    return "error hehehehehehehe";
-    }
-
-
-    private String getTextHeight(double[][] data, Date birthday, double height){
+    private String getTextBMI(double[][] data, Date birthday, double bmi) {
 
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(Calendar.getInstance().getTime());
@@ -294,30 +260,78 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
         age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-        if(age>228){
-            age =228;
-        }
+        if (age > 228) {
+            return bmiCategorize(bmi, profile.sex);
+        } else {
+            //  optimal.add(data[i][data[0].length / 2]);
+            for (int i = 0; i < data.length; i++) {
+                if ((int) data[i][0] == age) {
 
-            for(int i = 0;i<data.length;i++){
-                if((int)data[i][0]==age){
                     //  optimal.add(data[i][data[0].length / 2]);
-                    double sdMinus1 = (data[i][data[0].length / 2-1]);
-                    double sdPlus1 = (data[i][data[0].length / 2+1]);
-                    if(height>sdPlus1){
-                        return "bist aber ein großer";
+                    double sdMinus1 = (data[i][data[0].length / 2 - 1]);
+                    double sdPlus1 = (data[i][data[0].length / 2 + 1]);
+                    double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                    double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                    if (bmi > sdPlus2) {
+                        return getString(R.string.bmi_category_weight_child_severly_overweight);
+
+                    } else if (bmi > sdPlus1) {
+                        return getString(R.string.bmi_category_weight_child_overweight);
+                    } else if (bmi < sdMinus2) {
+                        return getString(R.string.bmi_category_weight_child_severly_underweight);
+                    } else if (bmi < sdMinus1) {
+                        return getString(R.string.bmi_category_weight_child_underweight);
                     }
-                    if(height<sdMinus1){
-                        return "bist aber ein kleiner";
-                    }
-                    return "gut so";
+                    return getString(R.string.bmi_category_weight_child_normal_weight);
+
                 }
             }
+
+
+        }
+        return "error hehehehehehehe";
+    }
+
+    private String getTextHeight(double[][] data, Date birthday, double height) {
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(Calendar.getInstance().getTime());
+        Calendar measuredDay = Calendar.getInstance();
+        calendar.setTime(birthday);
+        age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
+        age *= 12;
+        age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
+        if (age > 228) {
+            age = 228;
+        }
+        for (int i = 0; i < data.length; i++) {
+            if ((int) data[i][0] == age) {
+                heightPosition =i;
+                double sdMinus1 = (data[i][data[0].length / 2 - 1]);
+                double sdPlus1 = (data[i][data[0].length / 2 + 1]);
+                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                if (height > sdPlus2) {
+                    return getString(R.string.height_category_weight_child_severly_overweight);
+
+                } else if (height > sdPlus1) {
+                    return getString(R.string.height_category_weight_child_overweight);
+                } else if (height < sdMinus2) {
+                    return getString(R.string.height_category_weight_child_severly_underweight);
+                } else if (height < sdMinus1) {
+                    return getString(R.string.height_category_weight_child_underweight);
+                }
+                return getString(R.string.height_category_weight_child_normal_weight);
+
+            }
+        }
 
         return "error hehehehehehehe";
     }
 
 
-    private String getTextWeight(double[][] data, Date birthday, double weight){
+
+    private String getTextWeight(double[][] data, Date birthday, double weight) {
 
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(Calendar.getInstance().getTime());
@@ -326,25 +340,32 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
         age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-        if(age>120){
+        if (age > 120) {
             return "keine who daten für dein alter digga";
-        }else if(age<61){
-            age*=30;
+        } else if (age < 61) {
+            age *= 30;
         }
 
 
-        for(int i = 0;i<data.length;i++){
-            if((int)data[i][0]==age){
-                //  optimal.add(data[i][data[0].length / 2]);
-                double sdMinus1 = (data[i][data[0].length / 2-1]);
-                double sdPlus1 = (data[i][data[0].length / 2+1]);
-                if(weight>sdPlus1){
-                    return "bist aber ein fetter";
+        for (int i = 0; i < data.length; i++) {
+            if ((int) data[i][0] == age) {
+                weightPosition =i;
+                double sdMinus1 = (data[i][data[0].length / 2 - 1]);
+                double sdPlus1 = (data[i][data[0].length / 2 + 1]);
+                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                if (weight > sdPlus2) {
+                    return getString(R.string.bmi_category_weight_child_severly_overweight);
+
+                } else if (weight > sdPlus1) {
+                    return getString(R.string.bmi_category_weight_child_overweight);
+                } else if (weight < sdMinus2) {
+                    return getString(R.string.bmi_category_weight_child_severly_underweight);
+                } else if (weight < sdMinus1) {
+                    return getString(R.string.bmi_category_weight_child_underweight);
                 }
-                if(weight<sdMinus1){
-                    return "bist aber ein dünner";
-                }
-                return "gut so";
+                return getString(R.string.bmi_category_weight_child_normal_weight);
+
             }
         }
 
@@ -434,10 +455,10 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
     }
 
     public static void setMeasurement(MeasurementData measurementData) {
-       if(measurementData==null){
-           return;
-           //todo: create toast
-       }
+        if (measurementData == null) {
+            return;
+            //todo: create toast
+        }
         goBack = false;
         callbackWaiter.interrupt();
         eT_height.setText("" + measurementData.height);
@@ -449,7 +470,6 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
             mImageView.setImageBitmap(bitmap);
             mImageView.setVisibility(View.VISIBLE);
         }
-
 
 
         undo.setVisibility(View.VISIBLE);
@@ -502,7 +522,22 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
             Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
             return false;
         } else {
+            double height = Double.parseDouble(this.eT_height.getText().toString());
+            double weight = Double.parseDouble(this.eT_weight.getText().toString());
+       /*     if (height > heightData[heightPosition][heightData[0].length-1]  ||
+                    height < heightData[heightPosition][heightData[0].length/2-3] ||
+                    weight > weightData[weightPosition][weightData[0].length-1] ||
+                    weight <  weightData[weightPosition][heightData[0].length/2-3] ) {
+                    */
+            if(height>250||height<20||weight>200||weight<10){
+                Toast.makeText(this, R.string.validate_data, Toast.LENGTH_LONG).show();
+                return false;
+            }
             return true;
+
+
+
+
         }
     }
 
@@ -525,7 +560,7 @@ private String getTextBMI(double[][] data, Date birthday, double bmi){
         }
     }
 
-    public void undo(View view){
+    public void undo(View view) {
         File file = new File(image);
         file.delete();
         File fileOriginal = new File(edited);

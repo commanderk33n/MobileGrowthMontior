@@ -63,6 +63,8 @@
     <string name="bmi_category_weight_adult_overweight">are overweight!</string>
     <string name="bmi_category_weight_adult_obesity">are obese!</string>
     <string name="bmi_category_weight_adult_sever_obesity">are severely obese!</string>
+
+
     <string name="enter_height">Please enter the childs height!</string>
     <string name="enter_weight">Please enter the childs weight!</string>
     <string name="weight_in_kg">weight in kg</string>
@@ -77,6 +79,11 @@
     <string name="roll">Roll: %d</string>
     <string name="heightReference">Height of Reference Object in cm</string>
     <string name="enter_heightReference">Please enter the height of the reference object!</string>
+    <string name="validate_data">Please enter valid data</string>
 
-
+    <string name="height_category_weight_child_severly_underweight">is severlery short!</string>
+    <string name="height_category_weight_child_underweight">is short!</string>
+    <string name="height_category_weight_child_normal_weight">has normal height!</string>
+    <string name="height_category_weight_child_overweight">is tall!</string>
+    <string name="height_category_weight_child_severly_overweight">is severly tall!</string>
 </resources>

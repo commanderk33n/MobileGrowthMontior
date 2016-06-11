@@ -78,5 +78,12 @@
     <string name="pitch">Neigung: %d</string>
     <string name="roll">Roll: %d</string>
     <string name="sensor_not_found">Der Sonsor wurde nicht gefunden!</string>
+    <string name="height_category_weight_child_normal_weight">hat normale größe</string>
+    <string name="height_category_weight_child_overweight">ist groß</string>
+    <string name="height_category_weight_child_severly_overweight">ist sehr groß</string>
+    <string name="height_category_weight_child_severly_underweight">ist sehr klein</string>
+    <string name="height_category_weight_child_underweight">ist klein</string>
+    <string name="validate_data">Bitte geben Sie valide Daten ein.</string>
+    <string name="enter_heightReference">Bitte geben Sie die Größe des Referenzobjekts an</string>
 
 </resources>
