@@ -268,10 +268,10 @@ public class MeasurementView extends BaseActivity {
                 if ((int) data[i][0] == age) {
 
                     //  optimal.add(data[i][data[0].length / 2]);
-                    double sdMinus1 = (data[i][data[0].length / 2 - 1]);
-                    double sdPlus1 = (data[i][data[0].length / 2 + 1]);
-                    double sdMinus2 = (data[i][data[0].length / 2 - 2]);
-                    double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                    double sdMinus1 = (data[i][data[0].length / 2 - 2]);
+                    double sdPlus1 = (data[i][data[0].length / 2 + 2]);
+                    double sdMinus2 = (data[i][data[0].length / 2 - 3]);
+                    double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                     if (bmi > sdPlus2) {
                         return getString(R.string.bmi_category_weight_child_severly_overweight);
 
@@ -307,10 +307,10 @@ public class MeasurementView extends BaseActivity {
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
                 heightPosition =i;
-                double sdMinus1 = (data[i][data[0].length / 2 - 1]);
-                double sdPlus1 = (data[i][data[0].length / 2 + 1]);
-                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
-                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus1 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus1 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus2 = (data[i][data[0].length / 2 - 3]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                 if (height > sdPlus2) {
                     return getString(R.string.height_category_weight_child_severly_overweight);
 
@@ -350,10 +350,10 @@ public class MeasurementView extends BaseActivity {
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
                 weightPosition =i;
-                double sdMinus1 = (data[i][data[0].length / 2 - 1]);
-                double sdPlus1 = (data[i][data[0].length / 2 + 1]);
-                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
-                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus1 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus1 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus2 = (data[i][data[0].length / 2 - 3]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                 if (weight > sdPlus2) {
                     return getString(R.string.bmi_category_weight_child_severly_overweight);
 

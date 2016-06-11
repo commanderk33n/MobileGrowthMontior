@@ -156,8 +156,8 @@ public class GraphListView extends AppCompatActivity {
                     for(int i = 0;i<data.length;i++){
                         if((int)data[i][0]==age){
                             //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus1.add(data[i][data[0].length / 2-1]);
-                            sdPlus1.add(data[i][data[0].length / 2+1]);
+                            sdMinus1.add(data[i][data[0].length / 2-2]);
+                            sdPlus1.add(data[i][data[0].length / 2+2]);
 
                         }
                     }
@@ -173,8 +173,8 @@ public class GraphListView extends AppCompatActivity {
                     for(int i = 0;i<data.length;i++){
                         if((int)data[i][0]==age){
                             //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus1.add(data[i][data[0].length / 2-1]);
-                            sdPlus1.add(data[i][data[0].length / 2+1]);
+                            sdMinus1.add(data[i][data[0].length / 2-2]);
+                            sdPlus1.add(data[i][data[0].length / 2+2]);
 
                         }
                     }
@@ -256,7 +256,7 @@ public class GraphListView extends AppCompatActivity {
             mPlot.setDomainStep(XYStepMode.SUBDIVIDE, dateArray.length);
             mPlot.setRangeValueFormat(new DecimalFormat("0"));
 
-       /*     mPlot.setDomainValueFormat(new Format() {
+          /*  mPlot.setDomainValueFormat(new Format() {
 
                 // create a simple date format that draws on the year portion of our timestamp.
                 // see http://download.oracle.com/javase/1.4.2/docs/api/java/text/SimpleDateFormat.html

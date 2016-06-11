@@ -282,7 +282,7 @@ public class ProfileView extends BaseActivity {
      * @param view
      */
     public void startGraph(View view) {
-        if(dbHelper.getAllMeasurements(profile_Id).size()<3){
+        if(dbHelper.getAllMeasurements(profile_Id)==null ||dbHelper.getAllMeasurements(profile_Id).size()<3){
             Toast.makeText(getApplicationContext(),"Not enough measurements for a graph",Toast.LENGTH_LONG);
         }else{
         Intent intent = new Intent(this, GraphListView.class);
