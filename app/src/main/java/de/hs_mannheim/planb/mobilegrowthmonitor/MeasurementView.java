@@ -182,8 +182,9 @@ public class MeasurementView extends BaseActivity {
         if (validate()) {
             double height = Double.parseDouble(this.eT_height.getText().toString());
             double weight = Double.parseDouble(this.eT_weight.getText().toString());
-            height = (double) Math.round(height * 100) / 100;
-            weight = (double) Math.round(weight * 100) / 100;
+            height =  height*10;
+            height = height-height%1;
+            height = height/10;
             MeasurementData measurementData = new MeasurementData();
             measurementData.height = height;
             measurementData.weight = weight;

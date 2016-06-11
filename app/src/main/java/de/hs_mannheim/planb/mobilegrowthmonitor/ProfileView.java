@@ -133,12 +133,15 @@ public class ProfileView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+          //  double tempWeight = measurementData.weight-measurementData.weight%0.01;
 
             TextView tvWeight = (TextView) findViewById(R.id.tv_weight);
             tvWeight.setText(measurementData.weight + " kg");
 
             TextView tvHeight = (TextView) findViewById(R.id.tv_height);
-            tvHeight.setText(measurementData.height/100.0 + " m");
+            double tempHeight = measurementData.height ;
+            tempHeight-=tempHeight%1;
+            tvHeight.setText(tempHeight/100+ " m"); //cut off after 2 digits
         }
 
     }
