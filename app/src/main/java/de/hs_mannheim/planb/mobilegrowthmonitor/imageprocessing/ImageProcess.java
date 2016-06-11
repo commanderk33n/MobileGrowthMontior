@@ -230,7 +230,7 @@ public class ImageProcess {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private String imageWriter(Bitmap bmp) {
+    public String imageWriter(Bitmap bmp) {
         FileOutputStream out = null;
         String fileName="";
         try {

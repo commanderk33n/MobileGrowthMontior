@@ -37,6 +37,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.ImageProcess;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
@@ -215,8 +216,8 @@ public class ProfileView extends BaseActivity {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
               //  mImageView.setImageBitmap(imageBitmap);
-
-           //     dbHelper.setProfilePic(profile_Id, pictureCamPath);
+            String pictureCamPath= new ImageProcess(0).imageWriter(imageBitmap);
+                dbHelper.setProfilePic(profile_Id, pictureCamPath);
                 //Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
                 imageBitmap = getTheProperThumbnailBitmap(imageBitmap);
 

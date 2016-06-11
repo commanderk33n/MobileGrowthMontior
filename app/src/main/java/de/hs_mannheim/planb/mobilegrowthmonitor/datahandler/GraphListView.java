@@ -39,8 +39,9 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
-public class GraphListView extends AppCompatActivity {
+public class GraphListView extends BaseActivity {
     private ListView plots;
     DbHelper dbHelper;
     private int profileId;
