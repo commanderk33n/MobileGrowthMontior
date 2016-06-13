@@ -46,7 +46,7 @@ public class Filereader {
             age--;
         }
         age*=12;
-        age +=  (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH));
+        age += 12- (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH));
         try{
         switch (classification){
             case 1 :
