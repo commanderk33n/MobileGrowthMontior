@@ -16,8 +16,8 @@
     <string name="firstname">firstname</string>
     <string name="age">age</string>
     <string name="date">Date</string>
-    <string name="height">Height:</string>
-    <string name="weight">Weight:</string>
+    <string name="height">Height: </string>
+    <string name="weight">Weight: </string>
     <string name="foto">Photo</string>
     <string name="graph">Graph</string>
     <string name="gallery">Gallery</string>
@@ -49,20 +49,20 @@
     <string name="toast_choose_gender">Please choose the gender!</string>
     <string name="toast_choose_birthday">Please choose a reasonable birthday!</string>
     <string name="snackbar_create_profile">Create a new Profile?</string>
-    <string name="bmi">The BMI is: %.2f.</string>
+    <string name="bmi">The BMI is: %f</string>
     <string name="bmi_category_weight_child">The child %s</string>
     <string name="bmi_category_weight_adult">You %s</string>
-    <string name="bmi_category_weight_not_valid">There is no valid BMI in this age class</string>
-    <string name="bmi_category_weight_child_severly_underweight">is severly underweight!</string>
-    <string name="bmi_category_weight_child_underweight">is underweight!</string>
-    <string name="bmi_category_weight_child_normal_weight">has normal weight!</string>
-    <string name="bmi_category_weight_child_overweight">is overweight!</string>
-    <string name="bmi_category_weight_child_severly_overweight">is severly overweight!</string>
-    <string name="bmi_category_weight_adult_underweight">are underweight!</string>
-    <string name="bmi_category_weight_adult_normal_weight">have normal weight!</string>
-    <string name="bmi_category_weight_adult_overweight">are overweight!</string>
-    <string name="bmi_category_weight_adult_obesity">are obese!</string>
-    <string name="bmi_category_weight_adult_sever_obesity">are severely obese!</string>
+    <string name="bmi_category_weight_not_valid">There is no WHO reference data in this age class</string>
+    <string name="bmi_category_weight_child_severly_underweight">That means strong underweight!</string>
+    <string name="bmi_category_weight_child_underweight">That means underweight!</string>
+    <string name="bmi_category_weight_child_normal_weight">That means normal weight!</string>
+    <string name="bmi_category_weight_child_overweight">That means overweight!</string>
+    <string name="bmi_category_weight_child_severly_overweight">That means strong overweight!</string>
+    <string name="bmi_category_weight_adult_underweight">That means underweight!</string>
+    <string name="bmi_category_weight_adult_normal_weight">That means normal weight!</string>
+    <string name="bmi_category_weight_adult_overweight">That means overweight!</string>
+    <string name="bmi_category_weight_adult_obesity">That means obesity!</string>
+    <string name="bmi_category_weight_adult_sever_obesity">That means severe obesity!</string>
 
 
     <string name="enter_height">Please enter the childs height!</string>
@@ -81,9 +81,9 @@
     <string name="enter_heightReference">Please enter the height of the reference object!</string>
     <string name="validate_data">Please enter valid data</string>
 
-    <string name="height_category_weight_child_severly_underweight">is severlery short!</string>
-    <string name="height_category_weight_child_underweight">is short!</string>
-    <string name="height_category_weight_child_normal_weight">has normal height!</string>
-    <string name="height_category_weight_child_overweight">is tall!</string>
-    <string name="height_category_weight_child_severly_overweight">is severly tall!</string>
+    <string name="category_height_child_very_short">is very short!</string>
+    <string name="category_height_child_short">is short!</string>
+    <string name="category_height_child_normal_height">has normal height!</string>
+    <string name="category_height_child_tall">is tall!</string>
+    <string name="category_height_child_very_tall">is very tall!</string>
 </resources>

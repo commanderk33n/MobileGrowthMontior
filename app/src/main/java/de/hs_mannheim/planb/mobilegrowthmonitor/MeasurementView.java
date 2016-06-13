@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
@@ -274,15 +271,20 @@ public class MeasurementView extends BaseActivity {
                     double sdMinus2 = (data[i][data[0].length / 2 - 3]);
                     double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                     if (bmi > sdPlus2) {
+                        setBackgroundColor(1, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_severly_overweight);
 
                     } else if (bmi > sdPlus1) {
+                        setBackgroundColor(2, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_overweight);
                     } else if (bmi < sdMinus2) {
+                        setBackgroundColor(1, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_severly_underweight);
                     } else if (bmi < sdMinus1) {
+                        setBackgroundColor(3, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_underweight);
                     }
+                    setBackgroundColor(4, bmiCategory);
                     return getString(R.string.bmi_category_weight_child_normal_weight);
 
                 }
@@ -313,16 +315,20 @@ public class MeasurementView extends BaseActivity {
                 double sdMinus2 = (data[i][data[0].length / 2 - 3]);
                 double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                 if (height > sdPlus2) {
-                    return getString(R.string.height_category_weight_child_severly_overweight);
-
+                    setBackgroundColor(2, heightCategory);
+                    return getString(R.string.category_height_child_very_tall);
                 } else if (height > sdPlus1) {
-                    return getString(R.string.height_category_weight_child_overweight);
+                    setBackgroundColor(3, heightCategory);
+                    return getString(R.string.category_height_child_tall);
                 } else if (height < sdMinus2) {
-                    return getString(R.string.height_category_weight_child_severly_underweight);
+                    setBackgroundColor(1, heightCategory);
+                    return getString(R.string.category_height_child_very_short);
                 } else if (height < sdMinus1) {
-                    return getString(R.string.height_category_weight_child_underweight);
+                    setBackgroundColor(2, heightCategory);
+                    return getString(R.string.category_height_child_short);
                 }
-                return getString(R.string.height_category_weight_child_normal_weight);
+                setBackgroundColor(4, heightCategory);
+                return getString(R.string.category_height_child_normal_height);
 
             }
         }
@@ -342,7 +348,7 @@ public class MeasurementView extends BaseActivity {
         age *= 12;
         age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
         if (age > 120) {
-            return "keine who daten für dein alter digga";
+            return getString(R.string.bmi_category_weight_not_valid);
         } else if (age < 61) {
             age *= 30;
         }
@@ -356,15 +362,20 @@ public class MeasurementView extends BaseActivity {
                 double sdMinus2 = (data[i][data[0].length / 2 - 3]);
                 double sdPlus2 = (data[i][data[0].length / 2 + 3]);
                 if (weight > sdPlus2) {
+                    setBackgroundColor(1, weightCategory);
                     return getString(R.string.bmi_category_weight_child_severly_overweight);
 
                 } else if (weight > sdPlus1) {
+                    setBackgroundColor(2, weightCategory);
                     return getString(R.string.bmi_category_weight_child_overweight);
                 } else if (weight < sdMinus2) {
+                    setBackgroundColor(1, weightCategory);
                     return getString(R.string.bmi_category_weight_child_severly_underweight);
                 } else if (weight < sdMinus1) {
+                    setBackgroundColor(2, weightCategory);
                     return getString(R.string.bmi_category_weight_child_underweight);
                 }
+                setBackgroundColor(4, weightCategory);
                 return getString(R.string.bmi_category_weight_child_normal_weight);
 
             }
@@ -375,6 +386,7 @@ public class MeasurementView extends BaseActivity {
 
 
     // Tabellen von http://www.bmi-rechner.net/
+    // Still needed?
     private String bmiCategorizeChild(int age, double bmi, int sex) {
         String result = "";
         System.out.println("name: " + profile.lastname);
@@ -398,19 +410,19 @@ public class MeasurementView extends BaseActivity {
 
             if (bmi < percentileFemale[i][1]) {
                 result = getString(R.string.bmi_category_weight_child_severly_underweight);
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
             } else if (bmi < percentileFemale[i][2]) {
                 result = getString(R.string.bmi_category_weight_child_underweight);
-                setBackgroundColor(2);
+                setBackgroundColor(2, bmiCategory);
             } else if (bmi > percentileFemale[i][2] && bmi < percentileFemale[i][4]) { //3
                 result = getString(R.string.bmi_category_weight_child_normal_weight);
-                setBackgroundColor(4);
+                setBackgroundColor(4, bmiCategory);
             } else if (bmi > percentileFemale[i][4] && bmi < percentileFemale[i][5]) {
                 result = getString(R.string.bmi_category_weight_child_overweight);
-                setBackgroundColor(2);
+                setBackgroundColor(2, bmiCategory);
             } else {
                 result = getString(R.string.bmi_category_weight_child_severly_overweight);
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
             }
 
 
@@ -435,20 +447,20 @@ public class MeasurementView extends BaseActivity {
             System.out.println("Zeile: " + i);
 
             if (bmi < percentileMale[i][1]) {
+                setBackgroundColor(1, bmiCategory);
                 result = getString(R.string.bmi_category_weight_child_severly_underweight);
-                setBackgroundColor(1);
             } else if (bmi < percentileMale[i][2]) {
                 result = getString(R.string.bmi_category_weight_child_underweight);
-                setBackgroundColor(2);
+                setBackgroundColor(2, bmiCategory);
             } else if (bmi > percentileMale[i][2] && bmi < percentileMale[i][4]) { //3
                 result = getString(R.string.bmi_category_weight_child_normal_weight);
-                setBackgroundColor(4);
+                setBackgroundColor(4, bmiCategory);
             } else if (bmi > percentileMale[i][4] && bmi < percentileMale[i][5]) {
                 result = getString(R.string.bmi_category_weight_child_overweight);
-                setBackgroundColor(2);
+                setBackgroundColor(2, bmiCategory);
             } else {
                 result = getString(R.string.bmi_category_weight_child_severly_overweight);
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
             }
         }
 
@@ -480,36 +492,36 @@ public class MeasurementView extends BaseActivity {
     private String bmiCategorize(double bmi, int sex) {
         if (sex == 0) {
             if (bmi < 19) {
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_underweight);
             } else if (bmi < 25) {
-                setBackgroundColor(4);
+                setBackgroundColor(4, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_normal_weight);
             } else if (bmi < 31) {
-                setBackgroundColor(2);
+                setBackgroundColor(3, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_overweight);
             } else if (bmi < 41) {
-                setBackgroundColor(3);
+                setBackgroundColor(2, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_obesity);
             } else {
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_sever_obesity);
             }
         } else {
             if (bmi < 20) {
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_underweight);
             } else if (bmi < 26) {
-                setBackgroundColor(4);
+                setBackgroundColor(4, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_normal_weight);
             } else if (bmi < 31) {
-                setBackgroundColor(2);
+                setBackgroundColor(2, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_overweight);
             } else if (bmi < 41) {
-                setBackgroundColor(3);
+                setBackgroundColor(3, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_obesity);
             } else {
-                setBackgroundColor(1);
+                setBackgroundColor(1, bmiCategory);
                 return getString(R.string.bmi_category_weight_adult_sever_obesity);
             }
         }
@@ -542,19 +554,19 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
-    private void setBackgroundColor(int color) {
+    private void setBackgroundColor(int color, TextView tv) {
         switch (color) {
             case 1:
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF4D00"));
+                tv.setBackgroundColor(Color.parseColor("#FF973D2B")); //dark red
                 break;
             case 2:
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFF7B00"));
+                tv.setBackgroundColor(Color.parseColor("#FFFF4D00")); //light red
                 break;
             case 3:
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFFFB300"));
+                tv.setBackgroundColor(Color.parseColor("#FFFFB300")); //lighter orange
                 break;
             case 4:
-                bmiCategory.setBackgroundColor(Color.parseColor("#FFCDE28F"));
+                tv.setBackgroundColor(Color.parseColor("#FFCDE28F")); //green
                 break;
             default:
                 break;

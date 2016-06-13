@@ -59,32 +59,30 @@
             android:id="@+id/btn_enter_for_bmi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/et_weight"
             android:onClick="saveMeasurement"
-            android:text="Enter"
-            android:layout_above="@+id/tv_bmi_category"
-            android:layout_toRightOf="@+id/tv_bmi_category"
-            android:layout_toEndOf="@+id/tv_bmi_category" />
+            android:text="Enter" />
 
         <Button
             android:id="@+id/btn_undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/et_weight"
+            android:layout_alignRight="@+id/et_weight"
+            android:layout_alignTop="@+id/btn_enter_for_bmi"
             android:onClick="undo"
             android:text="Undo"
-            android:visibility="invisible"
-            android:layout_alignTop="@+id/btn_enter_for_bmi"
-            android:layout_alignRight="@+id/et_weight"
-            android:layout_alignEnd="@+id/et_weight" />
+            android:visibility="invisible" />
 
         <TextView
-        android:id="@+id/tv_bmi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_weight"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="40dp"
-        android:text="The BMI is: "
-        android:visibility="invisible" />
+            android:id="@+id/tv_bmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_enter_for_bmi"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/bmi"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_bmi_category"
@@ -99,59 +97,59 @@
             android:id="@+id/tv_heightText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_bmi"
+            android:layout_below="@id/tv_bmi_category"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="40dp"
-            android:text="The height is: "
+            android:layout_marginTop="25dp"
+            android:text="@string/height"
             android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_height_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_heightText"
+            android:layout_alignBaseline="@id/tv_heightText"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/tv_heightText"
             android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_weightText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_heightText"
+            android:layout_below="@id/tv_heightText"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="40dp"
-            android:text="The weight: "
+            android:layout_marginTop="25dp"
+            android:text="@string/weight"
             android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_weight_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_weightText"
+            android:layout_alignBaseline="@id/tv_weightText"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/tv_weightText"
             android:visibility="invisible" />
-
 
 
         <TextView
             android:id="@+id/tv_result_pic"
-            android:layout_below="@id/tv_weight_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_weight_category"
+            android:layout_centerHorizontal="true"
             android:text="Result Picture: "
-            android:visibility="invisible"
-            android:layout_centerHorizontal="true" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/iv_result_pic"
-            android:layout_below="@id/tv_result_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_result_pic"
             android:adjustViewBounds="true"
-            android:gravity="bottom|center_horizontal"
-          />
+            android:gravity="bottom|center_horizontal" />
 
     </RelativeLayout>
 </ScrollView>
