@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
@@ -34,9 +32,6 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.ExportView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphListView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.GraphView;
-import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.CameraView;
-
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.ImageProcess;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
@@ -287,7 +282,7 @@ public class ProfileView extends BaseActivity {
      */
     public void startGraph(View view) {
         if(dbHelper.getAllMeasurements(profile_Id)==null ||dbHelper.getAllMeasurements(profile_Id).size()<3){
-            Toast.makeText(getApplicationContext(),"Not enough measurements for a graph",Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(),"Not enough measurements for a graph",Toast.LENGTH_LONG).show();
         }else{
         Intent intent = new Intent(this, GraphListView.class);
         intent.putExtra("profile_Id", profile.index);

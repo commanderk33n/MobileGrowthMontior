@@ -1,11 +1,8 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import org.junit.Test;
-import org.opencv.core.Core;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.ImageProcess;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -19,7 +16,7 @@ public class ExampleUnitTest {
     }
 
 
-    @Test
+    /*@Test
     public void sizeIsMeasured() throws Exception{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         ImageProcess ip = new ImageProcess();
@@ -29,5 +26,5 @@ public class ExampleUnitTest {
         assertEquals(163,ip.sizeMeasurement("C:\\Users\\Yogi\\Desktop\\growpics\\laura.png"),5);
         assertEquals(172,ip.sizeMeasurement("C:\\Users\\Yogi\\Desktop\\growpics\\jacky.png"),5);
 
-    }
+    }*/
 }

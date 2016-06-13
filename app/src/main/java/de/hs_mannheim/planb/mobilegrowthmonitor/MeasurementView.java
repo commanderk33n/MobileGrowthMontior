@@ -191,7 +191,7 @@ public class MeasurementView extends BaseActivity {
             } else {
                 measurementData.image = "";
             }
-            image = null;
+           // image = null; todo: see if this causes problems
             Calendar today = Calendar.getInstance();
             today.getTime();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -200,7 +200,9 @@ public class MeasurementView extends BaseActivity {
             dbHelper.addMeasurement(measurementData);
 
             showTexts();
-
+            if(undo!= null){
+                undo.setVisibility(View.INVISIBLE);
+            }
 
         }
     }
@@ -349,7 +351,7 @@ public class MeasurementView extends BaseActivity {
         age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
         if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
-        } else if (age < 61) {
+        } else if (age < 60) {
             age *= 30;
         }
 

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -31,7 +29,6 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -59,7 +56,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
     // View to display the camera output.
     private CameraPreview mPreview;
-
+    boolean released;
     private Activity mActivity;
 
     private Button captureButton;
@@ -207,7 +204,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         ((TextView) mActivity.findViewById(R.id.pitch)).setText(String.format(getString(R.string.pitch), Math.round(pitch)));
         ((TextView) mActivity.findViewById(R.id.roll)).setText(String.format(getString(R.string.roll), Math.round(roll)));
 
-        if (Math.round(pitch) < 3.0 && Math.round(pitch) > -3.0 && Math.round(roll) < 3.0 && Math.round(roll) > -3.0) {
+        if (Math.round(pitch) <= 3.0 && Math.round(pitch) >= -3.0 && Math.round(roll) <= 3.0 && Math.round(roll) >= -3.0) {
             captureButton.setClickable(true);
             captureButton.setBackgroundColor(getResources().getColor(R.color.transparent_green));
             ((TextView) mActivity.findViewById(R.id.pitch)).setBackgroundColor(getResources().getColor(R.color.transparent_green));
@@ -244,7 +241,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         releaseCameraAndPreview();
         mCamera = getCameraInstance();
         qOpened = (mCamera != null);
-
+        released = false;
         if (qOpened == true) {
             mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera, view);
             FrameLayout preview = (FrameLayout) view.findViewById(R.id.camera_preview);
@@ -295,6 +292,8 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.release();
+            released = true;
+
             mCamera = null;
         }
         if (mPreview != null) {
@@ -397,8 +396,9 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
          * @param holder
          */
         public void surfaceDestroyed(SurfaceHolder holder) {
-            if (mCamera != null) {
+            if (mCamera != null && released == false) {
                 mCamera.stopPreview();
+
             }
         }
 

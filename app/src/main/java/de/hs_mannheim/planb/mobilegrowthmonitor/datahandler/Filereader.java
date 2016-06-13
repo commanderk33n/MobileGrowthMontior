@@ -1,11 +1,11 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.net.CookieHandler;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -35,20 +35,22 @@ public class Filereader {
         int file = 0;
         int age=0;
         double[][] table=null;
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(dateOfBirth);
+        Calendar birthday = new GregorianCalendar();
+        birthday.setTime(dateOfBirth);
         Calendar today = Calendar.getInstance();
-        age = today.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-        if (today.get(Calendar.MONTH) < calendar.get(Calendar.MONTH)) {
+        age = today.get(Calendar.YEAR) - birthday.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < birthday.get(Calendar.MONTH)) {
             age--;
-        } else if (today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                today.get(Calendar.DAY_OF_MONTH) < calendar.get(Calendar.DAY_OF_MONTH)) {
+        } else if (today.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) &&
+                today.get(Calendar.DAY_OF_MONTH) < birthday.get(Calendar.DAY_OF_MONTH)) {
             age--;
         }
+        age*=12;
+        age +=  (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH));
         try{
         switch (classification){
             case 1 :
-                if(age<3){
+                if(age<3*12){
                     if(!male){
                         table = readBMIScore(R.raw.bmi_girls_0_2_zscores,false);
                     }else {
@@ -56,7 +58,7 @@ public class Filereader {
                     }
 
 
-                }else if(age<5){
+                }else if(age<5*12){
                     if(!male){
                         table = readBMIScore(R.raw.bmi_girls_2_5_zscores,false);
                     }else {
@@ -74,7 +76,7 @@ public class Filereader {
 
                 break;
             case 2 :
-                if(age<5){
+                if(age<5*12){
                     if(!male){
                         table = readZScore(R.raw.lhfa_girls_z_exp);
                     }else {
@@ -90,7 +92,7 @@ public class Filereader {
                 }
                 break;
             case 3 :
-                if(age<5){
+                if(age<5*12){
                     if(!male){
                         table = readZScore(R.raw.wfa_girls_z_exp);
                     }else {
