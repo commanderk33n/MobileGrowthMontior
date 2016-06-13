@@ -61,6 +61,7 @@ public class GraphListView extends BaseActivity {
 
     class MyViewAdapter extends ArrayAdapter<View> {
         private Context context;
+
         public MyViewAdapter(Context context, int resId, List<View> views) {
             super(context, resId, views);
             this.context = context;
@@ -74,7 +75,7 @@ public class GraphListView extends BaseActivity {
         @Override
         public View getView(int pos, View convertView, ViewGroup parent) {
             LayoutInflater inf = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            pos++;
+            //   pos++;
             View v = convertView;
             if (v == null) {
                 v = inf.inflate(R.layout.graph_view, parent, false);
@@ -83,8 +84,8 @@ public class GraphListView extends BaseActivity {
             XYPlot mPlot = (XYPlot) v.findViewById(R.id.plot);
             mPlot.clear();
             Filereader f = new Filereader(getApplicationContext());
-         //    PointF minXY;
-           //  PointF maxXY;
+            //    PointF minXY;
+            //  PointF maxXY;
 
             ProfileData profile = dbHelper.getProfile(profileId);
 
@@ -94,33 +95,33 @@ public class GraphListView extends BaseActivity {
             List<Date> dateList = new ArrayList<>();
             List<Double> valueList = new ArrayList<>();
 
-                if (measurements != null && measurements.size() >= 3) {
-                    for (MeasurementData md : measurements) {
-                        if(pos==1) {
+            if (measurements != null && measurements.size() >= 3) {
+                for (MeasurementData md : measurements) {
+                    if (pos == 0) {
 
-                            double bmi = md.weight / (md.height / 100) / (md.height / 100);
-                            bmi = bmi * 100;
-                            bmi = bmi - bmi % 10;
-                            bmi = bmi / 100;
-                            valueList.add(bmi);
-                        }else if (pos==2) {
-                            valueList.add(md.height);
-                        }else if(pos==3) {
-                            valueList.add(md.weight);
-                        }
-                        System.out.println("Height: " + md.height + "Weight: " + md.weight);
-                        Calendar calendar = new GregorianCalendar();
-                        try {
-                            calendar.setTime(format.parse(md.date));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        dateList.add(calendar.getTime());
-                        System.out.println("Timestamp: " + calendar.getTimeInMillis());
+                        double bmi = md.weight / (md.height / 100) / (md.height / 100);
+                        bmi = bmi * 100;
+                        bmi = bmi - bmi % 10;
+                        bmi = bmi / 100;
+                        valueList.add(bmi);
+                    } else if (pos == 1) {
+                        valueList.add(md.height);
+                    } else if (pos == 2) {
+                        valueList.add(md.weight);
                     }
-                } else {
-                    return null;
+                    System.out.println("Height: " + md.height + "Weight: " + md.weight);
+                    Calendar calendar = new GregorianCalendar();
+                    try {
+                        calendar.setTime(format.parse(md.date));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    dateList.add(calendar.getTime());
+                    System.out.println("Timestamp: " + calendar.getTimeInMillis());
                 }
+            } else {
+                return null;
+            }
 
 
         /*
@@ -128,7 +129,7 @@ public class GraphListView extends BaseActivity {
          */
             // List<Double> optimal = new ArrayList<>();
             List<Double> sdMinus2 = new ArrayList<>();
-            List<Double> sdPlus1 = new ArrayList<>();
+            List<Double> sdPlus2 = new ArrayList<>();
             Date birthday = null;
             try {
                 birthday = format.parse(profile.birthday);
@@ -137,52 +138,54 @@ public class GraphListView extends BaseActivity {
             }
             int age = 0;
 
-        Log.i("Position","pos"+pos);
-            double[][] data = f.giveMeTheData(pos, birthday, profile.sex==1); // type, birthday, gender
+            Log.i("Position", "pos" + pos);
+            double[][] data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1); // type, birthday, gender
 
             for (Date d : dateList) {
 
                 Calendar calendar = new GregorianCalendar();
-                calendar.setTime(d);
+                //  calendar.setTime(d);
                 Calendar measuredDay = Calendar.getInstance();
+                measuredDay.setTime(d);
                 calendar.setTime(birthday);
                 age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
                 age *= 12;
                 age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-                if(pos==3 && age>120){
+
+
+                if (pos == 2 && age > 120) {
                     sdMinus2.add(0.0);
-                    sdPlus1.add(100.0);
+                    sdPlus2.add(100.0);
                 }
-                if(age<228){ //19 jahre
-                    for(int i = 0;i<data.length;i++){
-                        if((int)data[i][0]==age){
+
+
+                if (age < 228) { //19 jahre
+
+                    if (age <= 60 && pos != 0) {
+                        age *= 30;
+                    }
+                    for (int i = 0; i < data.length; i++) {
+                        if ((int) data[i][0] == age) {
                             //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus2.add(data[i][data[0].length / 2-2]);
-                            sdPlus1.add(data[i][data[0].length / 2+2]);
+                            sdMinus2.add(data[i][data[0].length / 2 - 2]);
+                            sdPlus2.add(data[i][data[0].length / 2 + 2]);
+                            continue;
 
                         }
+
                     }
 
-                }else{
-                    if(pos==1){
+                } else { //over 19
+                    if (pos == 0) {
 
-                    sdMinus2.add(18.5);
-                    sdPlus1.add(25.0);
-                }
-                if(pos==2){
-                    age=228;
-                    for(int i = 0;i<data.length;i++){
-                        if((int)data[i][0]==age){
-                            //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus2.add(data[i][data[0].length / 2-2]);
-                            sdPlus1.add(data[i][data[0].length / 2+2]);
-
-                        }
+                        sdMinus2.add(18.5);
+                        sdPlus2.add(25.0);
                     }
+
+
                 }
 
-
-            }}
+            }
 
             final Date[] dateArray = dateList.toArray(new Date[dateList.size()]);
             // final Double[] optimalArray = optimal.toArray(new Double[optimal.size()]);
@@ -190,22 +193,22 @@ public class GraphListView extends BaseActivity {
             //TODO fix zoom and pan
             //  mPlot.setOnTouchListener(this);
 
-                String seriesName="";
-                if(pos ==1){
-                    seriesName ="BMI";
+            String seriesName = "";
+            if (pos == 0) {
+                seriesName = "BMI";
 
-                }else if(pos==2){
-                    seriesName= "Height in cm";
-                }else if(pos==3){
-                    seriesName= "Weight in kg";
-                }
+            } else if (pos == 1) {
+                seriesName = "Height in cm";
+            } else if (pos == 2) {
+                seriesName = "Weight in kg";
+            }
             mPlot.setTitle(seriesName);
             mPlot.setRangeLabel(seriesName);
 
             XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesName);
             //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
             XYSeries sdm1Series = new SimpleXYSeries(sdMinus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-2");
-            XYSeries sdp1Series = new SimpleXYSeries(sdPlus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
+            XYSeries sdp1Series = new SimpleXYSeries(sdPlus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
 
 
             // create formatters to use for drawing a series using LineAndPointRenderer
@@ -251,15 +254,15 @@ public class GraphListView extends BaseActivity {
             // add a new series' to the xyplot:
             mPlot.addSeries(valueSeries, bmiFormat);
             // mPlot.addSeries(optimalSeries,sd0Format);
-            mPlot.addSeries(sdm1Series,sd1Format);
-            mPlot.addSeries(sdp1Series,sd1Format);
+            mPlot.addSeries(sdm1Series, sd1Format);
+            mPlot.addSeries(sdp1Series, sd1Format);
 
 
             // draw a domain tick for each year:
             mPlot.setDomainStep(XYStepMode.SUBDIVIDE, dateArray.length);
             mPlot.setRangeValueFormat(new DecimalFormat("0"));
 
-          /*  mPlot.setDomainValueFormat(new Format() {
+            mPlot.setDomainValueFormat(new Format() {
 
                 // create a simple date format that draws on the year portion of our timestamp.
                 // see http://download.oracle.com/javase/1.4.2/docs/api/java/text/SimpleDateFormat.html
@@ -279,7 +282,7 @@ public class GraphListView extends BaseActivity {
 
                 }
             });
-*/
+
             // reduce the number of range labels
             mPlot.setTicksPerRangeLabel(1);
             mPlot.setTicksPerDomainLabel(1);
@@ -293,7 +296,7 @@ public class GraphListView extends BaseActivity {
 
             //Set of internal variables for keeping track of the boundaries
             mPlot.calculateMinMaxVals();
-          //  minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
+            //  minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
             //maxXY=new PointF(mPlot.getCalculatedMaxX().floatValue(),mPlot.getCalculatedMaxY().floatValue());
 
             return v;

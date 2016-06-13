@@ -14,10 +14,10 @@ public class DbDummyData {
     public void addData(int id){
         MeasurementData data= new MeasurementData();
         for(int i = 0;i<6;i++){
-            data.date= "2016-06-0"+i+" 12:00:00";
+            data.date= "2016-0"+i+"-05 12:00:00";
 
-            data.height = 1.30;
-            data.weight = 30-i;
+            data.height = 88+0.6*i;
+            data.weight = 12.5+0.15*i;
             data.index = id;
 
             dbHelper.addMeasurement(data);
