@@ -46,11 +46,11 @@ public class Filereader {
             age--;
         }
         age*=12;
-        age += (12- (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH)))%12;
+        age += today.get(Calendar.MONTH) - birthday.get(Calendar.MONTH);
         try{
         switch (classification){
             case 1 :
-                if(age<3*12){
+                if(age<=2*12){
                     if(!male){
                         table = readBMIScore(R.raw.bmi_girls_0_2_zscores,false);
                     }else {
@@ -58,7 +58,7 @@ public class Filereader {
                     }
 
 
-                }else if(age<5*12){
+                }else if(age<=5*12){
                     if(!male){
                         table = readBMIScore(R.raw.bmi_girls_2_5_zscores,false);
                     }else {
@@ -76,7 +76,7 @@ public class Filereader {
 
                 break;
             case 2 :
-                if(age<5*12){
+                if(age<=5*12){
                     if(!male){
                         table = readZScore(R.raw.lhfa_girls_z_exp);
                     }else {
@@ -92,7 +92,7 @@ public class Filereader {
                 }
                 break;
             case 3 :
-                if(age<5*12){
+                if(age<=5*12){
                     if(!male){
                         table = readZScore(R.raw.wfa_girls_z_exp);
                     }else {

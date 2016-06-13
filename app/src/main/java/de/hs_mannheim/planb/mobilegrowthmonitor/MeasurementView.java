@@ -218,7 +218,10 @@ public class MeasurementView extends BaseActivity {
         double height = Double.parseDouble(this.eT_height.getText().toString()) / 100.0;
         double weight = Double.parseDouble(this.eT_weight.getText().toString());
 
-        double bmi_value = weight / (height * height);
+        double bmiValue = weight / (height * height);
+        bmiValue *=100;
+        bmiValue-=bmiValue%1;
+        bmiValue/=100;
 
         bmi = (TextView) findViewById(R.id.tv_bmi);
         bmi.setVisibility(View.VISIBLE);
@@ -226,7 +229,7 @@ public class MeasurementView extends BaseActivity {
         bmiCategory = (TextView) findViewById(R.id.tv_bmi_category);
         bmiCategory.setVisibility(View.VISIBLE);
 
-        bmi.setText(String.format(getString(R.string.bmi), bmi_value));
+        bmi.setText(String.format(getString(R.string.bmi), bmiValue));
 
         heightText = (TextView) findViewById(R.id.tv_heightText);
         heightText.setVisibility(View.VISIBLE);
@@ -242,7 +245,7 @@ public class MeasurementView extends BaseActivity {
 
 
 
-        bmiCategory.setText(getTextBMI(bmiData, birthday, bmi_value));
+        bmiCategory.setText(getTextBMI(bmiData, birthday, bmiValue));
 
         heightCategory.setText(getTextHeight(heightData, birthday, height * 100));
 
@@ -259,7 +262,7 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;
+        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
         if (age > 228) {
             return bmiCategorize(bmi, profile.sex);
         } else {
@@ -305,7 +308,8 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;        if (age > 228) {
+        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
+        if (age > 228) {
             age = 228;
         }else if(age<=60){
             age*=30;
@@ -349,7 +353,7 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;
+        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
             if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
         } else if (age < 60) {
