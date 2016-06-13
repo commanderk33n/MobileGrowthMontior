@@ -83,8 +83,8 @@ public class GraphListView extends BaseActivity {
             XYPlot mPlot = (XYPlot) v.findViewById(R.id.plot);
             mPlot.clear();
             Filereader f = new Filereader(getApplicationContext());
-             PointF minXY;
-             PointF maxXY;
+         //    PointF minXY;
+           //  PointF maxXY;
 
             ProfileData profile = dbHelper.getProfile(profileId);
 
@@ -127,7 +127,7 @@ public class GraphListView extends BaseActivity {
         Find the Data with SD0 for the appropriate range
          */
             // List<Double> optimal = new ArrayList<>();
-            List<Double> sdMinus1 = new ArrayList<>();
+            List<Double> sdMinus2 = new ArrayList<>();
             List<Double> sdPlus1 = new ArrayList<>();
             Date birthday = null;
             try {
@@ -150,14 +150,14 @@ public class GraphListView extends BaseActivity {
                 age *= 12;
                 age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
                 if(pos==3 && age>120){
-                    sdMinus1.add(0.0);
+                    sdMinus2.add(0.0);
                     sdPlus1.add(100.0);
                 }
                 if(age<228){ //19 jahre
                     for(int i = 0;i<data.length;i++){
                         if((int)data[i][0]==age){
                             //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus1.add(data[i][data[0].length / 2-2]);
+                            sdMinus2.add(data[i][data[0].length / 2-2]);
                             sdPlus1.add(data[i][data[0].length / 2+2]);
 
                         }
@@ -166,7 +166,7 @@ public class GraphListView extends BaseActivity {
                 }else{
                     if(pos==1){
 
-                    sdMinus1.add(18.5);
+                    sdMinus2.add(18.5);
                     sdPlus1.add(25.0);
                 }
                 if(pos==2){
@@ -174,7 +174,7 @@ public class GraphListView extends BaseActivity {
                     for(int i = 0;i<data.length;i++){
                         if((int)data[i][0]==age){
                             //  optimal.add(data[i][data[0].length / 2]);
-                            sdMinus1.add(data[i][data[0].length / 2-2]);
+                            sdMinus2.add(data[i][data[0].length / 2-2]);
                             sdPlus1.add(data[i][data[0].length / 2+2]);
 
                         }
@@ -195,17 +195,17 @@ public class GraphListView extends BaseActivity {
                     seriesName ="BMI";
 
                 }else if(pos==2){
-                    seriesName= "Height";
+                    seriesName= "Height in cm";
                 }else if(pos==3){
-                    seriesName= "weight";
+                    seriesName= "Weight in kg";
                 }
             mPlot.setTitle(seriesName);
             mPlot.setRangeLabel(seriesName);
 
             XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesName);
             //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
-            XYSeries sdm1Series = new SimpleXYSeries(sdMinus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-1");
-            XYSeries sdp1Series = new SimpleXYSeries(sdPlus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+1");
+            XYSeries sdm1Series = new SimpleXYSeries(sdMinus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-2");
+            XYSeries sdp1Series = new SimpleXYSeries(sdPlus1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
 
 
             // create formatters to use for drawing a series using LineAndPointRenderer
@@ -293,8 +293,8 @@ public class GraphListView extends BaseActivity {
 
             //Set of internal variables for keeping track of the boundaries
             mPlot.calculateMinMaxVals();
-            minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
-            maxXY=new PointF(mPlot.getCalculatedMaxX().floatValue(),mPlot.getCalculatedMaxY().floatValue());
+          //  minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
+            //maxXY=new PointF(mPlot.getCalculatedMaxX().floatValue(),mPlot.getCalculatedMaxY().floatValue());
 
             return v;
         }

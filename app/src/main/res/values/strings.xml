@@ -49,7 +49,7 @@
     <string name="toast_choose_gender">Please choose the gender!</string>
     <string name="toast_choose_birthday">Please choose a reasonable birthday!</string>
     <string name="snackbar_create_profile">Create a new Profile?</string>
-    <string name="bmi">The BMI is: %f</string>
+    <string name="bmi">The BMI is: %.2f</string>
     <string name="bmi_category_weight_child">The child %s</string>
     <string name="bmi_category_weight_adult">You %s</string>
     <string name="bmi_category_weight_not_valid">There is no WHO reference data in this age class</string>

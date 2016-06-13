@@ -22,5 +22,12 @@
         android:layout_below="@+id/tv_data_export"
         android:layout_centerHorizontal="true"
         android:onClick="exportData" />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yes"
+        android:id="@+id/btn_morphing"
+        android:layout_below="@+id/bt_confirm"
+        android:layout_centerHorizontal="true"
+        android:onClick="exportGif" />
 </RelativeLayout>
