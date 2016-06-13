@@ -77,6 +77,8 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
      */
     public NativeCam() {
         super();
+        released = false;
+
     }
 
 
@@ -89,6 +91,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         NativeCam fragment = new NativeCam();
         fragment.heightReference = heightReference;
         fragment.profileId = profileId;
+
         return fragment;
     }
 
@@ -116,6 +119,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
         // Create our Preview view and set it as the content of our activity.
         boolean opened = safeCameraOpenInView(view);
+        released = false;
 
         if (opened == false) {
             Log.d("CameraGuide", "Error, Camera failed to open");
@@ -585,8 +589,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         File testFile = new File(fileName);
         //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
         //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-        Toast.makeText(getActivity(), getString(R.string.image_saving_success), Toast.LENGTH_LONG)
-                .show();
+        //Toast.makeText(getActivity(), getString(R.string.image_saving_success), Toast.LENGTH_LONG).show();
         return testFile;
     }
 

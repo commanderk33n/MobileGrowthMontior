@@ -37,7 +37,7 @@ public class MeasurementView extends BaseActivity {
     public static EditText eT_height, eT_weight;
     private static ImageView mImageView;
     private DbHelper dbHelper;
-    private int profile_Id, age,heightPosition,weightPosition;
+    private int profile_Id, age;
     private double weight, height;
     private static String image, edited;
     private ProfileData profile;
@@ -259,7 +259,7 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age += 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
+        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;
         if (age > 228) {
             return bmiCategorize(bmi, profile.sex);
         } else {
@@ -305,15 +305,14 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age += 12-(measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-        if (age > 228) {
+        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;        if (age > 228) {
             age = 228;
         }else if(age<=60){
             age*=30;
         }
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
-                heightPosition =i;
+           //     heightPosition =i;
                 double sdMinus1 = (data[i][data[0].length / 2 - 2]);
                 double sdPlus1 = (data[i][data[0].length / 2 + 2]);
                 double sdMinus2 = (data[i][data[0].length / 2 - 3]);
@@ -350,8 +349,8 @@ public class MeasurementView extends BaseActivity {
         calendar.setTime(birthday);
         age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
         age *= 12;
-        age += 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
-        if (age > 120) {
+        age +=( 12- (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)))%12;
+            if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
         } else if (age < 60) {
             age *= 30;
@@ -360,7 +359,7 @@ public class MeasurementView extends BaseActivity {
 
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
-                weightPosition =i;
+           //     weightPosition =i;
                 double sdMinus1 = (data[i][data[0].length / 2 - 2]);
                 double sdPlus1 = (data[i][data[0].length / 2 + 2]);
                 double sdMinus2 = (data[i][data[0].length / 2 - 3]);
@@ -541,12 +540,13 @@ public class MeasurementView extends BaseActivity {
         } else {
             double height = Double.parseDouble(this.eT_height.getText().toString());
             double weight = Double.parseDouble(this.eT_weight.getText().toString());
-       /*     if (height > heightData[heightPosition][heightData[0].length-1]  ||
-                    height < heightData[heightPosition][heightData[0].length/2-3] ||
-                    weight > weightData[weightPosition][weightData[0].length-1] ||
-                    weight <  weightData[weightPosition][heightData[0].length/2-3] ) {
-                    */
-            if(height>250||height<20||weight>200||weight<10){
+        /*   if (height > heightData[heightPosition][heightData[0].length-1] -10 ||  //weight / height should not be more than 10 cm/kg +- SD+-3
+                    height < heightData[heightPosition][heightData[0].length/2-3] +10||
+                    weight > weightData[weightPosition][weightData[0].length-1]-10 ||
+                    weight <  weightData[weightPosition][heightData[0].length/2-3] + 10 ||
+                   height <5||height>250||weight<1||weight>200) {*/
+
+            if(height>250||height<10||weight>200||weight<1){
                 Toast.makeText(this, R.string.validate_data, Toast.LENGTH_LONG).show();
                 return false;
             }

@@ -193,12 +193,14 @@ public class GraphListView extends BaseActivity {
                 String seriesName="";
                 if(pos ==1){
                     seriesName ="BMI";
+
                 }else if(pos==2){
                     seriesName= "Height";
                 }else if(pos==3){
                     seriesName= "weight";
                 }
             mPlot.setTitle(seriesName);
+            mPlot.setRangeLabel(seriesName);
 
             XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesName);
             //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");

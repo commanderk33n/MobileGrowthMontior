@@ -15,6 +15,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ImageAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class PreCameraView extends BaseActivity {
@@ -70,6 +71,7 @@ public class PreCameraView extends BaseActivity {
 
             }
         });
+        ImageAdapter.REFERENCE_OBJECT_HEIGHT = heightReference;
         camFragLoader.start();
 
     }

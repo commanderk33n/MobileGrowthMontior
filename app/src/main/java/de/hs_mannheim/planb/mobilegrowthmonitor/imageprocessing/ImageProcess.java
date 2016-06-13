@@ -39,7 +39,7 @@ public class ImageProcess {
 
     private double REFERENCEOBJECTHEIGHT = 14.9;
     private final double PERSONPOSITION = 3;
-   // private MeasurementData measurementData ;
+    // private MeasurementData measurementData ;
 
     public ImageProcess(double height) {
         REFERENCEOBJECTHEIGHT = height;
@@ -51,7 +51,7 @@ public class ImageProcess {
         // init
         MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
-       // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
+        // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
 
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
@@ -81,64 +81,66 @@ public class ImageProcess {
             if (rectContour == null) {
                 Log.i(TAG, "calculate 2");
                 measurementData = sizeMeasurement2(destination, source);
-                /*if (calculatedWith2 < 20 || calculatedWith2 > 250) {
+                if (measurementData.height < 20 || measurementData.height > 250) {
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
-
-                }*/
-             //   measurementData.height =calculatedWith2;
-                return measurementData;
-
-            }
-            Log.i(TAG,"calculate 1");
-            yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
-
-            // Find Contour of ReferenceObject in middle of left side of the picture
-
-            Collections.sort(rectContour, new Comparator<MatOfPoint>() {
-                @Override
-                public int compare(MatOfPoint lhs, MatOfPoint rhs) {
-                    return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
-            });
+
+                    //   measurementData.height =calculatedWith2;
+                    return measurementData;
+
+                }
+                Log.i(TAG, "calculate 1");
+                yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
+
+                // Find Contour of ReferenceObject in middle of left side of the picture
+
+                Collections.sort(rectContour, new Comparator<MatOfPoint>() {
+                    @Override
+                    public int compare(MatOfPoint lhs, MatOfPoint rhs) {
+                        return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
+                    }
+                });
 
 
-            heightReferenceObject = heightReferenceObject(rectContour, source).height;
+                heightReferenceObject = heightReferenceObject(rectContour, source).height;
 
-            for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
-                    if (destination.get(j, k)[0] > 0) {
-                        yCoordinateHighestPoint = j;
-                        xCoordinateHighestPoint = k;
+                for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
+                    for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
+                        if (destination.get(j, k)[0] > 0) {
+                            yCoordinateHighestPoint = j;
+                            xCoordinateHighestPoint = k;
 
-                        breakForLoop = true;
+                            breakForLoop = true;
+                            break;
+                        }
+
+                    }
+                    if (breakForLoop) {
                         break;
                     }
+                }
 
+                //draw Line from lowest to highest point
+                Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
+                        new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
+                // Height of ReferenceObject and SizeMeasurement
+                double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
+                heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
+                if (heightOfPerson > 250 || heightOfPerson < 10) {
+                    throw new IllegalArgumentException("Error, person / reference object not found");
                 }
-                if (breakForLoop) {
-                    break;
-                }
+                Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
+                bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(source, bmp);
+
+            }catch(CvException e){
+                Log.e("sizeMeasurement(): ", e.getMessage());
             }
+            measurementData.edited = imageWriter(bmp);
+            measurementData.height = heightOfPerson;
 
-            //draw Line from lowest to highest point
-            Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
-                    new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
-            // Height of ReferenceObject and SizeMeasurement
-            double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
-            heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
-
-            Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
-            bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(source, bmp);
-
-        } catch (CvException e) {
-            Log.e("sizeMeasurement(): ", e.getMessage());
+            return measurementData;
         }
-        measurementData.edited = imageWriter(bmp);
-        measurementData.height = heightOfPerson;
-
-        return measurementData;
-    }
 
     public static boolean isContourRect(MatOfPoint thisContour) {
         MatOfPoint2f approxCurve = new MatOfPoint2f();
@@ -232,7 +234,7 @@ public class ImageProcess {
     @SuppressLint("SimpleDateFormat")
     public String imageWriter(Bitmap bmp) {
         FileOutputStream out = null;
-        String fileName="";
+        String fileName = "";
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String timeStamp = sdf.format(new Date());

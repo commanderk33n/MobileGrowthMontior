@@ -46,7 +46,7 @@ public class Filereader {
             age--;
         }
         age*=12;
-        age += 12- (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH));
+        age += (12- (today.get(Calendar.MONTH)-birthday.get(Calendar.MONTH)))%12;
         try{
         switch (classification){
             case 1 :
@@ -138,7 +138,7 @@ public class Filereader {
         double[][] values = new double[lines-1][10];
 
         File outputDir = context.getCacheDir(); // context being the Activity pointer
-        final File outputFile = File.createTempFile("temp", "txt", outputDir);
+         File outputFile = File.createTempFile("temp", "txt", outputDir);
         outputFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(outputFile) ;
         int len = initialStream.read(buffer);
@@ -150,12 +150,17 @@ public class Filereader {
 
         Scanner reader = new Scanner(outputFile);
         reader.useLocale(Locale.US);
-        int zeile = 0;
-reader.nextLine();
+        int rows = 0;
+        reader.nextLine();
         while (reader.hasNextDouble()) {
-            values[zeile / 10][zeile % 10] = reader.nextDouble();
-            zeile++;
+            values[rows / columns][rows % columns] = reader.nextDouble();
+            rows++;
         }
+        initialStream.close();
+        reader.close();
+        out.close();
+        outputFile.delete();
+        outputFile = null;
         return values;
     }
 
@@ -168,7 +173,7 @@ reader.nextLine();
         int columns = over5? 10:8;
         double[][] values = new double[lines-1][columns];
         File outputDir = context.getCacheDir(); // context being the Activity pointer
-        final File outputFile = File.createTempFile("temp", "txt", outputDir);
+        File outputFile = File.createTempFile("temp", "txt", outputDir);
         outputFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(outputFile) ;
         int len = initialStream.read(buffer);
@@ -177,7 +182,7 @@ reader.nextLine();
             out.write(buffer, 0, len);
             len = initialStream.read(buffer);
         }
-
+out.close();
         Scanner reader = new Scanner(outputFile);
 
         int zeile = 0;
@@ -199,8 +204,10 @@ reader.nextLine();
             }
 
         }        initialStream.close();
+        outputFile.delete();
+        outputFile = null;
 
-
+reader.close();
         return values;
     }
 
@@ -216,7 +223,7 @@ reader.nextLine();
         double[][] values = new double[lines-1][10];
 
         File outputDir = context.getCacheDir(); // context being the Activity pointer
-        final File outputFile = File.createTempFile("temp", "txt", outputDir);
+        File outputFile = File.createTempFile("temp", "txt", outputDir);
         outputFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(outputFile) ;
         int len = initialStream.read(buffer);
@@ -225,7 +232,7 @@ reader.nextLine();
             out.write(buffer, 0, len);
             len = initialStream.read(buffer);
         }
-
+        out.close();
         Scanner reader = new Scanner(outputFile);
         reader.useLocale(Locale.US);
 
@@ -252,6 +259,10 @@ reader.nextLine();
             }
 
         }
+        initialStream.close();
+        reader.close();
+        outputFile.delete();
+        outputFile = null;
         return values;
     }
 

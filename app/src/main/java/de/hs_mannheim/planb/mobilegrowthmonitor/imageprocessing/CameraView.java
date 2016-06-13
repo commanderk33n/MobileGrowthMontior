@@ -74,6 +74,14 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, PreCameraView.class);
+        intent.putExtra("profile_Id", profile_Id);
+        startActivity(intent);
+    }
+
+    @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }

@@ -42,11 +42,12 @@ public class ImageAdapter extends BaseAdapter {
     private int shortAnimationDuration = 350;
     private ImageProcess imageProcess;
     private ArrayList<String> pathlist;
+    public static double REFERENCE_OBJECT_HEIGHT = 14.9;
 
     public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList,ArrayList<String> pathlist ){
         this.context = context;
         this.bitmapList = bitmapList;
-        imageProcess = new ImageProcess(14.9);
+        imageProcess = new ImageProcess(REFERENCE_OBJECT_HEIGHT);
         this.pathlist = pathlist;
     }
 
@@ -256,7 +257,7 @@ public class ImageAdapter extends BaseAdapter {
                             try {
 
                                 Looper.prepare();
-                                final double size = new ImageProcess(14.9).sizeMeasurement(path).height;
+                                final double size = new ImageProcess(REFERENCE_OBJECT_HEIGHT).sizeMeasurement(path).height;
                                 ((Activity)context).runOnUiThread(new Runnable() {
 
                                     public void run() {
