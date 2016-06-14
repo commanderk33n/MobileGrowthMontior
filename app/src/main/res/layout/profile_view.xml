@@ -219,6 +219,16 @@
                 android:textAlignment="viewStart"
                 android:textSize="22dp"
                 android:onClick="startExport" />
+
+            <ImageButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/btn_delete_profile"
+                android:background="@drawable/delete_24"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/btn_export"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentBottom="true"
+                android:visibility="invisible"/>
         </RelativeLayout>
     </ScrollView>
 
