@@ -3,6 +3,8 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
 /**
  * Abstract Class of AppLock
  * for configuration purposes
+ * AppLock used from this repo:
+ * https://github.com/coderkiss/AppLock
  */
 
 import java.util.HashSet;
