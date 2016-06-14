@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
@@ -150,9 +149,7 @@ public class MeasurementView extends BaseActivity {
 
         }
 
-
         dataGetter.start();
-
         eT_weight.setText(weight + "");
         eT_height.setText(height + "");
         Log.i(TAG, "weight = " + weight);
@@ -540,10 +537,6 @@ public class MeasurementView extends BaseActivity {
                 return false;
             }
             return true;
-
-
-
-
         }
     }
 
