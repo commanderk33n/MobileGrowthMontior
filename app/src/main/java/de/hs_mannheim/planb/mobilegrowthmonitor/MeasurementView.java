@@ -158,7 +158,7 @@ public class MeasurementView extends BaseActivity {
         Log.i(TAG, "weight = " + weight);
         profile = dbHelper.getProfile(profile_Id);
         mImageView = (ImageView) findViewById(R.id.iv_result_pic);
-        mImageView.setVisibility(View.GONE);
+       // mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
 
            DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
