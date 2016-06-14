@@ -2,11 +2,14 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,7 +31,7 @@ public class PreCameraView extends BaseActivity {
     SharedPreferences settings;
     final String PREFS_NAME = "Reference";
     private NativeCam camFrag;
-    private Thread camFragLoader ;
+    private Thread camFragLoader;
 
     @Override
     public void onBackPressed() {
@@ -43,8 +46,20 @@ public class PreCameraView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pre_cam_view);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_pre_camera_view);
-        setSupportActionBar(toolbar);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_pre_camera_view);
+            setSupportActionBar(toolbar);
+        }else{
+            Button btnSaveProfile = (Button) findViewById(R.id.btn_save_measurement);
+            btnSaveProfile.setVisibility(View.VISIBLE);
+            btnSaveProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveMeasurement();
+                }
+            });
+        }
+
 
         etWeight = (EditText) findViewById(R.id.et_weightMeasurement);
         etHeightReference = (EditText) findViewById(R.id.et_heightReference);
@@ -52,6 +67,7 @@ public class PreCameraView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         dbHelper = DbHelper.getInstance(getApplicationContext());
         profile = dbHelper.getProfile(profile_Id);
+
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
         if (measurementData != null) {
             weight = (float) measurementData.weight;
@@ -66,7 +82,7 @@ public class PreCameraView extends BaseActivity {
         camFragLoader = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i("Thread started","loading camFrag");
+                Log.i("Thread started", "loading camFrag");
                 camFrag = NativeCam.newInstance(profile_Id, heightReference);
 
             }
@@ -88,39 +104,46 @@ public class PreCameraView extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.measure_start) {
 
+            saveMeasurement();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-            if (etWeight.getText().toString().trim().isEmpty() || Float.parseFloat(etWeight.getText().toString()) < 0) {
-                Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
-            } else if (etHeightReference.getText().toString().trim().isEmpty()) {
-                Toast.makeText(this, R.string.enter_heightReference, Toast.LENGTH_LONG).show();
-            } else {
-                weight = Float.parseFloat(etWeight.getText().toString());
-                heightReference = Float.parseFloat(etHeightReference.getText().toString());
+    private void saveMeasurement(){
 
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putFloat("heightReference", heightReference);
-                editor.commit();
-                Intent i = new Intent(getApplicationContext(), CameraView.class);
+        if (etWeight.getText().toString().trim().isEmpty() || Float.parseFloat(etWeight.getText().toString()) < 0) {
+            Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
+
+        } else if (etHeightReference.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, R.string.enter_heightReference, Toast.LENGTH_LONG).show();
+
+        } else {
+            weight = Float.parseFloat(etWeight.getText().toString());
+            heightReference = Float.parseFloat(etHeightReference.getText().toString());
+
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putFloat("heightReference", heightReference);
+            editor.commit();
+            Intent intent = new Intent(getApplicationContext(), CameraView.class);
                /* try {
                     camFragLoader.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }*/
-                Log.i("Going to Camera",camFrag.toString());
+            Log.i("Going to Camera", camFrag.toString());
 
-                if(camFrag!=null){
-                    i.putExtra("camFrag",camFrag);
-                }
-                i.putExtra("profile_Id", profile_Id);
-                i.putExtra("weight", weight);
-                i.putExtra("heightReference", heightReference);
-
-                startActivity(i);
-
-                finish();
+            if (camFrag != null) {
+                intent.putExtra("camFrag", camFrag);
             }
+
+            intent.putExtra("profile_Id", profile_Id);
+            intent.putExtra("weight", weight);
+            intent.putExtra("heightReference", heightReference);
+
+            startActivity(intent);
+
+            finish();
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

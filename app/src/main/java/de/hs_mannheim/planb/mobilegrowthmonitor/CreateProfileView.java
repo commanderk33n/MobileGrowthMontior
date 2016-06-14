@@ -46,7 +46,6 @@ public class CreateProfileView extends BaseActivity {
             setSupportActionBar(toolbar);
 
         }else{
-            //findViewById(R.id.save_profile).setVisibility(View.INVISIBLE);
             Button btnSaveProfile = (Button) findViewById(R.id.btn_save_profile);
             btnSaveProfile.setVisibility(View.VISIBLE);
             btnSaveProfile.setOnClickListener(new View.OnClickListener() {

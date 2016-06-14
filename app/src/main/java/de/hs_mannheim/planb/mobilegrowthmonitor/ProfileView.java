@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -60,8 +61,19 @@ public class ProfileView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_view);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
-        setSupportActionBar(toolbar);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
+            setSupportActionBar(toolbar);
+        }else{
+            ImageButton btnDeleteProfile = (ImageButton) findViewById(R.id.btn_delete_profile);
+            btnDeleteProfile.setVisibility(View.VISIBLE);
+            btnDeleteProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteProfile();
+                }
+            });
+        }
 
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
@@ -187,27 +199,29 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
-            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteProfile(profile_Id);
-                    onBackPressed();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-
+            deleteProfile();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteProfile() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbHelper.deleteProfile(profile_Id);
+                onBackPressed();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**

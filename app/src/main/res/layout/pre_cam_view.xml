@@ -69,5 +69,14 @@
             android:ems="10"
             android:inputType="numberDecimal" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_save_measurement"
+            android:text="@string/save"
+            android:visibility="invisible"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
