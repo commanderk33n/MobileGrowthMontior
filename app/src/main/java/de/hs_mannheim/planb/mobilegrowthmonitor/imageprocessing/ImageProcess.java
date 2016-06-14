@@ -30,32 +30,43 @@ import java.util.List;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**
- * Created by eikood on 05.05.2016.
+ * ImageProcess.java OpenCV implementation for
+ * - segmentation of picture:
+ * - finding lowest horizontal line
+ * - contourFind
+ * - rectangle detection
  */
 public class ImageProcess {
 
     private static final String TAG = "ImageProcess";
 
-    private double REFERENCEOBJECTHEIGHT = 14.9;
+    // in case calling ImageProcess without our constructor
+    private double REFERENCEOBJECTHEIGHT = 10;
     private final double PERSONPOSITION = 3;
-    // private MeasurementData measurementData ;
 
+    /**
+     * Constructor of ImageProcess
+     *
+     * @param height Reference object height
+     */
     public ImageProcess(double height) {
         REFERENCEOBJECTHEIGHT = height;
-        //MeasurementData measurementData = new MeasurementData();
     }
 
-    // this is our prototype function!!
+    /**
+     * MainFunction of ImageProcess - does all the magic
+     *
+     * @param path path of the ImageFile
+     * @return MeasurementData object
+     * @throws IllegalArgumentException no contours found
+     */
     public MeasurementData sizeMeasurement(String path) throws IllegalArgumentException {
         // init
         MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
-        // Imgproc.resize(source, source, new Size(source.width() / 2, source.height() / 2));
-
         Mat hierarchy = new Mat();
         Size size = new Size(7, 7);
         List<MatOfPoint> contours = new ArrayList<>();
-
         Bitmap bmp = null;
         double heightOfPerson = 0;
         double yCoordinateHorizontalLine = 0;
@@ -63,11 +74,10 @@ public class ImageProcess {
         int yCoordinateHighestPoint = 0;
         int xCoordinateHighestPoint = 0;
         boolean breakForLoop = false;
+        // Start imageProcessing
         try {
             Mat destination;
             destination = source.clone();
-
-
             Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
             Imgproc.GaussianBlur(destination, destination, size, 0);
             Imgproc.Canny(destination, destination, 50, 100);
@@ -77,75 +87,72 @@ public class ImageProcess {
             }
 
             List<MatOfPoint> rectContour = getRectContour(contours);
+            // Rectangle detection found no rectangle so try method 2
             if (rectContour == null) {
                 Log.i(TAG, "calculate 2");
                 measurementData = sizeMeasurement2(destination, source);
                 if (measurementData.height < 20 || measurementData.height > 250) {
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
                 }
+                return measurementData;
 
-                    //   measurementData.height =calculatedWith2;
-                    return measurementData;
+            }
+            Log.i(TAG, "calculate 1");
+            yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
 
+            // Find Contour of ReferenceObject in middle of left side of the picture
+            Collections.sort(rectContour, new Comparator<MatOfPoint>() {
+                @Override
+                public int compare(MatOfPoint lhs, MatOfPoint rhs) {
+                    return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
                 }
-                Log.i(TAG, "calculate 1");
-                yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
+            });
 
-                // Find Contour of ReferenceObject in middle of left side of the picture
+            heightReferenceObject = findReferenceObject(rectContour, source).height;
 
-                Collections.sort(rectContour, new Comparator<MatOfPoint>() {
-                    @Override
-                    public int compare(MatOfPoint lhs, MatOfPoint rhs) {
-                        return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
-                    }
-                });
+            for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
+                for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
+                    if (destination.get(j, k)[0] > 0) {
+                        yCoordinateHighestPoint = j;
+                        xCoordinateHighestPoint = k;
 
-
-                heightReferenceObject = heightReferenceObject(rectContour, source).height;
-
-                for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                    for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
-                        if (destination.get(j, k)[0] > 0) {
-                            yCoordinateHighestPoint = j;
-                            xCoordinateHighestPoint = k;
-
-                            breakForLoop = true;
-                            break;
-                        }
-
-                    }
-                    if (breakForLoop) {
+                        breakForLoop = true;
                         break;
                     }
-                }
 
-                //draw Line from lowest to highest point
-                Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
-                        new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
-                // Height of ReferenceObject and SizeMeasurement
-                double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
-                heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
-                if (heightOfPerson > 250 || heightOfPerson < 10) {
-                    throw new IllegalArgumentException("Error, person / reference object not found");
                 }
-                Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
-                bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(source, bmp);
-
-            }catch(CvException e){
-                Log.e("sizeMeasurement(): ", e.getMessage());
+                if (breakForLoop) {
+                    break;
+                }
             }
-            measurementData.edited = imageWriter(bmp);
-            measurementData.height = heightOfPerson;
 
-            return measurementData;
+            // Draw Line from lowest to highest point
+            Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
+                    new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
+            // Height of ReferenceObject and SizeMeasurement
+            double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
+            heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
+            if (heightOfPerson > 250 || heightOfPerson < 10) {
+                throw new IllegalArgumentException("Error, person / reference object not found");
+            }
+            Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2RGB);
+            bmp = Bitmap.createBitmap(source.cols(), source.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(source, bmp);
+
+        } catch (CvException e) {
+            Log.e("sizeMeasurement(): ", e.getMessage());
         }
+        measurementData.edited = imageWriter(bmp);
+        measurementData.height = heightOfPerson;
+
+        return measurementData;
+    }
 
     public static boolean isContourRect(MatOfPoint thisContour) {
         MatOfPoint2f approxCurve = new MatOfPoint2f();
-        //Convert contours from MatOfPoint to MatOfPoint2f
+        // Convert contours from MatOfPoint to MatOfPoint2f
         MatOfPoint2f contour2f = new MatOfPoint2f(thisContour.toArray());
-        //Processing on mMOP2f1 which is in type MatOfPoint2f
+        // Processing on MatOfPoint which is in type MatOfPoint2f
         double approxDistance = Imgproc.arcLength(contour2f, true) * 0.02;
 
         if (approxDistance > 5) {
@@ -153,21 +160,17 @@ public class ImageProcess {
             //Find Polygons
             Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
 
-
             //Convert back to MatOfPoint
             MatOfPoint points = new MatOfPoint(approxCurve.toArray());
 
-
             //Rectangle Checks - Points, area, convexity
             if (points.total() == 4 && Math.abs(Imgproc.contourArea(points)) > 1000 && Imgproc.isContourConvex(points)) {
-
 
                 Rect rect = Imgproc.boundingRect(points);
 
                 if (Math.abs(rect.height - rect.width) < 100) {
 
                     return true;
-
                 }
 
             }
@@ -175,7 +178,13 @@ public class ImageProcess {
         return false;
     }
 
-    public static List<MatOfPoint> getRectContour(List<MatOfPoint> contours) {
+    /**
+     * Function for finding all rectangle contours in contourList
+     *
+     * @param contours
+     * @return List<MatOfPoint> squares
+     */
+    private static List<MatOfPoint> getRectContour(List<MatOfPoint> contours) {
 
         List<MatOfPoint> squares = null;
 
@@ -188,81 +197,15 @@ public class ImageProcess {
                 squares.add(c);
             }
         }
-
         return squares;
     }
 
-    // finding lower horizontal Line
-    public int getYLowerHorizontalLine(Mat img) {
-        // init
-        Mat source = img;
-        int threshold = 50;
-        int minLineLength = 10;
-        int maxLineGap = 10;
-        Mat lines = new Mat();
-        int miny = 0;
-        try {
-            Mat destination;
-            destination = source;
-
-            //
-            //    Imgproc.cvtColor(source, destination, Imgproc.COLOR_BGR2GRAY);
-            //    Imgproc.Canny(destination, destination, 50, 100, 3, true); TODO: Maybe change this with the upper canny edge
-            Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
-            for (int x = 0; x < lines.rows(); x++) {
-                double[] vec = lines.get(x, 0);
-                double x1 = vec[0],
-                        y1 = vec[1],
-                        x2 = vec[2],
-                        y2 = vec[3];
-
-                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
-                    //   if (source.width() / 4.0 < x2 && x2 < source.width() * 3.0 / 4.0 && y1 > miny && y1 < source.height()) {
-                    if (y1 > miny && y1 < source.height()) {
-
-                        miny = (int) y1;
-                    }
-                }
-            }
-        } catch (CvException e) {
-            Log.e("backgroundSub():", e.getMessage());
-        }
-        return miny;
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    public String imageWriter(Bitmap bmp) {
-        FileOutputStream out = null;
-        String fileName = "";
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            String timeStamp = sdf.format(new Date());
-            fileName = Environment.getExternalStorageDirectory().getPath() +
-                    "/growpics/" + timeStamp + "_filter.jpg";
-            out = new FileOutputStream(fileName, true);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return fileName;
-    }
-
-
     /**
-     * This function is called when our first size Measurement doesnt wield any results
+     * This function is called when our first size Measurement doesn't wield any results
      *
-     * @param destination
-     * @param original
-     * @return
+     * @param destination image mat object
+     * @param original    image mat object
+     * @return MeasurementData object
      */
     public MeasurementData sizeMeasurement2(Mat destination, Mat original) throws IllegalArgumentException {
         MeasurementData measurementData = new MeasurementData();
@@ -297,8 +240,7 @@ public class ImageProcess {
             });
 
             // Find Contour of ReferenceObject in middle of left side of the picture
-            rect_small = heightReferenceObject(contours, original);
-
+            rect_small = findReferenceObject(contours, original);
 
             heightReferenceObject = rect_small.height;
             Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
@@ -321,7 +263,6 @@ public class ImageProcess {
             Imgproc.line(original, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
                     new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
             // Height of ReferenceObject and SizeMeasurement
-            // TODO: change to alertDialog
             double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
 
@@ -339,7 +280,54 @@ public class ImageProcess {
         return measurementData;
     }
 
-    public Rect heightReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {
+    /**
+     * Finding lower horizontal Line
+     *
+     * @param img imageFile
+     * @return int minimum y-coordinate
+     */
+    public int getYLowerHorizontalLine(Mat img) {
+        // init
+        Mat source = img;
+        int threshold = 50;
+        int minLineLength = 10;
+        int maxLineGap = 10;
+        Mat lines = new Mat();
+        int miny = 0;
+        try {
+            Mat destination;
+            destination = source;
+            Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
+            for (int x = 0; x < lines.rows(); x++) {
+                double[] vec = lines.get(x, 0);
+                double x1 = vec[0],
+                        y1 = vec[1],
+                        x2 = vec[2],
+                        y2 = vec[3];
+
+                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
+                    //   if (source.width() / 4.0 < x2 && x2 < source.width() * 3.0 / 4.0 && y1 > miny && y1 < source.height()) {
+                    if (y1 > miny && y1 < source.height()) {
+
+                        miny = (int) y1;
+                    }
+                }
+            }
+        } catch (CvException e) {
+            Log.e("backgroundSub():", e.getMessage());
+        }
+        return miny;
+    }
+
+    /**
+     * Function for finding referenceObject in upper left corner of Image
+     *
+     * @param contours contourList
+     * @param original
+     * @return rectangle
+     * @throws IllegalArgumentException
+     */
+    public Rect findReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {
         for (MatOfPoint m : contours) {
             Rect temp = Imgproc.boundingRect(m);
 
@@ -351,5 +339,37 @@ public class ImageProcess {
             }
         }
         throw new IllegalArgumentException("no reference object found");
+    }
+
+    /**
+     * Save image to file
+     *
+     * @param bmp
+     * @return
+     */
+    @SuppressLint("SimpleDateFormat")
+    public String imageWriter(Bitmap bmp) {
+        FileOutputStream out = null;
+        String fileName = "";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String timeStamp = sdf.format(new Date());
+            fileName = Environment.getExternalStorageDirectory().getPath() +
+                    "/growpics/" + timeStamp + "_filter.jpg";
+            out = new FileOutputStream(fileName, true);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return fileName;
     }
 }
