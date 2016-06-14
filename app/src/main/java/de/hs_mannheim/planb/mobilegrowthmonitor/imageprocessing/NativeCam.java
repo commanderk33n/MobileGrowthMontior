@@ -386,12 +386,14 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
          * @param holder
          */
         public void surfaceCreated(SurfaceHolder holder) {
-            try {
-                mCamera.setPreviewDisplay(holder);
+                if(mCamera!= null) {
+                    try {
+                        mCamera.setPreviewDisplay(holder);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         /**

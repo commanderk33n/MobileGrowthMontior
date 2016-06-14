@@ -307,7 +307,7 @@ public class ProfileView extends BaseActivity {
     }
 
     /**
-     * OnClick method to start GraphView Activity
+     * OnClick method to start GraphListView Activity
      *
      * @param view
      */

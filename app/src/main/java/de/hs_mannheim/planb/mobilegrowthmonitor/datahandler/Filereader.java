@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 
 /**
  * Created by Morty on 25.05.2016.
@@ -31,22 +32,12 @@ public class Filereader {
      * @param male
      * @return
      */
-    public  double[][] giveMeTheData(int classification, Date dateOfBirth, boolean male) throws IllegalArgumentException {
+    public  double[][] giveMeTheData(int classification, Date dateOfBirth, boolean male, Date measurementDate) throws IllegalArgumentException {
         int file = 0;
-        int age=0;
+
+        int age = Utils.getAgeInMonths(dateOfBirth,measurementDate);
         double[][] table=null;
-        Calendar birthday = new GregorianCalendar();
-        birthday.setTime(dateOfBirth);
-        Calendar today = Calendar.getInstance();
-        age = today.get(Calendar.YEAR) - birthday.get(Calendar.YEAR);
-        if (today.get(Calendar.MONTH) < birthday.get(Calendar.MONTH)) {
-            age--;
-        } else if (today.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) &&
-                today.get(Calendar.DAY_OF_MONTH) < birthday.get(Calendar.DAY_OF_MONTH)) {
-            age--;
-        }
-        age*=12;
-        age += today.get(Calendar.MONTH) - birthday.get(Calendar.MONTH);
+
         try{
         switch (classification){
             case 1 :

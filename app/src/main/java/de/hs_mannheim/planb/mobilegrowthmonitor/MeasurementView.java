@@ -38,7 +38,7 @@ public class MeasurementView extends BaseActivity {
     public static EditText eT_height, eT_weight;
     private static ImageView mImageView;
     private DbHelper dbHelper;
-    private int profile_Id, age;
+    private int profile_Id;
     private double weight, height;
     private static String image, edited;
     private ProfileData profile;
@@ -65,9 +65,9 @@ public class MeasurementView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender);
-            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender);
-            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender);
+            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender,null);
+            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender,null);
+            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender,null);
             Log.i("datagetter", "done");
 
         }
@@ -94,7 +94,7 @@ public class MeasurementView extends BaseActivity {
         dbHelper = DbHelper.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
-        age = extras.getInt("profileAge");
+
         profile = dbHelper.getProfile(profile_Id);
 
 
@@ -257,13 +257,7 @@ public class MeasurementView extends BaseActivity {
 
     private String getTextBMI(double[][] data, Date birthday, double bmi) {
 
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(Calendar.getInstance().getTime());
-        Calendar measuredDay = Calendar.getInstance();
-        calendar.setTime(birthday);
-        age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-        age *= 12;
-        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
+       int age = Utils.getAgeInMonths(birthday,null);
         if (age > 228) {
             return bmiCategorize(bmi, profile.sex);
         } else {
@@ -303,13 +297,8 @@ public class MeasurementView extends BaseActivity {
 
     private String getTextHeight(double[][] data, Date birthday, double height) {
 
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(Calendar.getInstance().getTime());
-        Calendar measuredDay = Calendar.getInstance();
-        calendar.setTime(birthday);
-        age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-        age *= 12;
-        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
+        int age = Utils.getAgeInMonths(birthday,null);
+
         if (age > 228) {
             age = 228;
         }else if(age<=60){
@@ -348,14 +337,9 @@ public class MeasurementView extends BaseActivity {
 
     private String getTextWeight(double[][] data, Date birthday, double weight) {
 
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(Calendar.getInstance().getTime());
-        Calendar measuredDay = Calendar.getInstance();
-        calendar.setTime(birthday);
-        age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-        age *= 12;
-        age += measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH);
-            if (age > 120) {
+       int age = Utils.getAgeInMonths(birthday,null);
+
+        if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
         } else if (age < 60) {
             age *= 30;

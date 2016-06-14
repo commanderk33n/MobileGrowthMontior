@@ -24,7 +24,6 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 public class GalleryView extends AppCompatActivity {
     public static final String TAG = GalleryView.class.getSimpleName();
     private static final String PREFS_NAME = "lengthList";
-    static ArrayList<Bitmap> bitmapList;
     public static ArrayList<String> pathList;
     GridView imageGrid;
     int profile_Id;
@@ -59,9 +58,7 @@ public class GalleryView extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i("Gallery", "onFocusChanged");
-        if (bitmapList == null) {
-            bitmapList = new ArrayList<>();
-        }
+
         if (pathList == null) {
             pathList = new ArrayList<>(
             );
@@ -71,7 +68,6 @@ public class GalleryView extends AppCompatActivity {
             File[] listFile = folder.listFiles();
             Log.i("Gallery", "hashList " + hashList);
             Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
-            Log.i("Gallery", "bitmapList length" + bitmapList.size());
 
             if (Arrays.hashCode(listFile) != hashList) {
 
@@ -82,12 +78,12 @@ public class GalleryView extends AppCompatActivity {
                     refreshView();
                 }
             } else {
-                if (bitmapList.size() == 0) {
+                if (pathList.size() == 0) {
                     refreshView();
                 }
                 imageGrid = (GridView) findViewById(R.id.gridview);
 
-                imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
+                imageGrid.setAdapter(new ImageAdapter(this, pathList));
 
             }
         }
@@ -96,10 +92,9 @@ public class GalleryView extends AppCompatActivity {
     public void refreshView() {
         // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 
-        //  bitmapList = new ArrayList<>();
         getFromSdCard(this);
         imageGrid = (GridView) findViewById(R.id.gridview);
-        imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
+        imageGrid.setAdapter(new ImageAdapter(this, pathList));
     }
 
     public static void getFromSdCard(Context context) {
@@ -113,7 +108,6 @@ public class GalleryView extends AppCompatActivity {
         if (folder.isDirectory()) {
             File[] listFile = folder.listFiles();
             pathList.clear();
-            bitmapList.clear();
             for (int i = 0; i < listFile.length; i++) {
 
                 try {
@@ -122,7 +116,6 @@ public class GalleryView extends AppCompatActivity {
 
                     pathList.add(0, listFile[i].getAbsolutePath());
 
-                    bitmapList.add(0, urlImageToBitmap(pathList.get(0), false));
                     // }
                     hashList = Arrays.hashCode(listFile);
                     editor.putInt("hash", hashList);
@@ -141,7 +134,7 @@ public class GalleryView extends AppCompatActivity {
             if (hiRes) {
                 options.inSampleSize = 1;
             } else {
-                options.inSampleSize = 12;
+                options.inSampleSize = 3;
 
             }
             result = BitmapFactory.decodeFile(imageUrl, options);
@@ -175,7 +168,7 @@ public class GalleryView extends AppCompatActivity {
     public static byte[] generateGIF() {
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
-        if (pathList == null) {
+        if(pathList ==null){
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
             pathList = new ArrayList<>();
             if (folder.isDirectory()) {
@@ -186,7 +179,7 @@ public class GalleryView extends AppCompatActivity {
                         // TODO: this check is inaccurate. Consider using an Id or something else
                         // if (pathList.get(i).contains(profile_name)) {
 
-                        pathList.add(0, listFile[i].getAbsolutePath());
+                        pathList.add(listFile[i].getAbsolutePath());
                         // }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -206,6 +199,7 @@ public class GalleryView extends AppCompatActivity {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         AnimatedGifEncoder encoder = new AnimatedGifEncoder();
         encoder.setRepeat(0);
+        encoder.delay = 50;
         encoder.start(bos);
         for (Bitmap bitmap : bitmaps) {
             encoder.addFrame(bitmap);

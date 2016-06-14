@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.ImageProcess;
 
+import static de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView.urlImageToBitmap;
+
 /**
  * Created by eikood on 05.05.2016.
  */
@@ -33,49 +35,60 @@ public class ImageAdapter extends BaseAdapter {
 
     private Context context;
     private Animator currentAnimator;
-    private ArrayList<Bitmap> bitmapList;
     private int shortAnimationDuration = 350;
     private ImageProcess imageProcess;
     private ArrayList<String> pathlist;
     public static double REFERENCE_OBJECT_HEIGHT = 14.9;
 
-    public ImageAdapter(Context context, ArrayList<Bitmap> bitmapList,ArrayList<String> pathlist ){
+    public ImageAdapter(Context context, ArrayList<String> pathlist) {
         this.context = context;
-        this.bitmapList = bitmapList;
         imageProcess = new ImageProcess(REFERENCE_OBJECT_HEIGHT);
         this.pathlist = pathlist;
     }
 
     @Override
     public int getCount() {
-        return this.bitmapList.size();
+        return this.pathlist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        try {
+            return urlImageToBitmap(pathlist.get(position),false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Point size = new Point();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getSize(size);
+        ((Activity) context).getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
         ImageView imageView;
+        //imageView = new ImageView(this.context);
+        //imageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenHeight/3));
+        //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (convertView == null) {
             imageView = new ImageView(this.context);
-            imageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenHeight/3));
+            imageView.setLayoutParams(new GridView.LayoutParams(screenWidth / 3, screenHeight / 3));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
-            imageView = (ImageView) convertView;
+imageView =(ImageView)convertView;
         }
-        imageView.setImageBitmap(this.bitmapList.get(position));
+        try {
+            imageView.setImageBitmap( urlImageToBitmap(pathlist.get(position),false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //this.bitmapList.get(position));
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +113,7 @@ public class ImageAdapter extends BaseAdapter {
         final Button sizeMeasurement = (Button) ((Activity) context).findViewById(R.id.btn_size_measurement);
 
         try {
-            fullscreenImageView.setImageBitmap(GalleryView.urlImageToBitmap(this.pathlist.get(position),true));
+            fullscreenImageView.setImageBitmap(urlImageToBitmap(this.pathlist.get(position), true));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,23 +266,26 @@ public class ImageAdapter extends BaseAdapter {
 
                                 Looper.prepare();
                                 final double size = new ImageProcess(REFERENCE_OBJECT_HEIGHT).sizeMeasurement(path).height;
-                                ((Activity)context).runOnUiThread(new Runnable() {
+                                ((Activity) context).runOnUiThread(new Runnable() {
 
                                     public void run() {
                                         DecimalFormat df = new DecimalFormat("####0.00");
                                         String resultString = df.format(size);
                                         Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
 
-                                        ((Activity) context).onWindowFocusChanged(true);                                };
-                              //  Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
+                                        ((Activity) context).onWindowFocusChanged(true);
+                                    }
+
+                                    ;
+                                    //  Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
 
                                 });
-                            }
-                            catch (IllegalArgumentException e){
+                            } catch (IllegalArgumentException e) {
                                 e.printStackTrace();
-                                ((Activity)context).runOnUiThread(new Runnable() {
+                                ((Activity) context).runOnUiThread(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();                            }
+                                        Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();
+                                    }
                                 });
 
                             }

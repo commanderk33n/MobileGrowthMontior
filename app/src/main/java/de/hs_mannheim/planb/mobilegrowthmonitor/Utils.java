@@ -14,11 +14,41 @@ import java.util.GregorianCalendar;
  */
 public class Utils {
 
-    /**
-     * Returns age of a profileUser
-     * @param date
-     * @return
-     */
+    public static int getAgeInMonths(Date birthday, Date measuredDay) {
+        int age = 0;
+        Calendar birthDayCalendar = new GregorianCalendar();
+        birthDayCalendar.setTime(birthday);
+        Calendar measurementDate = new GregorianCalendar();
+        if(measuredDay == null){
+
+            measurementDate.setTime(Calendar.getInstance().getTime());
+        }else{
+            measurementDate.setTime(measuredDay);
+
+        }
+        age = measurementDate.get(Calendar.YEAR) - birthDayCalendar.get(Calendar.YEAR);
+
+        if (measurementDate.get(Calendar.MONTH) < birthDayCalendar.get(Calendar.MONTH)) {
+            age--;
+        } else if (measurementDate.get(Calendar.MONTH) == birthDayCalendar.get(Calendar.MONTH) &&
+                measurementDate.get(Calendar.DAY_OF_MONTH) < birthDayCalendar.get(Calendar.DAY_OF_MONTH)) {
+            age--;
+        }
+        age*=12;
+        age += measurementDate.get(Calendar.MONTH) - birthDayCalendar.get(Calendar.MONTH);
+
+
+        return age;
+
+
+    }
+
+
+        /**
+         * Returns age of a profileUser
+         * @param date
+         * @return
+         */
     public static int getAge(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date tempDate = new Date();

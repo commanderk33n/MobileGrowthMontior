@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
@@ -46,7 +47,7 @@ public class GraphListView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_list_view);
         dbHelper = DbHelper.getInstance(getApplicationContext());
-        PixelUtils.init(getApplicationContext());
+      //  PixelUtils.init(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profileId = extras.getInt("profile_Id");
         plots = (ListView) findViewById(R.id.lv_plots);
@@ -74,6 +75,8 @@ public class GraphListView extends BaseActivity {
             View v = convertView;
             if (v == null) {
                 v = inf.inflate(R.layout.graph_view, parent, false);
+            }else{
+                return v;
             }
 
             XYPlot mPlot = (XYPlot) v.findViewById(R.id.plot);
@@ -131,22 +134,31 @@ public class GraphListView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            int age = 0;
+            int age = Utils.getAgeInMonths(birthday,dateList.get(0));
+
 
             Log.i("Position", "pos" + pos);
-            double[][] data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1); // type, birthday, gender
-
+            double[][] data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1,dateList.get(0)); // type, birthday, gender
+            int pastAge = age;
             for (Date d : dateList) {
+                age = Utils.getAgeInMonths(birthday,d);
 
-                Calendar calendar = new GregorianCalendar();
-                //  calendar.setTime(d);
-                Calendar measuredDay = Calendar.getInstance();
-                measuredDay.setTime(d);
-                calendar.setTime(birthday);
-                age = measuredDay.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-                age *= 12;
-                age += (measuredDay.get(Calendar.MONTH) - calendar.get(Calendar.MONTH));
+                if(pos !=0){   // reload the Data if age passed a critical border ( file border)
+                    if((pastAge<60 && age>60)||(pastAge>60 && age<60)){
+                         data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1,d); // type, birthday, gender
 
+                    }
+
+                }else{
+
+                    if((pastAge<24 && age>24) ||(pastAge<60 && age>60)|| (pastAge>24 && age<24) ||(pastAge>60 && age<60)) {
+                    data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1,d); // type, birthday, gender
+
+                    }
+
+
+                }
+                pastAge = age;
 
                 if (pos == 2 && age > 120) {
                     sdMinus2.add(0.0);
@@ -164,7 +176,7 @@ public class GraphListView extends BaseActivity {
                             //  optimal.add(data[i][data[0].length / 2]);
                             sdMinus2.add(data[i][data[0].length / 2 - 2]);
                             sdPlus2.add(data[i][data[0].length / 2 + 2]);
-                            continue;
+                            break;
 
                         }
 
