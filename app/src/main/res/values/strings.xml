@@ -11,8 +11,8 @@
     <string name="disable_passcode">Disable passcode</string>
     <string name="enable_passcode">Enable passcode</string>
     <string name="capture_image">Capture Image</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="fullscreen_image" />
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="fullscreen_image" translatable="false" />
     <string name="firstname">firstname</string>
     <string name="age">age</string>
     <string name="date">Date</string>
@@ -86,4 +86,16 @@
     <string name="category_height_child_normal_height">has normal height!</string>
     <string name="category_height_child_tall">is tall!</string>
     <string name="category_height_child_very_tall">is very tall!</string>
+    
+    <string name="delete_profile">Do you really want to delete this profile?</string>
+    <string name="delete_profile_title">Delete Profile?</string>
+    <string name="export_gif">Do you really want to export the pictures as gif?</string>
+    <string name="loading">Loading, feel free to browse around the app...</string>
+    <string name="no_measurements">There are no measurements to export!</string>
+    <string name="mail_with_gif">Mail with a .gif-file that contains the morphing gif for specific profile.</string>
+    <string name="database_exported">Success! Your database has been exported!</string>
+    <string name="mail_csv_file">Mail with a .csv-file that contains the measurement data for specific profile.</string>
+    <string name="pictures_converted_gif">Success! Your pictures have been converted in a gif.</string>
+    <string name="mail_subject">MobileGrowthMonitor Data</string>
+    <string name="graph_not_enough_measurements">Not enough measurements for a graph</string>
 </resources>

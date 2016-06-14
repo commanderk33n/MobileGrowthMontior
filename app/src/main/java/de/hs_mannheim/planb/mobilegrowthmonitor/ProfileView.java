@@ -187,8 +187,25 @@ public class ProfileView extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.delete_profile) {
-            dbHelper.deleteProfile(profile_Id);
-            onBackPressed();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbHelper.deleteProfile(profile_Id);
+                    onBackPressed();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -282,7 +299,7 @@ public class ProfileView extends BaseActivity {
      */
     public void startGraph(View view) {
         if(dbHelper.getAllMeasurements(profile_Id)==null ||dbHelper.getAllMeasurements(profile_Id).size()<3){
-            Toast.makeText(getApplicationContext(),"Not enough measurements for a graph",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.graph_not_enough_measurements,Toast.LENGTH_LONG).show();
         }else{
         Intent intent = new Intent(this, GraphListView.class);
         intent.putExtra("profile_Id", profile.index);

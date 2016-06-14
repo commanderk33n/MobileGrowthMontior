@@ -43,6 +43,7 @@
                 android:layout_height="100dp"
                 android:padding="5dp"
                 android:src="@drawable/ic_add_a_photo_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
                 android:layout_above="@+id/btn_camera"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -155,6 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_weight"
                 android:drawableLeft="@drawable/ic_photo_camera_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
+                android:layout_margin="3dp"
                 android:onClick="startCamera"
                 android:padding="5dp"
                 android:text="@string/foto"
@@ -167,6 +170,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_camera"
                 android:drawableLeft="@drawable/ic_timeline_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
+                android:layout_margin="3dp"
                 android:padding="5dp"
                 android:text="@string/graph"
                 android:onClick="startGraph"
@@ -179,6 +184,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_graphs"
                 android:drawableLeft="@drawable/ic_create_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
+                android:layout_margin="3dp"
                 android:onClick="startMeasurement"
                 android:padding="5dp"
                 android:text="@string/measurement"
@@ -191,6 +198,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_measurements"
                 android:drawableLeft="@drawable/ic_photo_library_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
+                android:layout_margin="3dp"
                 android:onClick="startGallery"
                 android:padding="5dp"
                 android:text="@string/gallery"
@@ -203,14 +212,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_gallery"
                 android:drawableLeft="@drawable/ic_mail_outline_black_24dp"
+                android:background="@drawable/gradient_box_buttons"
+                android:layout_margin="3dp"
                 android:padding="5dp"
                 android:text="@string/export"
                 android:textAlignment="viewStart"
                 android:textSize="22dp"
                 android:onClick="startExport" />
-
-
-
         </RelativeLayout>
     </ScrollView>
 

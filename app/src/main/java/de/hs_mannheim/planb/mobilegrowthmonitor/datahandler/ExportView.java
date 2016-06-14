@@ -49,7 +49,6 @@ public class ExportView extends BaseActivity {
 
         ArrayList<MeasurementData> measurements = dbHelper.getAllMeasurements(profileId);
         if(measurements!=null) {
-            System.out.println("measurements enthält : " + measurements.size() + " Elemente");
             CSVWriter writer = null;
 
             try {
@@ -74,23 +73,23 @@ public class ExportView extends BaseActivity {
                 e.printStackTrace();
             }
 
-            Toast.makeText(this, "Success! Your database has been exported!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.database_exported, Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");
-            intent.putExtra(Intent.EXTRA_TEXT, "Mail with a .csv-file that contains the measurement data for specific profile.");
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject));
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_csv_file));
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
                     + "/growpics/database" + profileId + ".csv")));
             intent.setType("application/csv");
             startActivity(Intent.createChooser(intent, "Send mail"));
 
         }else{
-            Toast.makeText(this, "There are no measurements to export!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.no_measurements, Toast.LENGTH_LONG).show();
         }
     }
 
     public void exportGif(View view) {
-        Toast.makeText(getApplicationContext(), "Loading, feel free to browse around the app", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.loading, Toast.LENGTH_LONG).show();
 
         new Thread(new Runnable() {
             @Override
@@ -98,7 +97,7 @@ public class ExportView extends BaseActivity {
                 GalleryView.writeGif();
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");
-                intent.putExtra(Intent.EXTRA_TEXT, "Mail with a .gif-file that contains the morphing gif for specific profile.");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_with_gif));
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
                         + "/growpics/gif.gif")));
                 intent.setType("text/plain");
@@ -108,7 +107,7 @@ public class ExportView extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Success! Your database has been exported!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.pictures_converted_gif, Toast.LENGTH_LONG).show();
 
                     }
                 });

@@ -550,7 +550,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(),"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                                Toast.makeText(getActivity(),R.string.error, Toast.LENGTH_LONG).show();                            }
                         });
                         MeasurementView.goBack();
 

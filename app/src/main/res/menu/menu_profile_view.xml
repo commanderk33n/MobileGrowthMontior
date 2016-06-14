@@ -4,7 +4,7 @@
     <item
         android:id="@+id/delete_profile"
         android:orderInCategory="100"
-        android:title="Delete Profile?"
+        android:title="@string/delete_profile_title"
         app:showAsAction="never" />
 
 </menu>

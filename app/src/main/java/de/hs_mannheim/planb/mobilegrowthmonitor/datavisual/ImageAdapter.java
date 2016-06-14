@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Looper;
@@ -21,10 +20,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -274,7 +269,7 @@ public class ImageAdapter extends BaseAdapter {
                                 e.printStackTrace();
                                 ((Activity)context).runOnUiThread(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(context,"There seems to be an error", Toast.LENGTH_LONG).show();                            }
+                                        Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();                            }
                                 });
 
                             }

@@ -85,5 +85,15 @@
     <string name="validate_data">Bitte geben Sie valide Daten ein.</string>
     <string name="enter_heightReference">Bitte geben Sie die Größe des Referenzobjekts an</string>
     <string name="category_height_child_short">ist klein.</string>
+    <string name="delete_profile">Möchten Sie dieses Profil wirklich löschen?</string>
+    <string name="delete_profile_title">Profil löschen?</string>
+    <string name="database_exported">Ihre Daten wurden erfolgreich exportiert!</string>
+    <string name="export_gif">Möchten Sie die Bilder wirklich in eine gif umwandeln?</string>
+    <string name="loading">Lädt. Bitte zögern Sie nicht, die App nach Belieben zu nutzen...</string>
+    <string name="mail_csv_file">Mail mit einer .csv-Datei, die die Messdaten für ein spezifisches Profil enthält.</string>
+    <string name="mail_subject">MobileGrowthMonitor Daten</string>
+    <string name="mail_with_gif">Mail mit einer .gif-Datei, die das Morphing darstellt.</string>
+    <string name="no_measurements">Es gibt keine Messungen, die exportiert werden könnten!</string>
+    <string name="pictures_converted_gif">Ihre Bilder wurden erfolgreich in eine GIF-Datei umgewandelt.</string>
 
 </resources>
