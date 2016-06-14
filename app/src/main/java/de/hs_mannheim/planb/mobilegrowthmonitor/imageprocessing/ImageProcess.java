@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**

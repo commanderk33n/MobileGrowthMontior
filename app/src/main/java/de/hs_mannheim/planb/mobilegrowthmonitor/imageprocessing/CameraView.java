@@ -43,11 +43,11 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         weight = extras.getFloat("weight");
         profile = db.getProfile(profile_Id);
 
-        if(extras.containsKey("camFrag")){
-            Log.i(TAG,"camfrag found");
+        if (extras.containsKey("camFrag")) {
+            Log.i(TAG, "camfrag found");
             camFrag = (NativeCam) extras.getSerializable("camFrag");
-        }else{
-            Log.i(TAG,"camfrag not found, creating new");
+        } else {
+            Log.i(TAG, "camfrag not found, creating new");
             camFrag = NativeCam.newInstance(profile_Id, heightReference);
 
         }
@@ -64,7 +64,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         intent.putExtra("age", age);
         intent.putExtra("weight", weight);
         intent.putExtra("height", height);
-        intent.putExtra("startCallback",true);
+        intent.putExtra("startCallback", true);
         startActivity(intent);
     }
 

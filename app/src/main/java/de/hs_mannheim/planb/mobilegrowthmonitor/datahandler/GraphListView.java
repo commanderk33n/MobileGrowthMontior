@@ -1,9 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PointF;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.androidplot.Plot;
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -33,7 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;

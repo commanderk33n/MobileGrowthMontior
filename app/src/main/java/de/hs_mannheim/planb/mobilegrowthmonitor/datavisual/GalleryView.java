@@ -1,5 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -27,7 +28,7 @@ public class GalleryView extends AppCompatActivity {
     public static ArrayList<String> pathList;
     GridView imageGrid;
     int profile_Id;
-    int hashList;
+    static int hashList;
 
     SharedPreferences settings;
 
@@ -41,8 +42,7 @@ public class GalleryView extends AppCompatActivity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
         hashList = settings.getInt("hash", 0);
-      //  writeGif();
-
+        //  writeGif();
     }
 
     @Override
@@ -54,15 +54,15 @@ public class GalleryView extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //  onWindowFocusChanged(true);
-
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i("Gallery", "onFocusChanged");
-        if(bitmapList==null) {
+        if (bitmapList == null) {
             bitmapList = new ArrayList<>();
-        }if(pathList == null){
+        }
+        if (pathList == null) {
             pathList = new ArrayList<>(
             );
         }
@@ -71,8 +71,7 @@ public class GalleryView extends AppCompatActivity {
             File[] listFile = folder.listFiles();
             Log.i("Gallery", "hashList " + hashList);
             Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
-            Log.i("Gallery","bitmapList length"+ bitmapList.size());
-
+            Log.i("Gallery", "bitmapList length" + bitmapList.size());
 
             if (Arrays.hashCode(listFile) != hashList) {
 
@@ -83,7 +82,7 @@ public class GalleryView extends AppCompatActivity {
                     refreshView();
                 }
             } else {
-                if(bitmapList.size()==0){
+                if (bitmapList.size() == 0) {
                     refreshView();
                 }
                 imageGrid = (GridView) findViewById(R.id.gridview);
@@ -97,17 +96,15 @@ public class GalleryView extends AppCompatActivity {
     public void refreshView() {
         // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
 
-      //  bitmapList = new ArrayList<>();
-        getFromSdCard();
+        //  bitmapList = new ArrayList<>();
+        getFromSdCard(this);
         imageGrid = (GridView) findViewById(R.id.gridview);
-
         imageGrid.setAdapter(new ImageAdapter(this, bitmapList, pathList));
     }
 
-    public void getFromSdCard() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    public static void getFromSdCard(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
-
 
         // TODO: change this to Internal again after height measurement is finished
         //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
@@ -123,9 +120,9 @@ public class GalleryView extends AppCompatActivity {
                     // TODO: this check is inaccurate. Consider using an Id or something else
                     // if (pathList.get(i).contains(profile_name)) {
 
-                    pathList.add(0,listFile[i].getAbsolutePath());
+                    pathList.add(0, listFile[i].getAbsolutePath());
 
-                    bitmapList.add(0,urlImageToBitmap(pathList.get(0), false));
+                    bitmapList.add(0, urlImageToBitmap(pathList.get(0), false));
                     // }
                     hashList = Arrays.hashCode(listFile);
                     editor.putInt("hash", hashList);
@@ -137,7 +134,7 @@ public class GalleryView extends AppCompatActivity {
         }
     }
 
-        protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
+    protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
         Bitmap result = null;
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -146,30 +143,25 @@ public class GalleryView extends AppCompatActivity {
             } else {
                 options.inSampleSize = 12;
 
-
             }
             result = BitmapFactory.decodeFile(imageUrl, options);
 
         }
         return result;
     }
+
     protected static Bitmap urlImageToBitmapGif(String imageUrl) throws Exception {
         Bitmap result = null;
         if (imageUrl != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
 
-                options.inSampleSize = 3;
-
-
+            options.inSampleSize = 3;
 
             result = BitmapFactory.decodeFile(imageUrl, options);
 
         }
         return result;
     }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -179,12 +171,13 @@ public class GalleryView extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public static byte[] generateGIF() {
-        ArrayList<Bitmap> bitmaps =new ArrayList<>();
 
-        if(pathList ==null){
+    public static byte[] generateGIF() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        if (pathList == null) {
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
-        pathList  = new ArrayList<>();
+            pathList = new ArrayList<>();
             if (folder.isDirectory()) {
                 File[] listFile = folder.listFiles();
                 for (int i = 0; i < listFile.length; i++) {
@@ -193,7 +186,7 @@ public class GalleryView extends AppCompatActivity {
                         // TODO: this check is inaccurate. Consider using an Id or something else
                         // if (pathList.get(i).contains(profile_name)) {
 
-                        pathList.add(0,listFile[i].getAbsolutePath());
+                        pathList.add(0, listFile[i].getAbsolutePath());
                         // }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -201,8 +194,8 @@ public class GalleryView extends AppCompatActivity {
                 }
             }
         }
-        Log.i(TAG,"pathlist"+pathList.size());
-        for(String s : pathList){
+        Log.i(TAG, "pathlist" + pathList.size());
+        for (String s : pathList) {
             try {
                 Bitmap b = GalleryView.urlImageToBitmapGif(s);
                 bitmaps.add(b);
@@ -220,13 +213,14 @@ public class GalleryView extends AppCompatActivity {
         encoder.finish();
         return bos.toByteArray();
     }
-    public static void writeGif(){
+
+    public static void writeGif() {
         FileOutputStream outStream = null;
-        try{
-            outStream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath()+ "/growpics/gif.gif");
+        try {
+            outStream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/growpics/gif.gif");
             outStream.write(generateGIF());
             outStream.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

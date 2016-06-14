@@ -247,11 +247,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 }
             }
             return profileDataList.get(indexLatestMeasurement);
-        }else{
+        } else {
             return null;
         }
-
-
     }
 
     /**
