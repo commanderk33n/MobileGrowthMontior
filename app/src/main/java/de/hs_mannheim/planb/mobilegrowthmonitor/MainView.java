@@ -1,3 +1,4 @@
+// @startuml
 package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 /**
@@ -262,14 +263,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    File folder = new File(getFilesDir(), "MobileGrowthMonitor_pictures");
-                    if (!(folder.exists())) {
-                        folder.mkdirs();
-                        Log.i(TAG, "Success! Folder created!");
-                    }
-
-                    // TODO: REMOVE THIS AFTER FINISHING SIZE MEASUREMENT
-                    folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+                    File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
                     if (!(folder.exists())) {
                         folder.mkdirs();
                         Log.i(TAG, "Success! Folder created!");
@@ -295,3 +289,4 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         }
     }
 }
+// @enduml

@@ -30,12 +30,13 @@ import java.util.List;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**
- * ImageProcess.java OpenCV implementation for
- * segmentation of picture:
+ * <h1>ImageProcess.java OpenCV implementation for
+ * segmentation of pictures:</h1>
  * <ul>
  * <li>finding lowest horizontal line</li>
- * <li>contourFind</li>
+ * <li>contourFind for finding human body</li>
  * <li>rectangle detection</li>
+ * <li>measure size of the detected human body</li>
  * </ul>
  */
 public class ImageProcess {
@@ -132,7 +133,8 @@ public class ImageProcess {
     }
 
     /**
-     * checks if a given contour is a rectangle
+     * Checks if a given contour is a rectangle
+     *
      * @param thisContour the contour to be checked
      * @return true if the contour is rect
      */
@@ -258,6 +260,7 @@ public class ImageProcess {
 
     /**
      * Sort contours from left to right or right to left
+     *
      * @param contours the contours to be sorted
      * @return the sorted contours
      */
@@ -362,7 +365,7 @@ public class ImageProcess {
      * Save image to file
      *
      * @param bmp file to save
-     * @return
+     * @return String path
      */
     @SuppressLint("SimpleDateFormat")
     public String imageWriter(Bitmap bmp) {

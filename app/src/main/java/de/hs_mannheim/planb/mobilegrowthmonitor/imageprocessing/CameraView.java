@@ -24,6 +24,7 @@ public class CameraView extends BaseActivity implements SensorEventListener {
     private float weight, heightReference;
     private DbHelper db;
     private ProfileData profile;
+    private String profileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,10 @@ public class CameraView extends BaseActivity implements SensorEventListener {
         heightReference = extras.getFloat("heightReference");
         weight = extras.getFloat("weight");
         profile = db.getProfile(profile_Id);
+        profileName = profile.firstname;
 
 
-        camFrag = NativeCam.newInstance(profile_Id, heightReference);
+        camFrag = NativeCam.newInstance(profile_Id, heightReference, profileName);
 
 
         FragmentManager fragmentManager = getFragmentManager();

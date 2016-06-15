@@ -39,17 +39,20 @@ import java.util.List;
 import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 
 /**
  * Created by eikood on 09.05.2016.
  */
-public class NativeCam extends Fragment implements SensorEventListener,Serializable {
+public class NativeCam extends Fragment implements SensorEventListener, Serializable {
 
     private static final String TAG = NativeCam.class.getSimpleName();
 
     // part of the name for the picture
-    int profileId;
+    protected int profileId;
+    protected String profileName;
 
     // Native camera.
     private Camera mCamera;
@@ -87,10 +90,11 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
      *
      * @return
      */
-    public static NativeCam newInstance(int profileId, float heightReference) {
+    public static NativeCam newInstance(int profileId, float heightReference, String profileName) {
         NativeCam fragment = new NativeCam();
         fragment.heightReference = heightReference;
         fragment.profileId = profileId;
+        fragment.profileName = profileName;
 
         return fragment;
     }
@@ -309,10 +313,10 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
      * excellent StackOverflow answer provided below.
-     * <p>
+     * <p/>
      * Reference / Credit: http://stackoverflow.com/questions/7942378/android-camera-will-not-work-startpreview-fails
      */
-    class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,Serializable {
+    class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, Serializable {
 
         // SurfaceHolder
         private SurfaceHolder mHolder;
@@ -386,13 +390,13 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
          * @param holder
          */
         public void surfaceCreated(SurfaceHolder holder) {
-                if(mCamera!= null) {
-                    try {
-                        mCamera.setPreviewDisplay(holder);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            if (mCamera != null) {
+                try {
+                    mCamera.setPreviewDisplay(holder);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
 
         }
 
@@ -402,7 +406,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
          * @param holder
          */
         public void surfaceDestroyed(SurfaceHolder holder) {
-            if (mCamera != null && released == false) {
+            if (mCamera != null && !released) {
                 mCamera.stopPreview();
 
             }
@@ -508,7 +512,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
     /**
      * Picture Callback for handling a picture capture and saving it out to a file.
      */
-    private class ourPictureCallBack implements Camera.PictureCallback,Serializable{
+    private class ourPictureCallBack implements Camera.PictureCallback, Serializable {
 
         @Override
         public synchronized void onPictureTaken(final byte[] data, Camera camera) {
@@ -533,8 +537,6 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
                     turnedBitmap.recycle();
                     byte[] byteArray = stream.toByteArray();
                     FileOutputStream fos = null;
-                    String path = "";
-
 
                     try {
                         fos = new FileOutputStream(pictureFile);
@@ -547,24 +549,22 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
                             public void run() {
                                 MeasurementView.setMeasurement(measurementData);
 
-
                             }
                         });
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         MeasurementView.goBack();
                         e.printStackTrace();
-                    } catch(IllegalArgumentException e){
+                    } catch (IllegalArgumentException e) {
                         e.printStackTrace();
 
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(),R.string.error, Toast.LENGTH_LONG).show();                            }
+                                Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+                            }
                         });
                         MeasurementView.goBack();
 
-
-                    }
-                    finally {
+                    } finally {
 
 
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
@@ -575,6 +575,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
         }
     }
+
     private Camera.PictureCallback mPicture = new ourPictureCallBack();
 
     /**
@@ -584,13 +585,9 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
         // Create a media file name
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        String fileName = Environment.getExternalStorageDirectory().getPath() +
-                "/growpics/" + timeStamp + ".jpg";
-        File testFile = new File(fileName);
-        //mediaFile = new File(getActivity().getFilesDir().getPath() + File.separator +
-        //"MobileGrowthMonitor_pictures" + File.separator + "IMG_" + profileName + "_" + timeStamp + ".jpg");
-        //Toast.makeText(getActivity(), getString(R.string.image_saving_success), Toast.LENGTH_LONG).show();
-        return testFile;
+        mediaFile = new File(Environment.getExternalStorageDirectory().getPath() + File.separator +
+                "growpics" + File.separator + profileName + File.separator + "IMG_" + "_" + timeStamp + ".jpg");
+        return mediaFile;
     }
 
 }

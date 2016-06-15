@@ -2,7 +2,9 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -132,6 +135,12 @@ public class CreateProfileView extends BaseActivity {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             profileData.birthday = simpleDateFormat.format(dateFromDatePicker);
             dbHelper.addProfile(profileData);
+            File folder = new File(Environment.getExternalStorageDirectory().getPath()+ File.separator + "growpics" +
+                    File.separator + firstname.getText().toString());
+            if (!(folder.exists())) {
+                folder.mkdirs();
+                Log.i(TAG, "Success! Folder created!");
+            }
             finish();
         }
     }

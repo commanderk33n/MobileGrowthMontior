@@ -27,6 +27,7 @@ public class PreCameraView extends BaseActivity {
     Bundle extras;
     DbHelper dbHelper;
     ProfileData profile;
+    String profileName;
     float weight, heightReference;
     SharedPreferences settings;
     final String PREFS_NAME = "Reference";
@@ -65,6 +66,7 @@ public class PreCameraView extends BaseActivity {
         profile_Id = extras.getInt("profile_Id");
         dbHelper = DbHelper.getInstance(getApplicationContext());
         profile = dbHelper.getProfile(profile_Id);
+        profileName = profile.firstname;
 
         MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
         if (measurementData != null) {
@@ -126,6 +128,7 @@ public class PreCameraView extends BaseActivity {
             intent.putExtra("profile_Id", profile_Id);
             intent.putExtra("weight", weight);
             intent.putExtra("heightReference", heightReference);
+            intent.putExtra("porfileName", profileName);
 
             startActivity(intent);
 

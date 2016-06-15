@@ -94,7 +94,7 @@ public class ExportView extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                GalleryView.getFromSdCard(getApplicationContext());
+                GalleryView.getFromSdCard();
                 GalleryView.writeGif();
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");

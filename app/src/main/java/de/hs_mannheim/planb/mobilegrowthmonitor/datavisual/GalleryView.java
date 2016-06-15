@@ -15,20 +15,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 
 
 public class GalleryView extends AppCompatActivity {
     public static final String TAG = GalleryView.class.getSimpleName();
     public static ArrayList<String> pathList;
     GridView imageGrid;
-    int profile_Id;
+    protected int profile_Id;
+    protected static String profileName;
+    private ProfileData profile;
+    private DbHelper dbHelper;
 
-
-    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,10 @@ public class GalleryView extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         this.profile_Id = extras.getInt("profile_Id");
+
+        dbHelper = DbHelper.getInstance(getApplicationContext());
+        profile = dbHelper.getProfile(profile_Id);
+        profileName = profile.firstname;
 
 
         //  writeGif();
@@ -62,53 +68,35 @@ public class GalleryView extends AppCompatActivity {
             );
         }
         if (hasFocus) {
-            File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
-            File[] listFile = folder.listFiles();
+            File folder = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "growpics" + File.separator + profileName);
+            if (folder.isDirectory()) {
 
-
-
-                if (folder.isDirectory()) {
-
-                    refreshView();
-                }
-             else {
+                refreshView();
+            } else {
                 if (pathList.size() == 0) {
                     refreshView();
                 }
                 imageGrid = (GridView) findViewById(R.id.gridview);
-
                 imageGrid.setAdapter(new ImageAdapter(this, pathList));
-
             }
         }
     }
 
     public void refreshView() {
-        // File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
-
-        getFromSdCard(this);
+        getFromSdCard();
         imageGrid = (GridView) findViewById(R.id.gridview);
         imageGrid.setAdapter(new ImageAdapter(this, pathList));
     }
 
-    public static void getFromSdCard(Context context) {
-
-        // TODO: change this to Internal again after height measurement is finished
-        //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
-        File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+    public static void getFromSdCard() {
+        File folder = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "growpics" + File.separator + profileName);
 
         if (folder.isDirectory()) {
             File[] listFile = folder.listFiles();
             pathList.clear();
             for (int i = 0; i < listFile.length; i++) {
-
                 try {
-                    // TODO: this check is inaccurate. Consider using an Id or something else
-                    // if (pathList.get(i).contains(profile_name)) {
-
                     pathList.add(0, listFile[i].getAbsolutePath());
-
-                    // }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -158,19 +146,15 @@ public class GalleryView extends AppCompatActivity {
     public static byte[] generateGIF() {
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
-        if(pathList ==null){
-            File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
+        if (pathList == null) {
+            File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics" + File.separator + profileName);
             pathList = new ArrayList<>();
             if (folder.isDirectory()) {
                 File[] listFile = folder.listFiles();
                 for (int i = 0; i < listFile.length; i++) {
 
                     try {
-                        // TODO: this check is inaccurate. Consider using an Id or something else
-                        // if (pathList.get(i).contains(profile_name)) {
-
                         pathList.add(listFile[i].getAbsolutePath());
-                        // }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

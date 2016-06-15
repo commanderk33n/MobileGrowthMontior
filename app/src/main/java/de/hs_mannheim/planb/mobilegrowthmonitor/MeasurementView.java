@@ -63,9 +63,9 @@ public class MeasurementView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender,null);
-            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender,null);
-            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender,null);
+            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender, null);
+            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender, null);
+            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender, null);
             Log.i("datagetter", "done");
 
         }
@@ -153,11 +153,11 @@ public class MeasurementView extends BaseActivity {
         Log.i(TAG, "weight = " + weight);
         profile = dbHelper.getProfile(profile_Id);
         mImageView = (ImageView) findViewById(R.id.iv_result_pic);
-       // mImageView.setVisibility(View.GONE);
+        // mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
 
-           DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-         dbDummyData.addData(profile_Id);
+        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        dbDummyData.addData(profile_Id);
     }
 
     /**
@@ -175,9 +175,9 @@ public class MeasurementView extends BaseActivity {
         if (validate()) {
             double height = Double.parseDouble(this.eT_height.getText().toString());
             double weight = Double.parseDouble(this.eT_weight.getText().toString());
-            height =  height*10;
-            height = height-height%1;
-            height = height/10;
+            height = height * 10;
+            height = height - height % 1;
+            height = height / 10;
             MeasurementData measurementData = new MeasurementData();
             measurementData.height = height;
             measurementData.weight = weight;
@@ -187,12 +187,12 @@ public class MeasurementView extends BaseActivity {
             } else {
                 measurementData.image = "";
             }
-            if(edited != null){
+            if (edited != null) {
                 File editedFile = new File(edited);
                 editedFile.delete();
 
             }
-           // image = null; todo: see if this causes problems
+            // image = null; todo: see if this causes problems
             Calendar today = Calendar.getInstance();
             today.getTime();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -201,7 +201,7 @@ public class MeasurementView extends BaseActivity {
             dbHelper.addMeasurement(measurementData);
 
             showTexts();
-            if(undo!= null){
+            if (undo != null) {
                 undo.setVisibility(View.INVISIBLE);
             }
 
@@ -211,7 +211,10 @@ public class MeasurementView extends BaseActivity {
 
     public static void goBack() {
         goBack = true;
-        callbackWaiter.interrupt();
+        if (callbackWaiter != null) {
+            callbackWaiter.interrupt();
+        }
+
         Log.i(TAG, "goBack()");
     }
 
@@ -220,9 +223,9 @@ public class MeasurementView extends BaseActivity {
         double weight = Double.parseDouble(eT_weight.getText().toString());
 
         double bmiValue = weight / (height * height);
-        bmiValue *=100;
-        bmiValue-=bmiValue%1;
-        bmiValue/=100;
+        bmiValue *= 100;
+        bmiValue -= bmiValue % 1;
+        bmiValue /= 100;
 
         bmi = (TextView) findViewById(R.id.tv_bmi);
         bmi.setVisibility(View.VISIBLE);
@@ -245,7 +248,6 @@ public class MeasurementView extends BaseActivity {
         weightCategory.setVisibility(View.VISIBLE);
 
 
-
         bmiCategory.setText(getTextBMI(bmiData, birthday, bmiValue));
 
         heightCategory.setText(getTextHeight(heightData, birthday, height * 100));
@@ -257,7 +259,7 @@ public class MeasurementView extends BaseActivity {
 
     private String getTextBMI(double[][] data, Date birthday, double bmi) {
 
-       int age = Utils.getAgeInMonths(birthday,null);
+        int age = Utils.getAgeInMonths(birthday, null);
         if (age > 228) {
             return bmiCategorize(bmi, profile.sex);
         } else {
@@ -296,16 +298,16 @@ public class MeasurementView extends BaseActivity {
 
     private String getTextHeight(double[][] data, Date birthday, double height) {
 
-        int age = Utils.getAgeInMonths(birthday,null);
+        int age = Utils.getAgeInMonths(birthday, null);
 
         if (age > 228) {
             age = 228;
-        }else if(age<=60){
-            age*=30;
+        } else if (age <= 60) {
+            age *= 30;
         }
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
-           //     heightPosition =i;
+                //     heightPosition =i;
                 double sdMinus2 = (data[i][data[0].length / 2 - 2]);
                 double sdPlus2 = (data[i][data[0].length / 2 + 2]);
                 double sdMinus3 = (data[i][data[0].length / 2 - 3]);
@@ -333,10 +335,9 @@ public class MeasurementView extends BaseActivity {
     }
 
 
-
     private String getTextWeight(double[][] data, Date birthday, double weight) {
 
-       int age = Utils.getAgeInMonths(birthday,null);
+        int age = Utils.getAgeInMonths(birthday, null);
 
         if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
@@ -347,7 +348,7 @@ public class MeasurementView extends BaseActivity {
 
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
-           //     weightPosition =i;
+                //     weightPosition =i;
                 double sdMinus2 = (data[i][data[0].length / 2 - 2]);
                 double sdPlus2 = (data[i][data[0].length / 2 + 2]);
                 double sdMinus3 = (data[i][data[0].length / 2 - 3]);
@@ -376,7 +377,6 @@ public class MeasurementView extends BaseActivity {
     }
 
 
-
     public static void setMeasurement(MeasurementData measurementData) {
         if (measurementData == null) {
             return;
@@ -391,7 +391,7 @@ public class MeasurementView extends BaseActivity {
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mImageView.setImageBitmap(bitmap);
-            
+
             mImageView.setVisibility(View.VISIBLE);
         }
         undo.setVisibility(View.VISIBLE);
@@ -399,6 +399,7 @@ public class MeasurementView extends BaseActivity {
 
     /**
      * Categorizes people over the age of 19
+     *
      * @param bmi
      * @param sex
      * @return
@@ -443,6 +444,7 @@ public class MeasurementView extends BaseActivity {
 
     /**
      * checks whether entered weigt and height are valid
+     *
      * @return true if values are valid
      */
     private boolean validate() {
@@ -461,7 +463,7 @@ public class MeasurementView extends BaseActivity {
                     weight <  weightData[weightPosition][heightData[0].length/2-3] + 10 ||
                    height <5||height>250||weight<1||weight>200) {*/
 
-            if(height>250||height<10||weight>200||weight<1){
+            if (height > 250 || height < 10 || weight > 200 || weight < 1) {
                 Toast.makeText(this, R.string.validate_data, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -471,6 +473,7 @@ public class MeasurementView extends BaseActivity {
 
     /**
      * Sets background color on a specific View depending on wheter the Person is overweight or not
+     *
      * @param color
      * @param tv
      */
@@ -495,6 +498,7 @@ public class MeasurementView extends BaseActivity {
 
     /**
      * Delete the edited and taken picture
+     *
      * @param view
      */
     public void undo(View view) {
