@@ -30,8 +30,6 @@ public class PreCameraView extends BaseActivity {
     float weight, heightReference;
     SharedPreferences settings;
     final String PREFS_NAME = "Reference";
-    private NativeCam camFrag;
-    private Thread camFragLoader;
 
     @Override
     public void onBackPressed() {
@@ -79,16 +77,8 @@ public class PreCameraView extends BaseActivity {
         heightReference = settings.getFloat("heightReference", 10);
         etWeight.setText(weight + "");
         etHeightReference.setText(heightReference + "");
-        camFragLoader = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("Thread started", "loading camFrag");
-                camFrag = NativeCam.newInstance(profile_Id, heightReference);
 
-            }
-        });
         ImageAdapter.REFERENCE_OBJECT_HEIGHT = heightReference;
-        camFragLoader.start();
 
     }
 
@@ -130,11 +120,8 @@ public class PreCameraView extends BaseActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }*/
-            Log.i("Going to Camera", camFrag.toString());
 
-            if (camFrag != null) {
-                intent.putExtra("camFrag", camFrag);
-            }
+
 
             intent.putExtra("profile_Id", profile_Id);
             intent.putExtra("weight", weight);

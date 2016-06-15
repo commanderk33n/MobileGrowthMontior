@@ -543,6 +543,13 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
                         Looper.prepare();
                         measurementData = new ImageProcess(heightReference).sizeMeasurement(pictureFile.getPath());
                         measurementData.image = pictureFile.getPath();
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                MeasurementView.setMeasurement(measurementData);
+
+
+                            }
+                        });
                     }catch (IOException e) {
                         MeasurementView.goBack();
                         e.printStackTrace();
@@ -558,15 +565,7 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
                     }
                     finally {
-                        getActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                MeasurementView.setMeasurement(measurementData);
 
-                                //    Toast.makeText(getActivity(), String.format(getString(R.string.measurement_success), measurementData.height), Toast.LENGTH_LONG).show();
-                                //   ((EditText)getActivity().findViewById(R.id.et_height)).bringToFront();
-
-                            }
-                        });
 
                         Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
                         NativeCam.this.onDestroy();
