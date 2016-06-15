@@ -1,6 +1,9 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.database;
+package de.hs_mannheim.planb.mobilegrowthmonitor.misc;
 
 import android.content.Context;
+
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**
  * Created by Morty on 07.06.2016.
@@ -13,7 +16,7 @@ public class DbDummyData {
     }
     public void addData(int id){
         MeasurementData data= new MeasurementData();
-        for(int i = 0;i<6;i++){
+        for(int i = 0;i<20;i++){
             data.date= "2016-0"+i+"-05 12:00:00";
 
             data.height = 88+0.6*i;

@@ -103,8 +103,6 @@ public class ExportView extends BaseActivity {
                         + "/growpics/gif.gif")));
                 intent.setType("text/plain");
                 startActivity(Intent.createChooser(intent, "Send mail"));
-
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

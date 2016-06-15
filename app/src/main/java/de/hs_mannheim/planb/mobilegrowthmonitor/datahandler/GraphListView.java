@@ -47,7 +47,6 @@ public class GraphListView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graph_list_view);
         dbHelper = DbHelper.getInstance(getApplicationContext());
-      //  PixelUtils.init(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profileId = extras.getInt("profile_Id");
         plots = (ListView) findViewById(R.id.lv_plots);
@@ -201,35 +200,24 @@ public class GraphListView extends BaseActivity {
             //  mPlot.setOnTouchListener(this);
 
             String seriesName = "";
+            String seriesUnit ="";
             if (pos == 0) {
                 seriesName = "BMI";
-
+                seriesUnit = seriesName;
             } else if (pos == 1) {
-                seriesName = "Height in cm";
+                seriesName = "height in cm";
+                seriesUnit = "cm";
             } else if (pos == 2) {
-                seriesName = "Weight in kg";
+                seriesName = "weight in kg";
+                seriesUnit = "kg";
             }
-            mPlot.setTitle(seriesName);
-            mPlot.setRangeLabel(seriesName);
 
-            XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesName);
-            //  XYSeries optimalSeries = new SimpleXYSeries(optimal, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD0");
+            mPlot.setTitle(seriesName);
+            mPlot.setRangeLabel(seriesUnit);
+
+            XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesUnit);
             XYSeries sdm1Series = new SimpleXYSeries(sdMinus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-2");
             XYSeries sdp1Series = new SimpleXYSeries(sdPlus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
-
-
-            // create formatters to use for drawing a series using LineAndPointRenderer
-            // and configure them from xml:
-            LineAndPointFormatter sd0Format = new LineAndPointFormatter();
-            sd0Format.setPointLabelFormatter(new PointLabelFormatter());
-            sd0Format.configure(getApplicationContext(),
-                    R.xml.line_point_formatter_with_labels);
-
-
-            // just for fun, add some smoothing to the lines:
-            // see: http://androidplot.com/smooth-curves-and-androidplot/
-            sd0Format.setInterpolationParams(
-                    new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
 
             // create formatters to use for drawing a series using LineAndPointRenderer
@@ -237,21 +225,18 @@ public class GraphListView extends BaseActivity {
             LineAndPointFormatter bmiFormat = new LineAndPointFormatter();
             bmiFormat.setPointLabelFormatter(new PointLabelFormatter());
             bmiFormat.configure(getApplicationContext(),
-                    R.xml.line_point_formatter_with_labels3);
-
-
+                    R.xml.line_point_formatter_with_labels);
+            bmiFormat.setPointLabeler(null);
             // just for fun, add some smoothing to the lines:
             // see: http://androidplot.com/smooth-curves-and-androidplot/
             bmiFormat.setInterpolationParams(
                     new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
+
             LineAndPointFormatter sd1Format = new LineAndPointFormatter();
-
             sd1Format.setPointLabelFormatter(new PointLabelFormatter());
-
             sd1Format.configure(getApplicationContext(),
                     R.xml.line_point_formatter_with_labels_2);
-            //sd1Format.setPointLabelFormatter(null);
             sd1Format.setPointLabeler(null);
             // just for fun, add some smoothing to the lines:
             // see: http://androidplot.com/smooth-curves-and-androidplot/
@@ -267,7 +252,7 @@ public class GraphListView extends BaseActivity {
 
             // draw a domain tick for each year:
             mPlot.setDomainStep(XYStepMode.SUBDIVIDE, dateArray.length);
-            mPlot.setRangeValueFormat(new DecimalFormat("0"));
+            mPlot.setRangeValueFormat(new DecimalFormat("#"));
 
             mPlot.setDomainValueFormat(new Format() {
 
@@ -292,11 +277,14 @@ public class GraphListView extends BaseActivity {
 
             // reduce the number of range labels
             mPlot.setTicksPerRangeLabel(1);
-            mPlot.setTicksPerDomainLabel(1);
+            mPlot.setTicksPerDomainLabel(2);
+
 
             // rotate domain labels 45 degrees to make them more compact horizontally:
             mPlot.getGraphWidget().setDomainLabelOrientation(-45);
-            mPlot.getGraphWidget().setRangeTickLabelWidth(25);
+            mPlot.getGraphWidget().setDomainTickLabelVerticalOffset(15);
+            mPlot.getGraphWidget().setDomainTickLabelWidth(5);
+            mPlot.getGraphWidget().setRangeTickLabelWidth(5);
             mPlot.getGraphWidget().setDomainGridLinePaint(null);
 
             mPlot.redraw();
