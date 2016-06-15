@@ -12,4 +12,14 @@
         android:orderInCategory="100"
         android:title="@string/change_passcode"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/agbs"
+        android:title="AGB's"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/open_source_license"
+        android:title="@string/open_source_licenses"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

@@ -86,7 +86,7 @@
     <string name="category_height_child_normal_height">has normal height!</string>
     <string name="category_height_child_tall">is tall!</string>
     <string name="category_height_child_very_tall">is very tall!</string>
-    
+
     <string name="delete_profile">Do you really want to delete this profile?</string>
     <string name="delete_profile_title">Delete Profile?</string>
     <string name="export_gif">Do you really want to export the pictures as gif?</string>
@@ -98,4 +98,9 @@
     <string name="pictures_converted_gif">Success! Your pictures have been converted in a gif.</string>
     <string name="mail_subject">MobileGrowthMonitor Data</string>
     <string name="graph_not_enough_measurements">Not enough measurements for a graph</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="open_source_license1" translatable="false"><b>AppLock</b>\n(https://github.com/coderkiss/AppLock)</string>
+    <string name="open_source_license2" translatable="false"><b>OpenCSV Writer</b>\n(http://opencsv.sourceforge.net/)</string>
+    <string name="open_source_license3" translatable="false"><b>AndroidPlot</b>\n(http://androidplot.com/)</string>
+    <string name="open_source_license4" translatable="false"><b>AnimatedGifEncoder</b>\n(https://github.com/nbadal/android-gif-encoder)\n<i>Based on J2ME encoder:</i>\n(http://www.jappit.com/blog/2008/12/04/j2me-animated-gif-encoder/)</string>
 </resources>

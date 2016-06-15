@@ -31,10 +31,12 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 
 /**
  * ImageProcess.java OpenCV implementation for
- * - segmentation of picture:
- * - finding lowest horizontal line
- * - contourFind
- * - rectangle detection
+ * segmentation of picture:
+ * <ul>
+ * <li>finding lowest horizontal line</li>
+ * <li>contourFind</li>
+ * <li>rectangle detection</li>
+ * </ul>
  */
 public class ImageProcess {
 
@@ -183,7 +185,7 @@ public class ImageProcess {
     /**
      * Function for finding all rectangle contours in contourList
      *
-     * @param contours
+     * @param contours contourList
      * @return List<MatOfPoint> squares
      */
     private static List<MatOfPoint> getRectContour(List<MatOfPoint> contours) {
@@ -252,11 +254,9 @@ public class ImageProcess {
                     if (destination.get(j, k)[0] > 0) {
                         yCoordinateHighestPoint = j;
                         xCoordinateHighestPoint = k;
-
                         breakForLoop = true;
                         break;
                     }
-
                 }
                 if (breakForLoop) {
                     break;
@@ -290,7 +290,6 @@ public class ImageProcess {
      */
     public int getYLowerHorizontalLine(Mat img) {
         // init
-        Mat source = img;
         int threshold = 50;
         int minLineLength = 10;
         int maxLineGap = 10;
@@ -298,7 +297,7 @@ public class ImageProcess {
         int miny = 0;
         try {
             Mat destination;
-            destination = source;
+            destination = img;
             Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
             for (int x = 0; x < lines.rows(); x++) {
                 double[] vec = lines.get(x, 0);
@@ -325,7 +324,7 @@ public class ImageProcess {
      * Function for finding referenceObject in upper left corner of Image
      *
      * @param contours contourList
-     * @param original
+     * @param original image
      * @return rectangle
      * @throws IllegalArgumentException
      */
@@ -346,7 +345,7 @@ public class ImageProcess {
     /**
      * Save image to file
      *
-     * @param bmp
+     * @param bmp file to save
      * @return
      */
     @SuppressLint("SimpleDateFormat")

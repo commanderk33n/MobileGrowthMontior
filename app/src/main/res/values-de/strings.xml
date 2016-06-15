@@ -95,5 +95,6 @@
     <string name="mail_with_gif">Mail mit einer .gif-Datei, die das Morphing darstellt.</string>
     <string name="no_measurements">Es gibt keine Messungen, die exportiert werden könnten!</string>
     <string name="pictures_converted_gif">Ihre Bilder wurden erfolgreich in eine GIF-Datei umgewandelt.</string>
+    <string name="open_source_licenses">Open Source Lizenzen</string>
 
 </resources>

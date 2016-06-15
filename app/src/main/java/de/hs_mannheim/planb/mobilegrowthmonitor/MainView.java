@@ -7,6 +7,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,6 +117,20 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             intent.putExtra(AbstractAppLock.MESSAGE,
                     getString(R.string.enter_old_passcode));
             startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
+        }
+        if (id == R.id.agbs) {
+
+        }
+        if (id == R.id.open_source_license) {
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.open_source_licenses_view, null);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle(R.string.open_source_licenses);
+            alertDialog.setView(view);
+            AlertDialog alert = alertDialog.create();
+            alert.show();
         }
         return super.onOptionsItemSelected(item);
     }
