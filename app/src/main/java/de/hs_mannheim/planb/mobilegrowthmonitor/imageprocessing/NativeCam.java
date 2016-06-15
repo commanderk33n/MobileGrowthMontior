@@ -301,7 +301,6 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
             mCamera.stopPreview();
             mCamera.release();
             released = true;
-
             mCamera = null;
         }
         if (mPreview != null) {
@@ -406,10 +405,6 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
          * @param holder
          */
         public void surfaceDestroyed(SurfaceHolder holder) {
-            if (mCamera != null && !released) {
-                mCamera.stopPreview();
-
-            }
         }
 
         /**

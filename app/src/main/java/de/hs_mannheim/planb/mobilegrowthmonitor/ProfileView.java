@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -64,7 +65,7 @@ public class ProfileView extends BaseActivity {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_view);
             setSupportActionBar(toolbar);
-        }else{
+        } else {
             ImageButton btnDeleteProfile = (ImageButton) findViewById(R.id.btn_delete_profile);
             btnDeleteProfile.setVisibility(View.VISIBLE);
             btnDeleteProfile.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,7 @@ public class ProfileView extends BaseActivity {
         }
 
         TextView tvAge = (TextView) findViewById(R.id.tv_age);
-        age =  Utils.getAge(profile.birthday);
+        age = Utils.getAge(profile.birthday);
         tvAge.setText(Integer.toString(age));
         setMeasurementTextViews();
 
@@ -116,10 +117,9 @@ public class ProfileView extends BaseActivity {
                 resizedBitmap = Utils.rotateBitmap(resizedBitmap, 270);
             } else {
                 resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
-
             }
-
             mProfileImage.setImageBitmap(resizedBitmap);
+            mProfileImage.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -140,15 +140,15 @@ public class ProfileView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-          //  double tempWeight = measurementData.weight-measurementData.weight%0.01;
+            //  double tempWeight = measurementData.weight-measurementData.weight%0.01;
 
             TextView tvWeight = (TextView) findViewById(R.id.tv_weight);
             tvWeight.setText(measurementData.weight + " kg");
 
             TextView tvHeight = (TextView) findViewById(R.id.tv_height);
-            double tempHeight = measurementData.height ;
-            tempHeight-=tempHeight%1;
-            tvHeight.setText(tempHeight/100+ " m"); //cut off after 2 digits
+            double tempHeight = measurementData.height;
+            tempHeight -= tempHeight % 1;
+            tvHeight.setText(tempHeight / 100 + " m"); //cut off after 2 digits
         }
 
     }
@@ -207,14 +207,14 @@ public class ProfileView extends BaseActivity {
     private void deleteProfile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dbHelper.deleteProfile(profile_Id);
                 onBackPressed();
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -234,24 +234,12 @@ public class ProfileView extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-              /*  Uri selectedCamImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedCamImage,
-                        filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String pictureCamPath = cursor.getString(columnIndex);
-                cursor.close();*/
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-              //  mImageView.setImageBitmap(imageBitmap);
-            String pictureCamPath= new ImageProcess(0).imageWriter(imageBitmap);
+                String pictureCamPath = new ImageProcess(0).imageWriter(imageBitmap);
                 dbHelper.setProfilePic(profile_Id, pictureCamPath);
-                //Bitmap camBitmap = BitmapFactory.decodeFile(pictureCamPath);
                 imageBitmap = getTheProperThumbnailBitmap(imageBitmap);
-
                 mProfileImage.setImageBitmap(imageBitmap);
-
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -269,14 +257,10 @@ public class ProfileView extends BaseActivity {
                     resizedBitmap = Utils.rotateBitmap(resizedBitmap, 270);
                 } else {
                     resizedBitmap = getTheProperThumbnailBitmap(resizedBitmap);
-
                 }
-
                 mProfileImage.setImageBitmap(resizedBitmap);
-
-
             }
-        }else if (requestCode == 3) {
+        } else if (requestCode == 3) {
             setMeasurementTextViews();
         }
     }
@@ -286,7 +270,7 @@ public class ProfileView extends BaseActivity {
         return Math.min(bitmap.getWidth(), bitmap.getHeight());
     }
 
-   private Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
+    private Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
         int dimension = getSquareCropDimensionForBitmap(originalBitmap);
 
         Bitmap resizedBitmap = ThumbnailUtils.extractThumbnail(originalBitmap, dimension, dimension);
@@ -312,13 +296,14 @@ public class ProfileView extends BaseActivity {
      * @param view
      */
     public void startGraph(View view) {
-        if(dbHelper.getAllMeasurements(profile_Id)==null ||dbHelper.getAllMeasurements(profile_Id).size()<3){
-            Toast.makeText(getApplicationContext(), R.string.graph_not_enough_measurements,Toast.LENGTH_LONG).show();
-        }else{
-        Intent intent = new Intent(this, GraphListView.class);
-        intent.putExtra("profile_Id", profile.index);
-        startActivity(intent);
-    }}
+        if (dbHelper.getAllMeasurements(profile_Id) == null || dbHelper.getAllMeasurements(profile_Id).size() < 3) {
+            Toast.makeText(getApplicationContext(), R.string.graph_not_enough_measurements, Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, GraphListView.class);
+            intent.putExtra("profile_Id", profile.index);
+            startActivity(intent);
+        }
+    }
 
     /**
      * OnClick method to start GalleryView Activity
@@ -336,7 +321,7 @@ public class ProfileView extends BaseActivity {
      *
      * @param view
      */
-   public void startMeasurement(View view) {
+    public void startMeasurement(View view) {
         Intent intent = new Intent(this, MeasurementView.class);
         Log.v("ProfileView -> Measu", " " + profile_Id);
         intent.putExtra("profile_Id", profile_Id);
