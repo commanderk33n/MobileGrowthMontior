@@ -78,7 +78,6 @@ public class PreCameraView extends BaseActivity {
         etWeight.setText(weight + "");
         etHeightReference.setText(heightReference + "");
 
-        ImageAdapter.REFERENCE_OBJECT_HEIGHT = heightReference;
 
     }
 
@@ -122,6 +121,7 @@ public class PreCameraView extends BaseActivity {
                 }*/
 
 
+            ImageAdapter.REFERENCE_OBJECT_HEIGHT = heightReference;
 
             intent.putExtra("profile_Id", profile_Id);
             intent.putExtra("weight", weight);
