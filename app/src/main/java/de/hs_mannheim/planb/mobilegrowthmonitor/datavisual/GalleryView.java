@@ -23,11 +23,10 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 public class GalleryView extends AppCompatActivity {
     public static final String TAG = GalleryView.class.getSimpleName();
-    private static final String PREFS_NAME = "lengthList";
     public static ArrayList<String> pathList;
     GridView imageGrid;
     int profile_Id;
-    static int hashList;
+
 
     SharedPreferences settings;
 
@@ -39,8 +38,7 @@ public class GalleryView extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         this.profile_Id = extras.getInt("profile_Id");
 
-        settings = getSharedPreferences(PREFS_NAME, 0);
-        hashList = settings.getInt("hash", 0);
+
         //  writeGif();
     }
 
@@ -66,18 +64,14 @@ public class GalleryView extends AppCompatActivity {
         if (hasFocus) {
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics");
             File[] listFile = folder.listFiles();
-            Log.i("Gallery", "hashList " + hashList);
-            Log.i("Gallery", "hash of List " + Arrays.hashCode(folder.listFiles()));
 
-            if (Arrays.hashCode(listFile) != hashList) {
 
-                Log.i("Gallery", "folder length" + listFile.length);
 
                 if (folder.isDirectory()) {
 
                     refreshView();
                 }
-            } else {
+             else {
                 if (pathList.size() == 0) {
                     refreshView();
                 }
@@ -98,8 +92,6 @@ public class GalleryView extends AppCompatActivity {
     }
 
     public static void getFromSdCard(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
 
         // TODO: change this to Internal again after height measurement is finished
         //File folder = new File(getFilesDir().getPath() + File.separator +"MobileGrowthMonitor_pictures");
@@ -117,9 +109,7 @@ public class GalleryView extends AppCompatActivity {
                     pathList.add(0, listFile[i].getAbsolutePath());
 
                     // }
-                    hashList = Arrays.hashCode(listFile);
-                    editor.putInt("hash", hashList);
-                    editor.commit();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
