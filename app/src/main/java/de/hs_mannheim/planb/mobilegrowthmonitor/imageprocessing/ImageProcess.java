@@ -101,7 +101,7 @@ public class ImageProcess {
             Log.i(TAG, "calculate 1");
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
 
-            rectContour = sortContours(true,rectContour);
+            rectContour = sortContours(rectContour);
 
             heightReferenceObject = findReferenceObject(rectContour, source).height;
 
@@ -131,6 +131,11 @@ public class ImageProcess {
         return measurementData;
     }
 
+    /**
+     * checks if a given contour is a rectangle
+     * @param thisContour the contour to be checked
+     * @return true if the contour is rect
+     */
     public static boolean isContourRect(MatOfPoint thisContour) {
         MatOfPoint2f approxCurve = new MatOfPoint2f();
         // Convert contours from MatOfPoint to MatOfPoint2f
@@ -215,7 +220,7 @@ public class ImageProcess {
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
 
-           contours = sortContours(true,contours);
+           contours = sortContours(contours);
 
             // Find Contour of ReferenceObject in middle of left side of the picture
             rect_small = findReferenceObject(contours, original);
@@ -251,18 +256,23 @@ public class ImageProcess {
         return measurementData;
     }
 
-
-    public List<MatOfPoint> sortContours(boolean leftToRight,List<MatOfPoint> contours){
-        final int factor = leftToRight?1:-1;
+    /**
+     * Sort contours from left to right or right to left
+     * @param contours the contours to be sorted
+     * @return the sorted contours
+     */
+    public List<MatOfPoint> sortContours(List<MatOfPoint> contours){
         Collections.sort(contours, new Comparator<MatOfPoint>() {
             @Override
             public int compare(MatOfPoint lhs, MatOfPoint rhs) {
-                return (Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x)*factor;
+                return (Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x);
 
             }
         });
         return contours;
     }
+
+
 
     /**
      * Used to find the highest Point in the image
