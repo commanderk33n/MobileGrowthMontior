@@ -522,7 +522,6 @@ public class NativeCam extends Fragment implements SensorEventListener,Serializa
 
             captureButton.setClickable(false);
 
-
             new Thread(new Runnable() {
                 public void run() {
                     ((CameraView) getActivity()).afterPictureTaken(height);

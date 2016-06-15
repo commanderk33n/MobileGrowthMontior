@@ -71,7 +71,6 @@ public class MeasurementView extends BaseActivity {
 
         }
     });
-    ;
 
     private static Thread callbackWaiter;
 
@@ -213,8 +212,8 @@ public class MeasurementView extends BaseActivity {
     }
 
     private void showTexts() {
-        double height = Double.parseDouble(this.eT_height.getText().toString()) / 100.0;
-        double weight = Double.parseDouble(this.eT_weight.getText().toString());
+        double height = Double.parseDouble(eT_height.getText().toString()) / 100.0;
+        double weight = Double.parseDouble(eT_weight.getText().toString());
 
         double bmiValue = weight / (height * height);
         bmiValue *=100;
@@ -470,10 +469,9 @@ public class MeasurementView extends BaseActivity {
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mImageView.setImageBitmap(bitmap);
+            
             mImageView.setVisibility(View.VISIBLE);
         }
-
-
         undo.setVisibility(View.VISIBLE);
     }
 
@@ -524,8 +522,8 @@ public class MeasurementView extends BaseActivity {
             Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
             return false;
         } else {
-            double height = Double.parseDouble(this.eT_height.getText().toString());
-            double weight = Double.parseDouble(this.eT_weight.getText().toString());
+            double height = Double.parseDouble(eT_height.getText().toString());
+            double weight = Double.parseDouble(eT_weight.getText().toString());
         /*   if (height > heightData[heightPosition][heightData[0].length-1] -10 ||  //weight / height should not be more than 10 cm/kg +- SD+-3
                     height < heightData[heightPosition][heightData[0].length/2-3] +10||
                     weight > weightData[weightPosition][weightData[0].length-1]-10 ||
