@@ -66,6 +66,7 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Point size = new Point();
@@ -73,22 +74,19 @@ public class ImageAdapter extends BaseAdapter {
         int screenWidth = size.x;
         int screenHeight = size.y;
         ImageView imageView;
-        //imageView = new ImageView(this.context);
-        //imageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenHeight/3));
-        //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         if (convertView == null) {
             imageView = new ImageView(this.context);
             imageView.setLayoutParams(new GridView.LayoutParams(screenWidth / 3, screenHeight / 3));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
-imageView =(ImageView)convertView;
+            imageView =(ImageView)convertView;
         }
         try {
             imageView.setImageBitmap( urlImageToBitmap(pathlist.get(position),false));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //this.bitmapList.get(position));
 
 
         imageView.setOnClickListener(new View.OnClickListener() {

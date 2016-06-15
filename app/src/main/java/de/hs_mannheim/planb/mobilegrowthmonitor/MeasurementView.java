@@ -45,8 +45,7 @@ public class MeasurementView extends BaseActivity {
     private static Button undo;
     public static final String TAG = MeasurementView.class.getSimpleName();
     public static Context baseContext;
-    private static volatile boolean startCallback;
-    private static volatile boolean goBack;
+    private static volatile boolean startCallback, goBack;
     double[][] weightData, heightData, bmiData;
     private boolean gender;
     private Date birthday;
@@ -136,8 +135,8 @@ public class MeasurementView extends BaseActivity {
                             if (goBack) {
                                 Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
                                 intent.putExtra("profile_Id", profile.index);
-                                startActivity(intent);
                                 startCallback = false;
+                                startActivity(intent);
                             }
                             e.printStackTrace();
                         }
@@ -188,6 +187,11 @@ public class MeasurementView extends BaseActivity {
                 measurementData.image = image;
             } else {
                 measurementData.image = "";
+            }
+            if(edited != null){
+                File editedFile = new File(edited);
+                editedFile.delete();
+
             }
            // image = null; todo: see if this causes problems
             Calendar today = Calendar.getInstance();
@@ -262,22 +266,21 @@ public class MeasurementView extends BaseActivity {
             for (int i = 0; i < data.length; i++) {
                 if ((int) data[i][0] == age) {
 
-                    //  optimal.add(data[i][data[0].length / 2]);
-                    double sdMinus1 = (data[i][data[0].length / 2 - 2]);
-                    double sdPlus1 = (data[i][data[0].length / 2 + 2]);
-                    double sdMinus2 = (data[i][data[0].length / 2 - 3]);
-                    double sdPlus2 = (data[i][data[0].length / 2 + 3]);
-                    if (bmi > sdPlus2) {
+                    double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                    double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                    double sdMinus3 = (data[i][data[0].length / 2 - 3]);
+                    double sdPlus3 = (data[i][data[0].length / 2 + 3]);
+                    if (bmi > sdPlus3) {
                         setBackgroundColor(1, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_severly_overweight);
 
-                    } else if (bmi > sdPlus1) {
+                    } else if (bmi > sdPlus2) {
                         setBackgroundColor(2, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_overweight);
-                    } else if (bmi < sdMinus2) {
+                    } else if (bmi < sdMinus3) {
                         setBackgroundColor(1, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_severly_underweight);
-                    } else if (bmi < sdMinus1) {
+                    } else if (bmi < sdMinus2) {
                         setBackgroundColor(3, bmiCategory);
                         return getString(R.string.bmi_category_weight_child_underweight);
                     }
@@ -304,20 +307,20 @@ public class MeasurementView extends BaseActivity {
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
            //     heightPosition =i;
-                double sdMinus1 = (data[i][data[0].length / 2 - 2]);
-                double sdPlus1 = (data[i][data[0].length / 2 + 2]);
-                double sdMinus2 = (data[i][data[0].length / 2 - 3]);
-                double sdPlus2 = (data[i][data[0].length / 2 + 3]);
-                if (height > sdPlus2) {
+                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus3 = (data[i][data[0].length / 2 - 3]);
+                double sdPlus3 = (data[i][data[0].length / 2 + 3]);
+                if (height > sdPlus3) {
                     setBackgroundColor(2, heightCategory);
                     return getString(R.string.category_height_child_very_tall);
-                } else if (height > sdPlus1) {
+                } else if (height > sdPlus2) {
                     setBackgroundColor(3, heightCategory);
                     return getString(R.string.category_height_child_tall);
-                } else if (height < sdMinus2) {
+                } else if (height < sdMinus3) {
                     setBackgroundColor(1, heightCategory);
                     return getString(R.string.category_height_child_very_short);
-                } else if (height < sdMinus1) {
+                } else if (height < sdMinus2) {
                     setBackgroundColor(2, heightCategory);
                     return getString(R.string.category_height_child_short);
                 }
@@ -346,21 +349,21 @@ public class MeasurementView extends BaseActivity {
         for (int i = 0; i < data.length; i++) {
             if ((int) data[i][0] == age) {
            //     weightPosition =i;
-                double sdMinus1 = (data[i][data[0].length / 2 - 2]);
-                double sdPlus1 = (data[i][data[0].length / 2 + 2]);
-                double sdMinus2 = (data[i][data[0].length / 2 - 3]);
-                double sdPlus2 = (data[i][data[0].length / 2 + 3]);
-                if (weight > sdPlus2) {
+                double sdMinus2 = (data[i][data[0].length / 2 - 2]);
+                double sdPlus2 = (data[i][data[0].length / 2 + 2]);
+                double sdMinus3 = (data[i][data[0].length / 2 - 3]);
+                double sdPlus3 = (data[i][data[0].length / 2 + 3]);
+                if (weight > sdPlus3) {
                     setBackgroundColor(1, weightCategory);
                     return getString(R.string.bmi_category_weight_child_severly_overweight);
 
-                } else if (weight > sdPlus1) {
+                } else if (weight > sdPlus2) {
                     setBackgroundColor(2, weightCategory);
                     return getString(R.string.bmi_category_weight_child_overweight);
-                } else if (weight < sdMinus2) {
+                } else if (weight < sdMinus3) {
                     setBackgroundColor(1, weightCategory);
                     return getString(R.string.bmi_category_weight_child_severly_underweight);
-                } else if (weight < sdMinus1) {
+                } else if (weight < sdMinus2) {
                     setBackgroundColor(2, weightCategory);
                     return getString(R.string.bmi_category_weight_child_underweight);
                 }
@@ -374,87 +377,6 @@ public class MeasurementView extends BaseActivity {
     }
 
 
-    // Tabellen von http://www.bmi-rechner.net/
-    // Still needed?
-    private String bmiCategorizeChild(int age, double bmi, int sex) {
-        String result = "";
-        System.out.println("name: " + profile.lastname);
-        System.out.println("Gender : " + profile.sex);
-        if (sex == 0) {
-            double[][] percentileFemale = {{8, 12.2, 13.2, 15.9, 18.8, 22.3},
-                    {9, 13.0, 13.7, 16.4, 19.8, 23.4},
-                    {10, 13.4, 14.2, 16.9, 20.7, 23.4},
-                    {11, 13.8, 14.6, 17.7, 20.8, 22.9},
-                    {12, 14.8, 16.0, 18.4, 21.5, 23.4},
-                    {13, 15.2, 15.6, 18.9, 22.1, 24.4},
-                    {14, 16.2, 17.0, 19.4, 23.2, 26.0},
-                    {15, 16.9, 17.6, 20.2, 23.2, 27.6},
-                    {16, 16.9, 17.8, 20.3, 22.8, 24.2},
-                    {17, 17.1, 17.8, 20.5, 23.4, 25.7},
-                    {18, 17.6, 18.3, 20.6, 23.5, 25.0}};
-            int i = 0;
-            while (percentileFemale[i][0] != age) {
-                i += 1;
-            }
-
-            if (bmi < percentileFemale[i][1]) {
-                result = getString(R.string.bmi_category_weight_child_severly_underweight);
-                setBackgroundColor(1, bmiCategory);
-            } else if (bmi < percentileFemale[i][2]) {
-                result = getString(R.string.bmi_category_weight_child_underweight);
-                setBackgroundColor(2, bmiCategory);
-            } else if (bmi > percentileFemale[i][2] && bmi < percentileFemale[i][4]) { //3
-                result = getString(R.string.bmi_category_weight_child_normal_weight);
-                setBackgroundColor(4, bmiCategory);
-            } else if (bmi > percentileFemale[i][4] && bmi < percentileFemale[i][5]) {
-                result = getString(R.string.bmi_category_weight_child_overweight);
-                setBackgroundColor(2, bmiCategory);
-            } else {
-                result = getString(R.string.bmi_category_weight_child_severly_overweight);
-                setBackgroundColor(1, bmiCategory);
-            }
-
-
-        } else {
-
-            double[][] percentileMale = {{8, 12.5, 14.2, 16.4, 19.3, 22.6},
-                    {9, 12.8, 13.7, 17.1, 19.4, 21.6},
-                    {10, 13.9, 14.6, 17.1, 21.4, 25.0},
-                    {11, 14.0, 14.3, 17.8, 21.2, 23.1},
-                    {12, 14.6, 14.8, 18.4, 22.0, 24.8},
-                    {13, 15.6, 16.2, 19.1, 21.7, 24.5},
-                    {14, 16.1, 16.7, 19.8, 22.6, 25.7},
-                    {15, 17.0, 17.8, 20.2, 23.1, 25.9},
-                    {16, 17.8, 18.5, 21.0, 23.7, 26.0},
-                    {17, 17.6, 18.6, 21.6, 23.7, 25.8},
-                    {18, 17.6, 18.6, 21.8, 24.0, 26.8}};
-
-            int i = 0;
-            while (percentileMale[i][0] != age) {
-                i += 1;
-            }
-            System.out.println("Zeile: " + i);
-
-            if (bmi < percentileMale[i][1]) {
-                setBackgroundColor(1, bmiCategory);
-                result = getString(R.string.bmi_category_weight_child_severly_underweight);
-            } else if (bmi < percentileMale[i][2]) {
-                result = getString(R.string.bmi_category_weight_child_underweight);
-                setBackgroundColor(2, bmiCategory);
-            } else if (bmi > percentileMale[i][2] && bmi < percentileMale[i][4]) { //3
-                result = getString(R.string.bmi_category_weight_child_normal_weight);
-                setBackgroundColor(4, bmiCategory);
-            } else if (bmi > percentileMale[i][4] && bmi < percentileMale[i][5]) {
-                result = getString(R.string.bmi_category_weight_child_overweight);
-                setBackgroundColor(2, bmiCategory);
-            } else {
-                result = getString(R.string.bmi_category_weight_child_severly_overweight);
-                setBackgroundColor(1, bmiCategory);
-            }
-        }
-
-        return result;
-    }
 
     public static void setMeasurement(MeasurementData measurementData) {
         if (measurementData == null) {
@@ -477,7 +399,12 @@ public class MeasurementView extends BaseActivity {
         undo.setVisibility(View.VISIBLE);
     }
 
-
+    /**
+     * Categorizes people over the age of 19
+     * @param bmi
+     * @param sex
+     * @return
+     */
     private String bmiCategorize(double bmi, int sex) {
         if (sex == 0) {
             if (bmi < 19) {
@@ -516,6 +443,10 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
+    /**
+     * checks whether entered weigt and height are valid
+     * @return true if values are valid
+     */
     private boolean validate() {
         if (eT_height.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, R.string.enter_height, Toast.LENGTH_LONG).show();
@@ -540,6 +471,11 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
+    /**
+     * Sets background color on a specific View depending on wheter the Person is overweight or not
+     * @param color
+     * @param tv
+     */
     private void setBackgroundColor(int color, TextView tv) {
         switch (color) {
             case 1:
@@ -559,11 +495,15 @@ public class MeasurementView extends BaseActivity {
         }
     }
 
+    /**
+     * Delete the edited and taken picture
+     * @param view
+     */
     public void undo(View view) {
         File file = new File(image);
         file.delete();
-        File fileOriginal = new File(edited);
-        fileOriginal.delete();
+        File editedImage = new File(edited);
+        editedImage.delete();
         Intent intent = new Intent(this, PreCameraView.class);
         intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
