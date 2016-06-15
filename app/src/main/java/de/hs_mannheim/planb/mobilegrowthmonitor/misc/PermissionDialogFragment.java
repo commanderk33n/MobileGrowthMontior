@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.misc;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 
 /**
  * Created by Laura on 03.06.2016.

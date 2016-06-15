@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.MainView;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;

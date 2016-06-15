@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.profiles;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;

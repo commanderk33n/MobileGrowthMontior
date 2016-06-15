@@ -1,8 +1,6 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.ProfileView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;

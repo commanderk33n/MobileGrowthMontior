@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.misc;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;

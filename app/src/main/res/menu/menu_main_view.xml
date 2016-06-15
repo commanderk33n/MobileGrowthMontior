@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.hs_mannheim.planb.mobilegrowthmonitor.MainView">
+    tools:context=".profiles.MainView">
     <item
         android:id="@+id/on_off_pin"
         android:orderInCategory="100"

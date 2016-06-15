@@ -6,13 +6,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.MeasurementView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
-import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;

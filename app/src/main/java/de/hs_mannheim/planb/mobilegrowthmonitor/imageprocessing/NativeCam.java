@@ -36,12 +36,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.MeasurementView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.MeasurementView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
-import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
-import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 
 /**
  * Created by eikood on 09.05.2016.

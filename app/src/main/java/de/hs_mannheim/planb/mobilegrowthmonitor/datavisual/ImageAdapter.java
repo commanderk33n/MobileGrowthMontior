@@ -36,13 +36,11 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
     private Animator currentAnimator;
     private int shortAnimationDuration = 350;
-    private ImageProcess imageProcess;
     private ArrayList<String> pathlist;
     public static double REFERENCE_OBJECT_HEIGHT = 14.9;
 
     public ImageAdapter(Context context, ArrayList<String> pathlist) {
         this.context = context;
-        imageProcess = new ImageProcess(REFERENCE_OBJECT_HEIGHT);
         this.pathlist = pathlist;
     }
 
@@ -259,9 +257,7 @@ public class ImageAdapter extends BaseAdapter {
                     new Thread(new Runnable() {
                         public void run() {
                             Log.i("Thread", "started");
-
                             try {
-
                                 Looper.prepare();
                                 final double size = new ImageProcess(REFERENCE_OBJECT_HEIGHT).sizeMeasurement(path).height;
                                 ((Activity) context).runOnUiThread(new Runnable() {
@@ -270,7 +266,6 @@ public class ImageAdapter extends BaseAdapter {
                                         DecimalFormat df = new DecimalFormat("####0.00");
                                         String resultString = df.format(size);
                                         Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
-
                                         ((Activity) context).onWindowFocusChanged(true);
                                     }
 
@@ -285,7 +280,6 @@ public class ImageAdapter extends BaseAdapter {
                                         Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();
                                     }
                                 });
-
                             }
                         }
 
@@ -295,6 +289,5 @@ public class ImageAdapter extends BaseAdapter {
             }
         }
     }
-
 }
 

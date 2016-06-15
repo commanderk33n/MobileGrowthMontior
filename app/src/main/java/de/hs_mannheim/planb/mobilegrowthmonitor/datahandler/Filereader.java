@@ -6,14 +6,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
-import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 
 /**
  * Created by Morty on 25.05.2016.

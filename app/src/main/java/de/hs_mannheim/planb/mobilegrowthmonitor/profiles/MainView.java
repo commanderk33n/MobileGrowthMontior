@@ -1,5 +1,14 @@
 // @startuml
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.profiles;
+/*
+
+* @startuml
+
+* car --|> wheel
+
+* @enduml
+
+*/
 
 /**
  * MainView.Activity
@@ -31,6 +40,8 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.PermissionDialogFragment;
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ListAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;

@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,13 +21,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.misc.DbDummyData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
-import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.Filereader;
 import de.hs_mannheim.planb.mobilegrowthmonitor.imageprocessing.PreCameraView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
+import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.ProfileView;
 
 /**
  * Created by Laura on 21.05.2016.

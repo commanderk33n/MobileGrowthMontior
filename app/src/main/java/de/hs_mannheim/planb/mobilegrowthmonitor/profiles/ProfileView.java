@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor;
+package de.hs_mannheim.planb.mobilegrowthmonitor.profiles;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import de.hs_mannheim.planb.mobilegrowthmonitor.datahandler.MeasurementView;
+import de.hs_mannheim.planb.mobilegrowthmonitor.R;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;

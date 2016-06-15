@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
@@ -31,7 +30,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
-import de.hs_mannheim.planb.mobilegrowthmonitor.Utils;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
@@ -145,17 +144,12 @@ public class GraphListView extends BaseActivity {
                 if(pos !=0){   // reload the Data if age passed a critical border ( file border)
                     if((pastAge<60 && age>60)||(pastAge>60 && age<60)){
                          data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1,d); // type, birthday, gender
-
                     }
-
                 }else{
-
                     if((pastAge<24 && age>24) ||(pastAge<60 && age>60)|| (pastAge>24 && age<24) ||(pastAge>60 && age<60)) {
                     data = f.giveMeTheData(pos + 1, birthday, profile.sex == 1,d); // type, birthday, gender
 
                     }
-
-
                 }
                 pastAge = age;
 
@@ -163,10 +157,7 @@ public class GraphListView extends BaseActivity {
                     sdMinus2.add(0.0);
                     sdPlus2.add(100.0);
                 }
-
-
                 if (age < 228) { //19 jahre
-
                     if (age <= 60 && pos != 0) {
                         age *= 30;
                     }
@@ -176,21 +167,15 @@ public class GraphListView extends BaseActivity {
                             sdMinus2.add(data[i][data[0].length / 2 - 2]);
                             sdPlus2.add(data[i][data[0].length / 2 + 2]);
                             break;
-
                         }
-
                     }
-
                 } else { //over 19
                     if (pos == 0) {
 
                         sdMinus2.add(18.5);
                         sdPlus2.add(25.0);
                     }
-
-
                 }
-
             }
 
             final Date[] dateArray = dateList.toArray(new Date[dateList.size()]);
@@ -249,7 +234,6 @@ public class GraphListView extends BaseActivity {
             mPlot.addSeries(sdm1Series, sd1Format);
             mPlot.addSeries(sdp1Series, sd1Format);
 
-
             // draw a domain tick for each year:
             mPlot.setDomainStep(XYStepMode.SUBDIVIDE, dateArray.length);
             mPlot.setRangeValueFormat(new DecimalFormat("#"));
@@ -286,12 +270,11 @@ public class GraphListView extends BaseActivity {
             mPlot.getGraphWidget().setDomainTickLabelWidth(5);
             mPlot.getGraphWidget().setRangeTickLabelWidth(5);
             mPlot.getGraphWidget().setDomainGridLinePaint(null);
-
             mPlot.redraw();
 
             //Set of internal variables for keeping track of the boundaries
             mPlot.calculateMinMaxVals();
-            //  minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
+            //minXY=new PointF(mPlot.getCalculatedMinX().floatValue(),mPlot.getCalculatedMinY().floatValue());
             //maxXY=new PointF(mPlot.getCalculatedMaxX().floatValue(),mPlot.getCalculatedMaxY().floatValue());
 
             return v;

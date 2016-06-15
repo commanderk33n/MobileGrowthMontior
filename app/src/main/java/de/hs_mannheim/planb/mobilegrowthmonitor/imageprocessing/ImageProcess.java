@@ -75,7 +75,6 @@ public class ImageProcess {
         double yCoordinateHorizontalLine = 0;
         double heightReferenceObject = 0;
 
-
         // Start imageProcessing
         try {
             Mat destination;
@@ -91,7 +90,7 @@ public class ImageProcess {
             List<MatOfPoint> rectContour = getRectContour(contours);
             // Rectangle detection found no rectangle so try method 2
             if (rectContour == null) {
-                Log.i(TAG, "calculate 2");
+                Log.i(TAG, "sizeMeasurement method 2");
                 measurementData = sizeMeasurement2(destination, source);
                 if (measurementData.height < 20 || measurementData.height > 250) {
                     throw new IllegalArgumentException("No reference Object found or another error hihi");
@@ -99,7 +98,7 @@ public class ImageProcess {
                 return measurementData;
 
             }
-            Log.i(TAG, "calculate 1");
+            Log.i(TAG, "sizeMeasurement method 1");
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
 
             rectContour = sortContours(rectContour);
@@ -212,7 +211,7 @@ public class ImageProcess {
         Rect rect_small;
         double heightOfPerson = 0;
         double yCoordinateHorizontalLine;
-        double heightReferenceObject = 0;
+        double heightReferenceObject;
 
         try {
 
