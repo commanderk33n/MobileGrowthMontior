@@ -110,6 +110,8 @@ public class ImageProcess {
 
             heightReferenceObject = findReferenceObject(rectContour, source).height;
 
+
+            //find highest point
             for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
                 for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
                     if (destination.get(j, k)[0] > 0) {
@@ -306,8 +308,8 @@ public class ImageProcess {
                         y2 = vec[3];
 
                 if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
-                    //   if (source.width() / 4.0 < x2 && x2 < source.width() * 3.0 / 4.0 && y1 > miny && y1 < source.height()) {
-                    if (y1 > miny && y1 < source.height()) {
+                    if ((source.width() / 3 < x1 || x2 > source.width() * 2.0 / 3.0) && y1 > miny && y1 < source.height()) {
+                    //if (y1 > miny && y1 < source.height()) {
 
                         miny = (int) y1;
                     }
