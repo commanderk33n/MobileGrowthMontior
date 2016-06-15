@@ -311,7 +311,7 @@ public class ImageProcess {
         int minLineLength = 10;
         int maxLineGap = 10;
         Mat lines = new Mat();
-        int miny = 0 ;
+        int miny = 0;
         try {
             Mat destination;
             destination = img;
