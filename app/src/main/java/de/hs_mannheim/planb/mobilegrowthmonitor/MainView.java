@@ -3,7 +3,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 /**
  * MainView.Activity
- * Shows all Profiles - add new profiles
+ * Shows all Profiles - add new profiles and options menu
  */
 
 import android.Manifest;

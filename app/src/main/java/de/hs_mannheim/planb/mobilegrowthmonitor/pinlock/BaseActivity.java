@@ -4,6 +4,7 @@ package de.hs_mannheim.planb.mobilegrowthmonitor.pinlock;
  * BaseActivity for all Activities of MobileGrowthMonitor
  * !every Activity must extend BaseActivity so it is AppLock-secured!
  */
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -59,15 +60,12 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(TAG, "Trying to load OpenCV library");
+        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback)) {
+            Log.i(TAG, "Loading OpenCV library failed");
+        }
         if (pageListener != null) {
             pageListener.onActivityResumed(this);
-        }
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
 
