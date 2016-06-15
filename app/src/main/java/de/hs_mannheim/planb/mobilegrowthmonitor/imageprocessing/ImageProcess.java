@@ -324,7 +324,7 @@ public class ImageProcess {
                         y2 = vec[3];
 
                 if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
-                    if ((destination.width() / 3 < x1 || x2 > destination.width() * 2.0 / 3.0) && y1 > miny && y1 < destination.height()) {
+                    if ((destination.width() / 3 > x1 || x2 > destination.width() * 2.0 / 3.0) && y1 > miny && y1 < destination.height()) {
                     //if (y1 > miny && y1 < source.height()) {
 
                         miny = (int) y1;

@@ -97,7 +97,7 @@
     <string name="mail_csv_file">Mail with a .csv-file that contains the measurement data for specific profile.</string>
     <string name="pictures_converted_gif">Success! Your pictures have been converted in a gif.</string>
     <string name="mail_subject">MobileGrowthMonitor Data</string>
-    <string name="graph_not_enough_measurements">Not enough measurements for a graph</string>
+    <string name="graph_not_enough_measurements">Not enough measurements for a graph!</string>
     <string name="open_source_licenses">Open Source Licenses</string>
     <string name="open_source_license1" translatable="false"><b>AppLock</b>\n(https://github.com/coderkiss/AppLock)</string>
     <string name="open_source_license2" translatable="false"><b>OpenCSV Writer</b>\n(http://opencsv.sourceforge.net/)</string>
