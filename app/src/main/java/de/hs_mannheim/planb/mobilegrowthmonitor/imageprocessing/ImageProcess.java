@@ -73,9 +73,8 @@ public class ImageProcess {
         double heightOfPerson = 0;
         double yCoordinateHorizontalLine = 0;
         double heightReferenceObject = 0;
-        int yCoordinateHighestPoint = 0;
-        int xCoordinateHighestPoint = 0;
-        boolean breakForLoop = false;
+
+
         // Start imageProcessing
         try {
             Mat destination;
@@ -102,39 +101,19 @@ public class ImageProcess {
             Log.i(TAG, "calculate 1");
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
 
-            // Find Contour of ReferenceObject in middle of left side of the picture
-            Collections.sort(rectContour, new Comparator<MatOfPoint>() {
-                @Override
-                public int compare(MatOfPoint lhs, MatOfPoint rhs) {
-                    return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
-                }
-            });
+            rectContour = sortContours(true,rectContour);
 
             heightReferenceObject = findReferenceObject(rectContour, source).height;
 
 
             //find highest point
-            for (int j = destination.rows() / 10; j < destination.rows() * 2 / 3; j++) {
-                for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
-                    if (destination.get(j, k)[0] > 0) {
-                        yCoordinateHighestPoint = j;
-                        xCoordinateHighestPoint = k;
-
-                        breakForLoop = true;
-                        break;
-                    }
-
-                }
-                if (breakForLoop) {
-                    break;
-                }
-            }
+            Point highestPoint = getHighestPoint(destination);
 
             // Draw Line from lowest to highest point
-            Imgproc.line(source, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
-                    new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
+            Imgproc.line(source, new Point(highestPoint.x, yCoordinateHorizontalLine),
+                    highestPoint, new Scalar(0, 255, 0), 3);
             // Height of ReferenceObject and SizeMeasurement
-            double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
+            double heightInPixels = yCoordinateHorizontalLine - highestPoint.y;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
             if (heightOfPerson > 250 || heightOfPerson < 10) {
                 throw new IllegalArgumentException("Error, person / reference object not found");
@@ -227,21 +206,16 @@ public class ImageProcess {
         double heightOfPerson = 0;
         double yCoordinateHorizontalLine;
         double heightReferenceObject = 0;
-        int yCoordinateHighestPoint = 0;
-        int xCoordinateHighestPoint = 0;
-        boolean breakForLoop = false;
+
         try {
 
             yCoordinateHorizontalLine = getYLowerHorizontalLine(destination);
             Imgproc.dilate(destination, destination, element);
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-            Collections.sort(contours, new Comparator<MatOfPoint>() {
-                @Override
-                public int compare(MatOfPoint lhs, MatOfPoint rhs) {
-                    return Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x;
-                }
-            });
+
+
+           contours = sortContours(true,contours);
 
             // Find Contour of ReferenceObject in middle of left side of the picture
             rect_small = findReferenceObject(contours, original);
@@ -249,23 +223,18 @@ public class ImageProcess {
             heightReferenceObject = rect_small.height;
             Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
                     rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
-            for (int j = destination.rows() / 50; j < destination.rows() * 2 / 3; j++) {
-                for (int k = (int) (destination.cols() / PERSONPOSITION); k < destination.cols() * 2 / PERSONPOSITION; k++) {
-                    if (destination.get(j, k)[0] > 0) {
-                        yCoordinateHighestPoint = j;
-                        xCoordinateHighestPoint = k;
-                        breakForLoop = true;
-                        break;
-                    }
-                }
-                if (breakForLoop) {
-                    break;
-                }
-            }
-            Imgproc.line(original, new Point(xCoordinateHighestPoint, yCoordinateHorizontalLine),
-                    new Point(xCoordinateHighestPoint, yCoordinateHighestPoint), new Scalar(0, 255, 0), 3);
+
+            Point highestPoint = getHighestPoint(destination);
+
+
+
+            Imgproc.line(original, new Point(highestPoint.x, yCoordinateHorizontalLine),
+                    highestPoint, new Scalar(0, 255, 0), 3);
+
+
+
             // Height of ReferenceObject and SizeMeasurement
-            double heightInPixels = yCoordinateHorizontalLine - yCoordinateHighestPoint;
+            double heightInPixels = yCoordinateHorizontalLine - highestPoint.y;
             heightOfPerson = heightInPixels / heightReferenceObject * REFERENCEOBJECTHEIGHT;
 
             Log.i("Size = ", "" + heightOfPerson);
@@ -280,6 +249,44 @@ public class ImageProcess {
         measurementData.height = heightOfPerson;
         measurementData.edited = imageWriter(bmp);
         return measurementData;
+    }
+
+
+    public List<MatOfPoint> sortContours(boolean leftToRight,List<MatOfPoint> contours){
+        final int factor = leftToRight?1:-1;
+        Collections.sort(contours, new Comparator<MatOfPoint>() {
+            @Override
+            public int compare(MatOfPoint lhs, MatOfPoint rhs) {
+                return (Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x)*factor;
+
+            }
+        });
+        return contours;
+    }
+
+    /**
+     * Used to find the highest Point in the image
+     * starting at the top & going until the middle of the image
+     * looking in the middle third
+     *
+     * @param image the image
+     * @return a point with x & y coordinates of the point
+     * @throws IllegalArgumentException if there is no highest point found
+     */
+    public Point getHighestPoint(Mat image) throws IllegalArgumentException {
+
+        Point p = new Point();
+        for (int j = image.rows() / 50; j < image.rows() /2 ; j++) {
+            for (int k = (int) (image.cols() / PERSONPOSITION); k < image.cols() * 2 / PERSONPOSITION; k++) {
+                if (image.get(j, k)[0] > 0) {
+                    p.y = j;
+                    p.x = k;
+                    return p;
+                }
+            }
+
+        }
+        throw new IllegalArgumentException("No highest Point found");
     }
 
     /**
@@ -307,7 +314,7 @@ public class ImageProcess {
                         y2 = vec[3];
 
                 if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
-                    if ((source.width() / 3 < x1 || x2 > source.width() * 2.0 / 3.0) && y1 > miny && y1 < source.height()) {
+                    if ((destination.width() / 3 < x1 || x2 > destination.width() * 2.0 / 3.0) && y1 > miny && y1 < destination.height()) {
                     //if (y1 > miny && y1 < source.height()) {
 
                         miny = (int) y1;
