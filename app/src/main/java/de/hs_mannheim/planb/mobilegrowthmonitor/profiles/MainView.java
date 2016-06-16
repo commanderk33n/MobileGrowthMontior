@@ -132,6 +132,15 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         }
         if (id == R.id.agbs) {
 
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.agb_view, null);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle(R.string.gtc);
+            alertDialog.setView(view);
+            AlertDialog alert = alertDialog.create();
+            alert.show();
+
         }
         if (id == R.id.open_source_license) {
 

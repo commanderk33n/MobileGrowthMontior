@@ -255,24 +255,4 @@ reader.close();
         return values;
     }
 
-
-
-    /**
-     * takes an array that the Filereader read as input, takes the height (or weight)
-     * as input
-     * and tells you the Standarddeviation
-     * @param ageArray
-     * @param height
-     * @return
-     */
-    public int deviation(double[] ageArray, double height) throws IllegalArgumentException {
-
-        for (int i = 0; i < ageArray.length; i++) {
-            if (ageArray[i + 1] > height || ageArray[ageArray.length - i-1] < height) {
-                int sign = height < ageArray[i + 1] ? -1 : 1; //positive or negative deviation
-                return (5 - i) * sign;
-            }
-        }
-        throw new IllegalArgumentException("no group found");
-    }
 }

@@ -103,4 +103,6 @@
     <string name="open_source_license2" translatable="false"><b>OpenCSV Writer</b>\n(http://opencsv.sourceforge.net/)</string>
     <string name="open_source_license3" translatable="false"><b>AndroidPlot</b>\n(http://androidplot.com/)</string>
     <string name="open_source_license4" translatable="false"><b>AnimatedGifEncoder</b>\n(https://github.com/nbadal/android-gif-encoder)\n<i>Based on J2ME encoder:</i>\n(http://www.jappit.com/blog/2008/12/04/j2me-animated-gif-encoder/)</string>
+    <string name="put_your_general_terms_and_conditions_here">Put your general terms and conditions here.</string>
+    <string name="gtc">General terms and conditions</string>
 </resources>
