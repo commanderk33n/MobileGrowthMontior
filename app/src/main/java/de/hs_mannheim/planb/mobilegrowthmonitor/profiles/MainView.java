@@ -63,7 +63,9 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         setContentView(R.layout.main_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getPermissions();
         }
@@ -210,7 +212,10 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        updateMenu();
+        Intent intent = new Intent(MainView.this, MainView.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
     }
 
     @Override

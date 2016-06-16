@@ -43,7 +43,6 @@ public class GalleryView extends AppCompatActivity {
         profileName = profile.firstname;
 
 
-        //  writeGif();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class GalleryView extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //  onWindowFocusChanged(true);
+      //    onWindowFocusChanged(true);
     }
 
     @Override
