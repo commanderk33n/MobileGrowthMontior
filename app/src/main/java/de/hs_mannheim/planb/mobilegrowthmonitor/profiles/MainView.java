@@ -1,14 +1,4 @@
-// @startuml
 package de.hs_mannheim.planb.mobilegrowthmonitor.profiles;
-/*
-
-* @startuml
-
-* car --|> wheel
-
-* @enduml
-
-*/
 
 /**
  * MainView.Activity
@@ -309,4 +299,3 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
         }
     }
 }
-// @enduml

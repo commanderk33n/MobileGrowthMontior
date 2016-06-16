@@ -18,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = BaseActivity.class.getSimpleName();
 
     private static PageListener pageListener;
+    public static Thread openCVLoader;
 
     public static void setListener(PageListener listener) {
         pageListener = listener;
@@ -60,13 +61,20 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "Trying to load OpenCV library");
-        if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback)) {
-            Log.i(TAG, "Loading OpenCV library failed");
-        }
-        if (pageListener != null) {
-            pageListener.onActivityResumed(this);
-        }
+        openCVLoader = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Trying to load OpenCV library");
+                if (!OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, BaseActivity.this, mLoaderCallback)) {
+                    Log.i(TAG, "Loading OpenCV library failed");
+                }
+                if (pageListener != null) {
+                    pageListener.onActivityResumed(BaseActivity.this);
+                }
+            }
+        });
+        openCVLoader.start();
+
     }
 
     @Override

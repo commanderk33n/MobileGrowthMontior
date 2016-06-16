@@ -11,6 +11,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -214,6 +216,16 @@ public class ProfileView extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dbHelper.deleteProfile(profile_Id);
+                File dir = new File(Environment.getExternalStorageDirectory().getPath(), "growpics" + File.separator + profile.firstname);
+                if (dir.isDirectory())
+                {
+                    String[] children = dir.list();
+                    for (int i = 0; i < children.length; i++)
+                    {
+                        new File(dir, children[i]).delete();
+                    }
+                    dir.delete() ;
+                }
                 onBackPressed();
             }
         });

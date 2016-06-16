@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
  * <h1>ImageProcess.java OpenCV implementation for
@@ -65,6 +66,11 @@ public class ImageProcess {
      */
     public MeasurementData sizeMeasurement(String path) throws IllegalArgumentException {
         // init
+        try {
+            BaseActivity.openCVLoader.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
         Mat hierarchy = new Mat();
