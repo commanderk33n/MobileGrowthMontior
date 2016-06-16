@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_marginTop="50dp"
+    android:layout_marginBottom="50dp">
 
     <LinearLayout
         android:id="@+id/licenses"
@@ -17,30 +19,6 @@
             android:layout_height="wrap_content"
             android:padding="10sp"
             android:text="@string/open_source_license1"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tv_license2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:text="@string/open_source_license2"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tv_license3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:text="@string/open_source_license3"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tv_license4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:text="@string/open_source_license4"
             android:textAlignment="center" />
 
     </LinearLayout>

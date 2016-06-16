@@ -16,7 +16,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="10sp"
-            android:text="@string/put_your_general_terms_and_conditions_here"
+            android:text="@string/general_terms_and_conditions"
             android:textAlignment="center" />
     </LinearLayout>
 </ScrollView>

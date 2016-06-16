@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -120,7 +121,7 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
                     getString(R.string.enter_old_passcode));
             startActivityForResult(intent, AbstractAppLock.CHANGE_PASSWORD);
         }
-        if (id == R.id.agbs) {
+        if (id == R.id.gtc) {
 
             LayoutInflater inflater = LayoutInflater.from(this);
             View view = inflater.inflate(R.layout.agb_view, null);
@@ -128,6 +129,13 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle(R.string.gtc);
             alertDialog.setView(view);
+            alertDialog.setIcon(R.drawable.logo_planb_klein);
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //dismisses Dialog automatically
+                }
+            });
             AlertDialog alert = alertDialog.create();
             alert.show();
 
@@ -137,9 +145,15 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             LayoutInflater inflater = LayoutInflater.from(this);
             View view = inflater.inflate(R.layout.open_source_licenses_view, null);
 
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setTitle(R.string.open_source_licenses);
             alertDialog.setView(view);
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //dismisses Dialog automatically
+                }
+            });
             AlertDialog alert = alertDialog.create();
             alert.show();
         }
