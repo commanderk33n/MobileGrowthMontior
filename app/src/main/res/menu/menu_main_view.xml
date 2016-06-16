@@ -13,7 +13,7 @@
         android:title="@string/change_passcode"
         app:showAsAction="never" />
     <item
-        android:id="@+id/agbs"
+        android:id="@+id/gtc"
         android:title="AGB's"
         android:orderInCategory="100"
         app:showAsAction="never"/>

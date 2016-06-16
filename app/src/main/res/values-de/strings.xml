@@ -98,6 +98,6 @@
     <string name="open_source_licenses">Open Source Lizenzen</string>
     <string name="graph_not_enough_measurements">Es liegen nicht genug Messungen vor, um einen Graphen zu erstellen!</string>
     <string name="gtc">Allgemeine Geschäftsbedingungen</string>
-    <string name="put_your_general_terms_and_conditions_here">Fügen Sie hier ihre Allgemeinen Geschäftsbedingungen ein!</string>
+    <string name="general_terms_and_conditions">Fügen Sie hier ihre Allgemeinen Geschäftsbedingungen ein!</string>
 
 </resources>
