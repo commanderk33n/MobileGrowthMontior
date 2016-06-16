@@ -2,6 +2,10 @@ package de.hs_mannheim.planb.mobilegrowthmonitor;
 
 import org.junit.Test;
 
+import java.util.Date;
+
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -15,7 +19,11 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
-
+    @Test
+    public void age_isCorrect() throws Exception{
+        assertEquals(23*12, Utils.getAgeInMonths(new Date(1993,06,05),new Date(2016,06,16)));
+        assertEquals(21*12+3,Utils.getAgeInMonths(new Date(1995,03,13),new Date(2016,06,16)));
+    }
     /*@Test
     public void sizeIsMeasured() throws Exception{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
