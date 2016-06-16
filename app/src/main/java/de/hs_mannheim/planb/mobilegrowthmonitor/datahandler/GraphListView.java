@@ -153,6 +153,16 @@ public class GraphListView extends BaseActivity {
                 }
                 pastAge = age;
 
+                if (pos == 1 && age > 228) { //take default values for 19 year olds if a person is older
+                    if(profile.sex==1){
+                        sdMinus2.add(154.648);
+                        sdPlus2.add(183.841	);
+                    }else{
+                        sdMinus2.add(143.532);
+                        sdPlus2.add(169.696	);
+                    }
+
+                }
                 if (pos == 2 && age > 120) {
                     sdMinus2.add(0.0);
                     sdPlus2.add(100.0);
