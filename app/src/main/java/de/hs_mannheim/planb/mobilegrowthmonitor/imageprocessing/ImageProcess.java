@@ -66,11 +66,7 @@ public class ImageProcess {
      */
     public MeasurementData sizeMeasurement(String path) throws IllegalArgumentException {
         // init
-        try {
-            BaseActivity.openCVLoader.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         MeasurementData measurementData = new MeasurementData();
         Mat source = Imgcodecs.imread(path);
         Mat hierarchy = new Mat();
@@ -348,7 +344,7 @@ public class ImageProcess {
             Rect temp = Imgproc.boundingRect(m);
 
             if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
-                    > original.height() / 10.0) {
+                    > original.height() / 10.0 && temp.area()>1000)  {
                 Imgproc.rectangle(original, new Point(temp.x, temp.y), new Point(temp.x +
                         temp.width, temp.y + temp.height), new Scalar(0, 255, 0), 3);
                 return temp;
