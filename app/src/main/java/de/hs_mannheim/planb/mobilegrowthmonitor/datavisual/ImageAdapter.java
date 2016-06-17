@@ -5,17 +5,21 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -254,37 +258,51 @@ public class ImageAdapter extends BaseAdapter {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_size_measurement:
-                    new Thread(new Runnable() {
-                        public void run() {
-                            Log.i("Thread", "started");
-                            try {
-                                Looper.prepare();
-                                final double size = new ImageProcess(REFERENCE_OBJECT_HEIGHT).sizeMeasurement(path).height;
-                                ((Activity) context).runOnUiThread(new Runnable() {
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    View view = inflater.inflate(R.layout.measurement_dialog, null);
 
-                                    public void run() {
-                                        DecimalFormat df = new DecimalFormat("####0.00");
-                                        String resultString = df.format(size);
-                                        Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
-                                        ((Activity) context).onWindowFocusChanged(true);
-                                    }
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    alertDialog.setTitle(context.getString(R.string.heightReference));
+                    alertDialog.setView(view);
+                   final EditText height = (EditText) view.findViewById(R.id.ed_dialog);
 
-                                    ;
-                                    //  Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
+                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //dismisses Dialog automatically
+                            REFERENCE_OBJECT_HEIGHT = Double.parseDouble(height.getText().toString());
+                            new Thread(new Runnable() {
+                            public void run() {
+                                Log.i("Thread", "started");
+                                try {
+                                    Looper.prepare();
+                                    final double size = new ImageProcess(REFERENCE_OBJECT_HEIGHT).sizeMeasurement(path).height;
+                                    ((Activity) context).runOnUiThread(new Runnable() {
 
-                                });
-                            } catch (IllegalArgumentException e) {
-                                e.printStackTrace();
-                                ((Activity) context).runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                                        public void run() {
+                                            DecimalFormat df = new DecimalFormat("####0.00");
+                                            String resultString = df.format(size);
+                                            Toast.makeText(context, "Height is: " + resultString + " cm", Toast.LENGTH_LONG).show();
+                                            ((Activity) context).onWindowFocusChanged(true);
+                                        };
+                                    });
+                                } catch (IllegalArgumentException e) {
+                                    e.printStackTrace();
+                                    ((Activity) context).runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
                             }
+
+
+                        }).start();
                         }
+                    });
+                    AlertDialog alert = alertDialog.create();
+                    alert.show();
 
-
-                    }).start();
                     break;
             }
         }

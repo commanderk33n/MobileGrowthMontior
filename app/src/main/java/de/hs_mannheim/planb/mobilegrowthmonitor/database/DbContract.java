@@ -54,5 +54,4 @@ public final class DbContract {
             "FOREIGN KEY(" + FeedMeasurement.COLUMN_NAME_ID + ")" + " REFERENCES " +
             FeedProfile.TABLE_NAME + "(" + FeedProfile.COLUMN_NAME_ID + "), " +
             "PRIMARY KEY("+ FeedMeasurement.COLUMN_NAME_ID + ", " + FeedMeasurement.COLUMN_NAME_DATE + "))";
-
 }

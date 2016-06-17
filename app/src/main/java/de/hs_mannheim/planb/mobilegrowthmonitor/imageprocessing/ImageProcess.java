@@ -167,7 +167,6 @@ public class ImageProcess {
 
                     return true;
                 }
-
             }
         }
         return false;
@@ -226,8 +225,7 @@ public class ImageProcess {
             Imgproc.erode(destination, destination, element1);
             Imgproc.findContours(destination, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-
-           contours = sortContours(contours);
+            contours = sortContours(contours);
 
             // Find Contour of ReferenceObject in middle of left side of the picture
             rect_small = findReferenceObject(contours, original);
@@ -239,11 +237,8 @@ public class ImageProcess {
             Point highestPoint = getHighestPoint(destination);
 
 
-
             Imgproc.line(original, new Point(highestPoint.x, yCoordinateHorizontalLine),
                     highestPoint, new Scalar(0, 255, 0), 3);
-
-
 
             // Height of ReferenceObject and SizeMeasurement
             double heightInPixels = yCoordinateHorizontalLine - highestPoint.y;
@@ -269,7 +264,7 @@ public class ImageProcess {
      * @param contours the contours to be sorted
      * @return the sorted contours
      */
-    public List<MatOfPoint> sortContours(List<MatOfPoint> contours){
+    public List<MatOfPoint> sortContours(List<MatOfPoint> contours) {
         Collections.sort(contours, new Comparator<MatOfPoint>() {
             @Override
             public int compare(MatOfPoint lhs, MatOfPoint rhs) {
@@ -279,8 +274,6 @@ public class ImageProcess {
         });
         return contours;
     }
-
-
 
     /**
      * Used to find the highest Point in the image
@@ -294,7 +287,7 @@ public class ImageProcess {
     public Point getHighestPoint(Mat image) throws IllegalArgumentException {
 
         Point p = new Point();
-        for (int j = image.rows() / 50; j < image.rows() /2 ; j++) {
+        for (int j = image.rows() / 50; j < image.rows() / 2; j++) {
             for (int k = (int) (image.cols() / PERSONPOSITION); k < image.cols() * 2 / PERSONPOSITION; k++) {
                 if (image.get(j, k)[0] > 0) {
                     p.y = j;
@@ -302,7 +295,6 @@ public class ImageProcess {
                     return p;
                 }
             }
-
         }
         throw new IllegalArgumentException("No highest Point found");
     }
@@ -332,8 +324,7 @@ public class ImageProcess {
                         y2 = vec[3];
                 if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
                     if ((destination.width() / 3 > x1 || x2 > destination.width() * 2.0 / 3.0) && y1 > miny && y1 < destination.height()) {
-                 //   if (y1 > miny && y1 < destination.height()) {
-
+                        //   if (y1 > miny && y1 < destination.height()) {
                         miny = (int) y1;
                     }
                 }
