@@ -149,11 +149,12 @@ public class MeasurementView extends BaseActivity {
 
         }
 
-        dataGetter.start();
         eT_weight.setText(weight + "");
         eT_height.setText(height + "");
         Log.i(TAG, "weight = " + weight);
         profile = dbHelper.getProfile(profile_Id);
+        dataGetter.start();
+
         mImageView = (ImageView) findViewById(R.id.iv_result_pic);
         // mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
