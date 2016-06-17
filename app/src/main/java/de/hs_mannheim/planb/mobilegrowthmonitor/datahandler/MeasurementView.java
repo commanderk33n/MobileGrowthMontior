@@ -65,9 +65,42 @@ public class MeasurementView extends BaseActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender, null);
-            heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender, null);
-            weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender, null);
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    bmiData = new Filereader(getApplicationContext()).giveMeTheData(1, birthday, gender, null);
+
+                }
+            });
+
+
+
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    heightData = new Filereader(getApplicationContext()).giveMeTheData(2, birthday, gender, null);
+
+                }
+            });
+
+
+            Thread t3 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    weightData = new Filereader(getApplicationContext()).giveMeTheData(3, birthday, gender, null);
+                }
+            });
+            t1.start();
+            t2.start();
+            t3.start();
+
+            try {
+                t1.join();
+                t2.join();
+                t3.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Log.i("datagetter", "done");
 
         }
