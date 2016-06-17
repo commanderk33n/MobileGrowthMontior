@@ -84,7 +84,6 @@ public class MeasurementView extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        dataGetter.start();
 
         setContentView(R.layout.measurement_view);
 
@@ -150,6 +149,7 @@ public class MeasurementView extends BaseActivity {
 
         }
 
+        dataGetter.start();
         eT_weight.setText(weight + "");
         eT_height.setText(height + "");
         Log.i(TAG, "weight = " + weight);
