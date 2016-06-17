@@ -211,38 +211,38 @@ public class GraphListView extends BaseActivity {
             mPlot.setRangeLabel(seriesUnit);
 
             XYSeries valueSeries = new SimpleXYSeries(valueList, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, seriesUnit);
-            XYSeries sdm1Series = new SimpleXYSeries(sdMinus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-2");
-            XYSeries sdp1Series = new SimpleXYSeries(sdPlus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
+            XYSeries sdm2Series = new SimpleXYSeries(sdMinus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD-2");
+            XYSeries sdp2Series = new SimpleXYSeries(sdPlus2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "SD+2");
 
 
             // create formatters to use for drawing a series using LineAndPointRenderer
             // and configure them from xml:
-            LineAndPointFormatter bmiFormat = new LineAndPointFormatter();
-            bmiFormat.setPointLabelFormatter(new PointLabelFormatter());
-            bmiFormat.configure(getApplicationContext(),
+            LineAndPointFormatter valueFormat = new LineAndPointFormatter();
+            valueFormat.setPointLabelFormatter(new PointLabelFormatter());
+            valueFormat.configure(getApplicationContext(),
                     R.xml.line_point_formatter_with_labels);
-            bmiFormat.setPointLabeler(null);
+            valueFormat.setPointLabeler(null);
             // just for fun, add some smoothing to the lines:
             // see: http://androidplot.com/smooth-curves-and-androidplot/
-            bmiFormat.setInterpolationParams(
+            valueFormat.setInterpolationParams(
                     new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
 
-            LineAndPointFormatter sd1Format = new LineAndPointFormatter();
-            sd1Format.setPointLabelFormatter(new PointLabelFormatter());
-            sd1Format.configure(getApplicationContext(),
+            LineAndPointFormatter sd2Format = new LineAndPointFormatter();
+            sd2Format.setPointLabelFormatter(new PointLabelFormatter());
+            sd2Format.configure(getApplicationContext(),
                     R.xml.line_point_formatter_with_labels_2);
-            sd1Format.setPointLabeler(null);
+            sd2Format.setPointLabeler(null);
             // just for fun, add some smoothing to the lines:
             // see: http://androidplot.com/smooth-curves-and-androidplot/
-            sd1Format.setInterpolationParams(
+            sd2Format.setInterpolationParams(
                     new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
             // add a new series' to the xyplot:
-            mPlot.addSeries(valueSeries, bmiFormat);
+            mPlot.addSeries(valueSeries, valueFormat);
             // mPlot.addSeries(optimalSeries,sd0Format);
-            mPlot.addSeries(sdm1Series, sd1Format);
-            mPlot.addSeries(sdp1Series, sd1Format);
+            mPlot.addSeries(sdm2Series, sd2Format);
+            mPlot.addSeries(sdp2Series, sd2Format);
 
             // draw a domain tick for each year:
             mPlot.setDomainStep(XYStepMode.SUBDIVIDE, dateArray.length);
@@ -270,7 +270,7 @@ public class GraphListView extends BaseActivity {
             });
 
             // reduce the number of range labels
-            mPlot.setTicksPerRangeLabel(1);
+            mPlot.setTicksPerRangeLabel(2);
             mPlot.setTicksPerDomainLabel(2);
 
 

@@ -223,12 +223,12 @@ public class ImageProcess {
 
             contours = sortContours(contours);
 
-            // Find Contour of ReferenceObject in middle of left side of the picture
+            // Find Contour of ReferenceObject in the upper half, left side of the picture
             rect_small = findReferenceObject(contours, original);
 
             heightReferenceObject = rect_small.height;
-            Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
-                    rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
+           // Imgproc.rectangle(original, new Point(rect_small.x, rect_small.y), new Point(rect_small.x +
+            //        rect_small.width, rect_small.y + rect_small.height), new Scalar(0, 255, 0), 3);
 
             Point highestPoint = getHighestPoint(destination);
 
@@ -340,11 +340,15 @@ public class ImageProcess {
      * @throws IllegalArgumentException
      */
     public Rect findReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {
+        double minArea = (original.cols()*original.rows())/500;
+        double maxArea = (original.cols()*original.rows())/20;
         for (MatOfPoint m : contours) {
             Rect temp = Imgproc.boundingRect(m);
 
             if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
-                    > original.height() / 10.0 && temp.area()>1000)  {
+                    > original.height() / 10.0 && temp.area()>minArea && temp.area()<maxArea
+                    &&temp.width<original.width()/5 && temp.height<original.height()/5)  {
+
                 Imgproc.rectangle(original, new Point(temp.x, temp.y), new Point(temp.x +
                         temp.width, temp.y + temp.height), new Scalar(0, 255, 0), 3);
                 return temp;
