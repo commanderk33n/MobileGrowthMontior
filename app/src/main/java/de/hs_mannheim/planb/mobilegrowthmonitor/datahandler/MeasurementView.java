@@ -377,7 +377,7 @@ public class MeasurementView extends BaseActivity {
 
         if (age > 120) {
             return getString(R.string.bmi_category_weight_not_valid);
-        } else if (age < 60) {
+        } else if (age <= 60) {
             age *= 30;
         }
 
