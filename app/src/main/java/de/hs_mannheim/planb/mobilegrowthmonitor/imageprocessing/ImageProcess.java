@@ -340,10 +340,11 @@ public class ImageProcess {
      * @throws IllegalArgumentException
      */
     public Rect findReferenceObject(List<MatOfPoint> contours, Mat original) throws IllegalArgumentException {
-        double minArea = (original.cols()*original.rows())/500;
+        double minArea = 0; //(original.cols()*original.rows())/1000;
         double maxArea = (original.cols()*original.rows())/20;
         for (MatOfPoint m : contours) {
             Rect temp = Imgproc.boundingRect(m);
+
 
             if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
                     > original.height() / 10.0 && temp.area()>minArea && temp.area()<maxArea
@@ -354,6 +355,7 @@ public class ImageProcess {
                 return temp;
             }
         }
+     //   return Imgproc.boundingRect(contours.get(0));
         throw new IllegalArgumentException("no reference object found");
     }
 
