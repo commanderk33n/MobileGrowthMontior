@@ -211,6 +211,7 @@ public class ProfileView extends BaseActivity {
 
     private void deleteProfile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.delete_24);
         builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override

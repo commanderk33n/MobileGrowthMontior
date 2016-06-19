@@ -19,9 +19,9 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -33,32 +33,20 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class CreateProfileTest {
 
-    private int year;
-    private int month;
-    private int day;
-    private String date;
-
-    @Rule
-    public ActivityTestRule<MainView> mActivityTestRule = new ActivityTestRule<>(MainView.class);
+    private int year, month, day;
 
     @Before
     public void setUp() {
         Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -6);
         calendar.getTime();
         year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
+        month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        if (month > 9 && day >9 ) {
-            date = year + "-" + month + "-" + day;
-        } else if (day < 10 && month < 10) {
-            date = year + "-0" + month + "-0" + day;
-        }else if (month < 10){
-            date = year + "-0" + month + "-" + day;
-        }else{
-            date = year + "-" + month + "-0" + day;
-        }
-        System.out.println(year + "-" + month + "-" + day);
     }
+
+    @Rule
+    public ActivityTestRule<MainView> mActivityTestRule = new ActivityTestRule<>(MainView.class);
 
     @Test
     public void createProfileTest() {
@@ -138,33 +126,19 @@ public class CreateProfileTest {
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));
         actionMenuItemView4.perform(click());
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.tv_name), withText("Maxi Muster, "), isDisplayed()));
-        textView3.check(matches(withText("Maxi Muster, ")));
+        onView(withId(R.id.rv_profileList)).perform(swipeUp());
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.tv_bday), withText("25 Jahre alt"), isDisplayed()));
-        textView4.check(matches(withText("25 Jahre alt")));
+        onView(allOf(withId(R.id.tv_name),(withText("Max Muster, ")))).perform(click());
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.rv_profileList), isDisplayed()));
-        recyclerView.perform(actionOnItemAtPosition(0, click()));
-
-        ViewInteraction textView5 = onView(
-                allOf(withId(R.id.tv_firstname), withText("Max,"), isDisplayed()));
+        ViewInteraction textView5 = onView(allOf(withId(R.id.tv_firstname)));
         textView5.check(matches(withText("Max,")));
 
-        ViewInteraction textView6 = onView(
-                allOf(withId(R.id.tv_age), withText("6"), isDisplayed()));
+        ViewInteraction textView6 = onView(allOf(withId(R.id.tv_age)));
         textView6.check(matches(withText("6")));
 
         ViewInteraction imageView = onView(
                 allOf(withId(R.id.iv_gender), isDisplayed()));
         imageView.check(matches(isDisplayed()));
-
-        ViewInteraction textView7 = onView(
-                allOf(withId(R.id.tv_date_last_measurement), withText("Datum"), isDisplayed()));
-        textView7.check(matches(withText("Datum")));
 
         ViewInteraction textView8 = onView(
                 allOf(withId(R.id.tv_height), withText("in m"), isDisplayed()));
@@ -176,9 +150,9 @@ public class CreateProfileTest {
 
         pressBack();
 
-        ViewInteraction recyclerView2 = onView(
-                allOf(withId(R.id.rv_profileList), isDisplayed()));
-        recyclerView2.perform(actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.rv_profileList)).perform(swipeUp());
+
+        onView(allOf(withId(R.id.tv_name),(withText("Maxi Muster, ")))).perform(click());
 
         ViewInteraction textView10 = onView(
                 allOf(withId(R.id.tv_firstname), withText("Maxi,"), isDisplayed()));
@@ -191,10 +165,6 @@ public class CreateProfileTest {
         ViewInteraction imageView2 = onView(
                 allOf(withId(R.id.iv_gender), isDisplayed()));
         imageView2.check(matches(isDisplayed()));
-
-        ViewInteraction textView12 = onView(
-                allOf(withId(R.id.tv_date_last_measurement), withText("Datum"), isDisplayed()));
-        textView12.check(matches(withText("Datum")));
 
         ViewInteraction textView13 = onView(
                 allOf(withId(R.id.tv_height), withText("in m"), isDisplayed()));
@@ -239,8 +209,6 @@ public class CreateProfileTest {
 
         pressBack();
 
-        ViewInteraction textView18 = onView(allOf(withId(R.id.tv_date_last_measurement), isDisplayed()));
-        textView18.check(matches(withText(date)));
 
         ViewInteraction textView19 = onView(
                 allOf(withId(R.id.tv_height), withText("1.65 m"), isDisplayed()));
@@ -252,13 +220,9 @@ public class CreateProfileTest {
 
         pressBack();
 
-        ViewInteraction recyclerView3 = onView(
-                allOf(withId(R.id.rv_profileList), isDisplayed()));
-        recyclerView3.perform(actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.rv_profileList)).perform(swipeUp());
 
-        ViewInteraction textView21 = onView(
-                allOf(withId(R.id.tv_date_last_measurement), withText("Datum"), isDisplayed()));
-        textView21.check(matches(withText("Datum")));
+        onView(allOf(withId(R.id.tv_name),(withText("Max Muster, ")))).perform(click());
 
         ViewInteraction textView22 = onView(
                 allOf(withId(R.id.tv_height), withText("in m"), isDisplayed()));
@@ -273,16 +237,29 @@ public class CreateProfileTest {
         overflowMenuButton.perform(click());
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.title), withText("Delete Profile?"), isDisplayed()));
+                allOf(withId(R.id.title), withText("Profil löschen?"), isDisplayed()));
         appCompatTextView.perform(click());
 
-        ViewInteraction recyclerView4 = onView(
-                allOf(withId(R.id.rv_profileList), isDisplayed()));
-        recyclerView4.perform(actionOnItemAtPosition(0, click()));
+        ViewInteraction imageView3 = onView(
+                allOf(withId(android.R.id.icon),
+                        withParent(allOf(withId(R.id.title_template),
+                                withParent(allOf(withId(R.id.topPanel),
+                                        withParent(allOf(withId(R.id.parentPanel),
+                                                withParent(allOf(withId(android.R.id.content),
+                                                        withParent(withId(R.id.action_bar_root)))))))))),
+                        isDisplayed()));
+        imageView3.check(matches(isDisplayed()));
 
-        ViewInteraction textView24 = onView(
-                allOf(withId(R.id.tv_date_last_measurement), withText(date), isDisplayed()));
-        textView24.check(matches(withText(date)));
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(android.R.id.button1), withText("Ja"),
+                        withParent(allOf(withId(R.id.buttonPanel),
+                                withParent(withId(R.id.parentPanel)))),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
+
+        onView(withId(R.id.rv_profileList)).perform(swipeUp());
+
+        onView(allOf(withId(R.id.tv_name),(withText("Maxi Muster, ")))).perform(click());
 
         ViewInteraction textView25 = onView(
                 allOf(withId(R.id.tv_height), withText("1.65 m"), isDisplayed()));
@@ -292,17 +269,19 @@ public class CreateProfileTest {
                 allOf(withId(R.id.tv_weight), withText("55.0 kg"), isDisplayed()));
         textView26.check(matches(withText("55.0 kg")));
 
-        ViewInteraction appCompatButton3 = onView(
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.btn_graphs), withText("Auswertung"), isDisplayed()));
-        appCompatButton3.perform(click());
+        appCompatButton4.perform(click());
+
+        pressBack();
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.btn_graphs), withText("Auswertung"), isDisplayed()));
         button.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatButton4 = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.btn_measurements), withText("Messung"), isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton5.perform(click());
 
         ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.et_height), withText("165.0"), isDisplayed()));
@@ -316,18 +295,14 @@ public class CreateProfileTest {
                 allOf(withId(R.id.et_weight), withText("55.0"), isDisplayed()));
         appCompatEditText10.perform(replaceText("58.0"));
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.btn_enter_for_bmi), withText("Enter"), isDisplayed()));
-        appCompatButton5.perform(click());
+        appCompatButton6.perform(click());
 
 
         pressBack();
 
         pressBack();
-
-        ViewInteraction textView29 = onView(
-                allOf(withId(R.id.tv_date_last_measurement), withText(date), isDisplayed()));
-        textView29.check(matches(withText(date)));
 
         ViewInteraction textView30 = onView(
                 allOf(withId(R.id.tv_height), withText("1.66 m"), isDisplayed()));
