@@ -68,7 +68,7 @@ public class Girl4YearsOldTest {
                         isDisplayed()));
         appCompatRadioButton.perform(click());
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year,month,day));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year,month+1,day));
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));

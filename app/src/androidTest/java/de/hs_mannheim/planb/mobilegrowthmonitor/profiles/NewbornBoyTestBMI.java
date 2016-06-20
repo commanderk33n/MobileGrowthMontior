@@ -71,7 +71,8 @@ public class NewbornBoyTestBMI {
                         isDisplayed()));
         appCompatRadioButton.perform(click());
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year, month, day));
+        //month + 1 because in java january is 0 not 1!
+        onView(withId(R.id.dp_birthday)).perform(setDate(year, month+1, day));
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));

@@ -68,13 +68,13 @@ public class Boy5YearsOldTest {
                         isDisplayed()));
         appCompatRadioButton.perform(click());
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year,month,day));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year,month+1,day));
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));
         actionMenuItemView.perform(click());
 
-        onView(withId(R.id.rv_profileList)).perform(swipeUp());
+        onView(withId(R.id.rv_profileList)).perform(swipeUp()).perform(swipeUp()).perform(swipeUp());
 
         onView(allOf(withId(R.id.tv_name),(withText("Boy5YearsOld i, ")))).perform(click());
 
@@ -96,7 +96,7 @@ public class Boy5YearsOldTest {
         textView.check(matches(withText("ist sehr klein.")));
 
         ViewInteraction textView2 = onView(allOf(withId(R.id.tv_weight_category)));
-        textView2.check(matches(withText("Das bedeutet Untergewicht!")));
+        textView2.check(matches(withText("Das bedeutet Normalgewicht!")));
 
         ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.et_height), withText("90"), isDisplayed()));
@@ -111,11 +111,7 @@ public class Boy5YearsOldTest {
         appCompatButton4.perform(click());
 
         ViewInteraction textView3 = onView(allOf(withId(R.id.tv_bmi_category)));
-        textView3.check(matches(withText("Das bedeutet Untergewicht!")));
-
-        ViewInteraction appCompatButton12 = onView(
-                allOf(withId(R.id.btn_enter_for_bmi), withText("Enter"), isDisplayed()));
-        appCompatButton12.perform(click());
+        textView3.check(matches(withText("Das bedeutet Normalgewicht!")));
 
         ViewInteraction textView4 = onView(allOf(withId(R.id.tv_height_category)));
         textView4.check(matches(withText("ist normal.")));

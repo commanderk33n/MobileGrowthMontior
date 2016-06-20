@@ -40,6 +40,7 @@ public class Boy3YearsOldTest {
     @Before
     public void setUp() {
         Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR,-3);
         calendar.getTime();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
@@ -77,7 +78,7 @@ public class Boy3YearsOldTest {
         pressBack();
 
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year-3,month,day-1));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year,month+1,day));
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));

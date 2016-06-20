@@ -68,7 +68,7 @@ public class Girl6MonthOldTest {
         appCompatRadioButton.perform(click());
 
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year,month,day));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year,month+1,day));
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.et_firstname), withText("Girl6Month"), isDisplayed()));

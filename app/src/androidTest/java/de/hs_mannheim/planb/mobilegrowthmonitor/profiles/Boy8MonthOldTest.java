@@ -69,7 +69,7 @@ public class Boy8MonthOldTest {
                         isDisplayed()));
         appCompatRadioButton.perform(click());
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(year,month,day));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year,month+1,day));
 
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));
@@ -169,7 +169,7 @@ public class Boy8MonthOldTest {
         textView11.check(matches(withText("ist sehr groß.")));
 
         ViewInteraction textView12 = onView(allOf(withId(R.id.tv_weight_category)));
-        textView12.check(matches(withText("Das bedeutet Übergewicht!")));
+        textView12.check(matches(withText("Das bedeutet extremes Übergewicht!")));
 
     }
 }

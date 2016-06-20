@@ -38,7 +38,7 @@ public class CreateProfileTest {
     @Before
     public void setUp() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -6);
+        calendar.add(Calendar.YEAR, -25);
         calendar.getTime();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
@@ -120,7 +120,7 @@ public class CreateProfileTest {
 
         pressBack();
 
-        onView(withId(R.id.dp_birthday)).perform(setDate(1990, 9, 15));
+        onView(withId(R.id.dp_birthday)).perform(setDate(year, month, day));
 
         ViewInteraction actionMenuItemView4 = onView(
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));
