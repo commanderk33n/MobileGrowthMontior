@@ -17,7 +17,7 @@ public class DbDummyData {
     public void addData(int id){
         MeasurementData data= new MeasurementData();
         for(int i = 1;i<9;i++){
-            data.date= "2015-0"+i+"-05 12:00:00";
+            data.date= "2016-0"+i+"-05 12:00:00";
 
             data.height = 88+0.6*i;
             data.weight = 12.5+0.15*i;

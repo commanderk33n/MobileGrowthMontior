@@ -245,10 +245,10 @@ public class GraphListView extends BaseActivity {
                 seriesName = "BMI";
                 seriesUnit = seriesName;
             } else if (pos == 1) {
-                seriesName = "height in cm";
+                seriesName = getString(R.string.height_in_cm);
                 seriesUnit = "cm";
             } else if (pos == 2) {
-                seriesName = "weight in kg";
+                seriesName = getString(R.string.weight_in_kg);
                 seriesUnit = "kg";
             }
 

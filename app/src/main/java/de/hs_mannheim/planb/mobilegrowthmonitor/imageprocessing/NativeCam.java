@@ -563,7 +563,7 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
                     } finally {
 
 
-                        Log.i("Thread", "finished"); //todo : go to graph view and refresh it with your current data
+                        Log.i("Thread", "finished");
                         NativeCam.this.onDestroy();
                     }
                 }
