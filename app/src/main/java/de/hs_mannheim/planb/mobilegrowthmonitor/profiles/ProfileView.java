@@ -209,6 +209,9 @@ public class ProfileView extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * deletes a profile
+     */
     private void deleteProfile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_profile).setTitle(R.string.delete_profile_title);
@@ -248,14 +251,14 @@ public class ProfileView extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
+            if (requestCode == 1) { // take picture
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 String pictureCamPath = new ImageProcess(0).imageWriter(imageBitmap);
                 dbHelper.setProfilePic(profile_Id, pictureCamPath);
                 imageBitmap = getTheProperThumbnailBitmap(imageBitmap);
                 mProfileImage.setImageBitmap(imageBitmap);
-            } else if (requestCode == 2) {
+            } else if (requestCode == 2) { //from gallery
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage,
@@ -280,11 +283,21 @@ public class ProfileView extends BaseActivity {
         }
     }
 
+    /**
+     * returns the dimensions for the thumbnail
+     * @param bitmap
+     * @return
+     */
     private int getSquareCropDimensionForBitmap(Bitmap bitmap) {
         //use the smallest dimension of the image to crop to
         return Math.min(bitmap.getWidth(), bitmap.getHeight());
     }
 
+    /**
+     * gets the thumbnail out of a bitmap
+     * @param originalBitmap
+     * @return
+     */
     private Bitmap getTheProperThumbnailBitmap(Bitmap originalBitmap) {
         int dimension = getSquareCropDimensionForBitmap(originalBitmap);
 

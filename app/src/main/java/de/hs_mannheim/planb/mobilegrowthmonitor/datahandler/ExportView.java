@@ -17,17 +17,21 @@ import java.util.ArrayList;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
  * Created by Laura on 02.06.2016.
+ *
+ * This view gives the possibility to export a morphing gif
+ * also it enables the export of the database as a .csv file
  */
 public class ExportView extends BaseActivity {
 
     private int profileId;
     private DbHelper dbHelper;
-
+    ProfileData profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,7 @@ public class ExportView extends BaseActivity {
         dbHelper = DbHelper.getInstance(this);
         Bundle extras = getIntent().getExtras();
         profileId = extras.getInt("profile_Id");
+        profile = dbHelper.getProfile(profileId);
 
     }
 
@@ -88,6 +93,10 @@ public class ExportView extends BaseActivity {
         }
     }
 
+    /**
+     * exports an animated gif of the profile specific files
+     * @param view
+     */
     public void exportGif(View view) {
         Toast.makeText(getApplicationContext(), R.string.loading, Toast.LENGTH_LONG).show();
 
@@ -101,7 +110,7 @@ public class ExportView extends BaseActivity {
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_with_gif));
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
                         + "/growpics/gif.gif")));
-                intent.setType("text/plain");
+                intent.setType("image/gif");
                 startActivity(Intent.createChooser(intent, "Send mail"));
                 runOnUiThread(new Runnable() {
                     @Override

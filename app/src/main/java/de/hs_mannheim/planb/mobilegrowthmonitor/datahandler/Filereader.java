@@ -15,6 +15,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 
 /**
  * Created by Morty on 25.05.2016.
+ * used to read the WHO Data
  */
 public class Filereader {
 
@@ -24,10 +25,11 @@ public class Filereader {
     }
 
     /**
-     *
+     * Reads the specific file with WHO Growth Standards and returns it as a double[][]
      * @param classification 1 = bmi, 2 = height , 3  = weight
      * @param dateOfBirth to see which file to read
-     * @param male
+     * @param male true if male
+     * @param measurementDate null if today
      * @return
      */
     public  double[][] giveMeTheData(int classification, Date dateOfBirth, boolean male, Date measurementDate) throws IllegalArgumentException {
@@ -111,9 +113,9 @@ public class Filereader {
      * reads a File and returns the values sorted in the known order of:
      * Age SD4neg	SD3neg	SD2neg	SD1neg	SD0	SD1	SD2	SD3	SD4
      * the reader has to handle whether the age is in months or days
-     * TODO: decide wether to have a path or a file as a parameter
      *
-     * @param path
+     *
+     * @param path id to the raw resource file
      * @return the sorted array of values
      * @throws IOException
      */
@@ -153,6 +155,19 @@ public class Filereader {
         return values;
     }
 
+    /**
+     * reads a File and returns the values sorted in the known order of:
+     * Age SD4neg	SD3neg	SD2neg	SD1neg	SD0	SD1	SD2	SD3	SD4
+     * if the person is under the age of 5, it returns  the order
+     * SD3neg	SD2neg	SD1neg	SD0	SD1	SD2	SD3
+     * the reader has to handle whether the age is in months or days
+     *
+     *
+     * @param path the id
+     * @param over5  true if yes
+     * @return the sorted array of values
+     * @throws IOException
+     */
     public  double[][] readBMIScore(int path,boolean over5) throws IOException {
         InputStream initialStream = context.getResources().openRawResource(path);
         byte[] buffer = new byte[8192];
@@ -200,7 +215,17 @@ reader.close();
         return values;
     }
 
-
+    /**
+     * reads a File and returns the values sorted in the known order of:
+     * Age SD4neg	SD3neg	SD2neg	SD1neg	SD0	SD1	SD2	SD3	SD4
+     * the reader has to handle whether the age is in months or days
+     *
+     *
+     * @param path the id
+     * @param weight  true if weight, false if height
+     * @return the sorted array of values
+     * @throws IOException
+     */
     public  double[][] readZOver5(int path, boolean weight ) throws IOException {
         int skip = weight ? 3 : 5;
 

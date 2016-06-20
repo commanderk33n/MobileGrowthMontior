@@ -34,6 +34,7 @@ import static de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.GalleryView.ur
 
 /**
  * Created by eikood on 05.05.2016.
+ * Loads images to GridView and enables a zoom function
  */
 public class ImageAdapter extends BaseAdapter {
 

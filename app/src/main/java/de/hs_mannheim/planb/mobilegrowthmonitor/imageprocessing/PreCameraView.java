@@ -99,6 +99,10 @@ public class PreCameraView extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * starts the camera view
+     *
+     */
     private void saveMeasurement(){
 
         if (etWeight.getText().toString().trim().isEmpty() || Float.parseFloat(etWeight.getText().toString()) < 0) {
@@ -127,7 +131,7 @@ public class PreCameraView extends BaseActivity {
             intent.putExtra("profile_Id", profile_Id);
             intent.putExtra("weight", weight);
             intent.putExtra("heightReference", heightReference);
-            intent.putExtra("porfileName", profileName);
+            intent.putExtra("profileName", profileName);
 
             startActivity(intent);
 

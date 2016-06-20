@@ -13,7 +13,12 @@ import java.util.GregorianCalendar;
  * Created by defin on 08.06.2016.
  */
 public class Utils {
-
+    /**
+     * returns age in months
+     * @param birthday
+     * @param measuredDay null if today
+     * @return age in months
+     */
     public static int getAgeInMonths(Date birthday, Date measuredDay) {
         int age = 0;
         Calendar birthDayCalendar = new GregorianCalendar();
@@ -40,7 +45,7 @@ public class Utils {
 
 
         /**
-         * Returns age of a profileUser
+         * Returns age of a profileUser out of a String
          * @param date
          * @return
          */

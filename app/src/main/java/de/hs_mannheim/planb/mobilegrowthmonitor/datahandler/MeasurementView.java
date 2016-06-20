@@ -33,6 +33,9 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.ProfileView;
 
 /**
  * Created by Laura on 21.05.2016.
+ * Measurement View is the Post Camera View, if you get there after you took a picture
+ * It takes the weight and height of a person, saves it in the Database and gives you feedback on
+ * how you compare to the data (5 categories)
  */
 public class MeasurementView extends BaseActivity {
 
@@ -51,6 +54,9 @@ public class MeasurementView extends BaseActivity {
     double[][] weightData, heightData, bmiData;
     private boolean gender;
     private Date birthday;
+    /*
+    this thread reads the who data asynchronously as soon as the Measurement view is loaded
+     */
     private Thread dataGetter = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -111,6 +117,7 @@ public class MeasurementView extends BaseActivity {
     /**
      * Fetches Profile from database
      *
+     *
      * @param savedInstanceState
      */
     @Override
@@ -153,6 +160,11 @@ public class MeasurementView extends BaseActivity {
         goBack = false;
 
         Log.i(TAG, "startCallback before if" + startCallback);
+
+        /*
+         if you came here after you took a picture, you're waiting for a result.
+         if the result is invalid, it sends you back to precamview
+         */
         if (startCallback) {
             callbackWaiter = new Thread(new Runnable() {
                 @Override
@@ -167,6 +179,7 @@ public class MeasurementView extends BaseActivity {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             if (goBack) {
+
                                 Intent intent = new Intent(MeasurementView.this, PreCameraView.class);
                                 intent.putExtra("profile_Id", profile.index);
                                 startCallback = false;
@@ -412,7 +425,11 @@ public class MeasurementView extends BaseActivity {
         return "error hehehehehehehe";
     }
 
-
+    /**
+     * after a picture is taken, set the data in the input fields to the newly measured data
+     * this is called after the camera took a picture
+     * @param measurementData
+     */
     public static void setMeasurement(MeasurementData measurementData) {
         if (measurementData == null) {
             return;

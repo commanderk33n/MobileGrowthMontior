@@ -1,9 +1,15 @@
 package de.hs_mannheim.planb.mobilegrowthmonitor.datahandler;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,7 +40,10 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.MeasurementData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
+import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.LockManager;
 
 public class GraphListView extends BaseActivity {
     private ListView plots;
@@ -44,13 +53,49 @@ public class GraphListView extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.graph_list_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_graph_list);
+        setSupportActionBar(toolbar);
+
         dbHelper = DbHelper.getInstance(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         profileId = extras.getInt("profile_Id");
         plots = (ListView) findViewById(R.id.lv_plots);
         plots.setAdapter(new MyViewAdapter(getApplicationContext(), R.layout.graph_view, null));
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_graph_list_view, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.graph_help) {
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.help_graph_list_view, null);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle(R.string.graph_help_title);
+            alertDialog.setView(view);
+            alertDialog.setIcon(R.drawable.logo_planb_klein);
+            alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //dismisses Dialog automatically
+                }
+            });
+            AlertDialog alert = alertDialog.create();
+            alert.show();
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class MyViewAdapter extends ArrayAdapter<View> {

@@ -56,6 +56,10 @@ public class GalleryView extends AppCompatActivity {
       //    onWindowFocusChanged(true);
     }
 
+    /**
+     * this is used to reload the pictures
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i("Gallery", "onFocusChanged");
@@ -79,12 +83,18 @@ public class GalleryView extends AppCompatActivity {
         }
     }
 
+    /**
+     * get images and set adapter
+     */
     public void refreshView() {
         getFromSdCard();
         imageGrid = (GridView) findViewById(R.id.gridview);
         imageGrid.setAdapter(new ImageAdapter(this, pathList));
     }
 
+    /**
+     * reads all profile specific images from the folder and saves them in the pathlist
+     */
     public static void getFromSdCard() {
         File folder = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "growpics" + File.separator + profileName);
 
@@ -102,6 +112,13 @@ public class GalleryView extends AppCompatActivity {
         }
     }
 
+    /**
+     * this is used to read images and create a Bitmapp
+     * @param imageUrl the path to the image
+     * @param hiRes true : high resolution, false: a third of high resolution
+     * @return a Bitmap from imageUrl
+     * @throws Exception
+     */
     protected static Bitmap urlImageToBitmap(String imageUrl, boolean hiRes) throws Exception {
         Bitmap result = null;
         if (imageUrl != null) {
@@ -118,18 +135,6 @@ public class GalleryView extends AppCompatActivity {
         return result;
     }
 
-    protected static Bitmap urlImageToBitmapGif(String imageUrl) throws Exception {
-        Bitmap result = null;
-        if (imageUrl != null) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            options.inSampleSize = 3;
-
-            result = BitmapFactory.decodeFile(imageUrl, options);
-
-        }
-        return result;
-    }
 
     @Override
     public void onBackPressed() {
@@ -140,9 +145,12 @@ public class GalleryView extends AppCompatActivity {
 
     }
 
+    /**
+     * uses the Animated gif encoder to create a gif
+     * @return
+     */
     public static byte[] generateGIF() {
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
-
         if (pathList == null) {
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics" + File.separator + profileName);
             pathList = new ArrayList<>();
@@ -161,7 +169,7 @@ public class GalleryView extends AppCompatActivity {
         Log.i(TAG, "pathlist" + pathList.size());
         for (String s : pathList) {
             try {
-                Bitmap b = GalleryView.urlImageToBitmapGif(s);
+                Bitmap b = GalleryView.urlImageToBitmap(s,false);
                 bitmaps.add(b);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,6 +187,9 @@ public class GalleryView extends AppCompatActivity {
         return bos.toByteArray();
     }
 
+    /**
+     * initiates the writing of a gif to a specified path
+     */
     public static void writeGif() {
         FileOutputStream outStream = null;
         try {

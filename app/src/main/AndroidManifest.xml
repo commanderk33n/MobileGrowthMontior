@@ -54,7 +54,8 @@
         <activity
             android:name=".imageprocessing.PreCameraView"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".datahandler.GraphListView"/>
+        <activity android:name=".datahandler.GraphListView"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

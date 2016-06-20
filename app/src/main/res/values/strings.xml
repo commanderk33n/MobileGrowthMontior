@@ -14,6 +14,7 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="fullscreen_image" translatable="false" />
     <string name="firstname">firstname</string>
+    <string name="help">Help</string>
     <string name="age">age</string>
     <string name="date">Date</string>
     <string name="height">Height: </string>
@@ -109,5 +110,10 @@
     </string>
     <string name="general_terms_and_conditions">Put your general terms and conditions here.</string>
     <string name="gtc">General terms and conditions</string>
+    <string name="graph_help_title">Explanation</string>
+    <string name="explanation">These graphs show how the measured data compares to WHO Growth Standards of children with the same age.
+    The higher bar (SD+2) and the lower bar (SD-2) are the cut off points that the WHO calls abnormal growth.
+    </string>
+
     <string name="instruction">Please put your rectangular reference object in the left upper rectangle, like the blue card in the picture below. Then position the person in the camera view as below between the two vertical lines.\n\nThen pitch and rotate your phone until the values of pitch and roll are near Zero und have a green background.\n\nOnly then you\'ll be able to take a picture!</string>
 </resources>

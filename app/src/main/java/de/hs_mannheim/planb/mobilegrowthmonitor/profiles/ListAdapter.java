@@ -1,4 +1,4 @@
-package de.hs_mannheim.planb.mobilegrowthmonitor.datavisual;
+package de.hs_mannheim.planb.mobilegrowthmonitor.profiles;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +17,11 @@ import java.util.List;
 
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
 
 /**
  * Created by eikood on 05.05.2016.
+ *
  */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 

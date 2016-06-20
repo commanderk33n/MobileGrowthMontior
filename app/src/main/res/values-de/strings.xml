@@ -31,6 +31,7 @@
     <string name="passcode_wrong">Falscher PIN, bitte versuchen Sie es erneut.</string>
     <string name="reenter_passcode">Geben Sie den PIN erneut ein.</string>
     <string name="save">Speichern</string>
+    <string name="help">Hilfe</string>
     <string name="setup_passcode">PIN eingestellt</string>
     <string name="size_measurement">Größenmessung</string>
     <string name="weight">Gewicht: </string>
@@ -100,5 +101,7 @@
     <string name="gtc">Allgemeine Geschäftsbedingungen</string>
     <string name="general_terms_and_conditions">Fügen Sie hier ihre Allgemeinen Geschäftsbedingungen ein!</string>
     <string name="instruction">Bitte platzieren Sie das rechteckige Referenzobjekt in dem linken, oberen Kasten, wie die blaue Karte unten. Dann platzieren Sie die Person zwischen den beiden vertikalen Linien in der Mitte des Bildes.\n\nDann neigen und drehen Sie ihr Smartphone, bis die beiden rot-hinterlegten Felder Neigung und Roll nahe Null sind und grün hinterlegt werden..\n\nNur dann können Sie ein Bild aufnehmen!</string>
+    <string name="graph_help_title">Erklärung</string>
+    <string name="explanation">Diese Graphen vergleichen die gemessenen Daten mit den WHO Wachstumsstandards. Die obere Linie (SD+2) und die untere Linie (SD-2) stehen hierbei für den Punkt, an dem die WHO ein abnormes Wachstum definiert.</string>
 
 </resources>

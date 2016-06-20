@@ -254,6 +254,10 @@ public class ImageProcess {
         return measurementData;
     }
 
+
+
+
+
     /**
      * Sort contours from left to right or right to left
      *
@@ -261,15 +265,24 @@ public class ImageProcess {
      * @return the sorted contours
      */
     public List<MatOfPoint> sortContours(List<MatOfPoint> contours) {
-        Collections.sort(contours, new Comparator<MatOfPoint>() {
+
+
+        Comparator<MatOfPoint> comp = new Comparator<MatOfPoint>() {
             @Override
             public int compare(MatOfPoint lhs, MatOfPoint rhs) {
                 return (Imgproc.boundingRect(lhs).x - Imgproc.boundingRect(rhs).x);
 
             }
-        });
+        };
+
+
+
+        Collections.sort(contours,comp );
         return contours;
     }
+
+
+
 
     /**
      * Used to find the highest Point in the image

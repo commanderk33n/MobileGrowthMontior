@@ -234,6 +234,8 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
         mSensorManager = (SensorManager) mActivity.getSystemService(mActivity.SENSOR_SERVICE);
         mRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         mSensorManager.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+
     }
 
     /**
@@ -306,6 +308,7 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
             mPreview.mCamera = null;
         }
     }
+
 
     /**
      * Surface on which the camera projects it's capture results. This is derived both from Google's docs and the
@@ -520,7 +523,7 @@ public class NativeCam extends Fragment implements SensorEventListener, Serializ
             captureButton.setClickable(false);
 
             new Thread(new Runnable() {
-                public void run() {
+                public void run() { // rotate the picture and start measurement
                     ((CameraView) getActivity()).afterPictureTaken(height);
                     Log.i("Thread", "started");
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
