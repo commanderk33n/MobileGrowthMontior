@@ -205,8 +205,8 @@ public class MeasurementView extends BaseActivity {
         // mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
 
-      //DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-        //dbDummyData.addData(profile_Id);
+        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+        dbDummyData.addData(profile_Id);
     }
 
     /**
