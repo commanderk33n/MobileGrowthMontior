@@ -59,6 +59,16 @@
     <string name="bmi_category_weight_child_normal_weight">That means normal weight!</string>
     <string name="bmi_category_weight_child_overweight">That means overweight!</string>
     <string name="bmi_category_weight_child_severly_overweight">That means strong overweight!</string>
+
+    <string name="weight_category_weight_child_severly_underweight">That means strong underweight for his height!</string>
+    <string name="weight_category_weight_child_underweight">That means underweight for his height!</string>
+    <string name="weight_category_weight_child_normal_weight">That means normal weight for his height!</string>
+    <string name="weight_category_weight_child_overweight">That means overweight for his height!</string>
+    <string name="weight_category_weight_child_severly_overweight">That means strong overweight for his height!</string>
+
+
+
+
     <string name="bmi_category_weight_adult_underweight">That means underweight!</string>
     <string name="bmi_category_weight_adult_normal_weight">That means normal weight!</string>
     <string name="bmi_category_weight_adult_overweight">That means overweight!</string>

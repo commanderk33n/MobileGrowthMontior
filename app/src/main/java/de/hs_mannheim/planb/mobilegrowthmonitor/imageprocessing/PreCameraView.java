@@ -21,13 +21,13 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.ImageAdapter;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 public class PreCameraView extends BaseActivity {
-    private EditText etWeight, etHeightReference;
+    private EditText  etHeightReference;
     private int profile_Id;
     Bundle extras;
     DbHelper dbHelper;
     ProfileData profile;
     String profileName;
-    float weight, heightReference;
+    float  heightReference;
     SharedPreferences settings;
     final String PREFS_NAME = "Reference";
 
@@ -59,7 +59,6 @@ public class PreCameraView extends BaseActivity {
         }
 
 
-        etWeight = (EditText) findViewById(R.id.et_weightMeasurement);
         etHeightReference = (EditText) findViewById(R.id.et_heightReference);
         extras = getIntent().getExtras();
         profile_Id = extras.getInt("profile_Id");
@@ -67,16 +66,9 @@ public class PreCameraView extends BaseActivity {
         profile = dbHelper.getProfile(profile_Id);
         profileName = profile.firstname;
 
-        MeasurementData measurementData = dbHelper.getLatestMeasurement(profile_Id);
-        if (measurementData != null) {
-            weight = (float) measurementData.weight;
-        } else {
-            weight = 0.0f;
-        }
 
         settings = getSharedPreferences(PREFS_NAME, 0);
         heightReference = settings.getFloat("heightReference", 10);
-        etWeight.setText(weight + "");
         etHeightReference.setText(heightReference + "");
 
 
@@ -105,14 +97,10 @@ public class PreCameraView extends BaseActivity {
      */
     private void saveMeasurement(){
 
-        if (etWeight.getText().toString().trim().isEmpty() || Float.parseFloat(etWeight.getText().toString()) < 0) {
-            Toast.makeText(this, R.string.enter_weight, Toast.LENGTH_LONG).show();
-
-        } else if (etHeightReference.getText().toString().trim().isEmpty()) {
+        if (etHeightReference.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, R.string.enter_heightReference, Toast.LENGTH_LONG).show();
 
         } else {
-            weight = Float.parseFloat(etWeight.getText().toString());
             heightReference = Float.parseFloat(etHeightReference.getText().toString());
 
             SharedPreferences.Editor editor = settings.edit();
@@ -129,7 +117,6 @@ public class PreCameraView extends BaseActivity {
             ImageAdapter.REFERENCE_OBJECT_HEIGHT = heightReference;
 
             intent.putExtra("profile_Id", profile_Id);
-            intent.putExtra("weight", weight);
             intent.putExtra("heightReference", heightReference);
             intent.putExtra("profileName", profileName);
 

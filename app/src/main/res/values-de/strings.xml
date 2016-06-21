@@ -59,11 +59,22 @@
     <string name="bmi_category_weight_adult_severly_underweight">Das bedeutet starkes Untergewicht!</string>
     <string name="bmi_category_weight_adult_underweight">Das bedeutet Untergewicht!</string>
     <string name="bmi_category_weight_child">Das Kind %s</string>
+    <string name="weight_category_weight_child_normal_weight">Das bedeutet normales Gewicht für die Größe!</string>
+    <string name="weight_category_weight_child_overweight">Das bedeutet Übergewicht für die Größe!</string>
+    <string name="weight_category_weight_child_severly_overweight">Das bedeutet extremes Übergewicht für die Größe!</string>
+    <string name="weight_category_weight_child_severly_underweight">Das bedeutet extremes Untergewicht für die Größe!</string>
+    <string name="weight_category_weight_child_underweight">Das bedeutet Untergewicht für die Größe!</string>
+
+
     <string name="bmi_category_weight_child_normal_weight">Das bedeutet Normalgewicht!</string>
     <string name="bmi_category_weight_child_overweight">Das bedeutet Übergewicht!</string>
     <string name="bmi_category_weight_child_severly_overweight">Das bedeutet extremes Übergewicht!</string>
     <string name="bmi_category_weight_child_severly_underweight">Das bedeutet extremes Untergewicht!</string>
     <string name="bmi_category_weight_child_underweight">Das bedeutet Untergewicht!</string>
+
+
+
+
     <string name="bmi_category_weight_not_valid">Es gibt keinen gültigen WHO-Referenzdaten in dieser Altersklasse!</string>
     <string name="enter_height">Bitte geben Sie die Größe des Kindes ein!</string>
     <string name="enter_weight">Bitte geben Sie das Gewicht des Kindes ein!</string>

@@ -53,28 +53,13 @@
                 android:maxLength="6" />
 
 
-            <TextView
-                android:id="@+id/tv_weightMeasurement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_heightReference"
-                android:layout_marginTop="30dp"
-                android:text="@string/weight_in_kg" />
 
-            <EditText
-                android:id="@+id/et_weightMeasurement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_weightMeasurement"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:maxLength="6" />
 
             <Button
                 android:id="@+id/btn_save_measurement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/et_weightMeasurement"
+                android:layout_below="@id/et_heightReference"
                 android:text="@string/save"
                 android:visibility="invisible" />
 

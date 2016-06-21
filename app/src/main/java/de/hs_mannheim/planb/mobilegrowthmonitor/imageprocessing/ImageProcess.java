@@ -360,7 +360,8 @@ public class ImageProcess {
 
 
             if (temp.y + temp.height < original.height() / 2 && temp.y + temp.height
-                    > original.height() / 10.0 && temp.area()>minArea && temp.area()<maxArea
+                    > original.height() / 10.0 && temp.area()>minArea && temp.area()<maxArea &&
+                    temp.x <original.width()/2
                     &&temp.width<original.width()/5 && temp.height<original.height()/5)  {
 
                 Imgproc.rectangle(original, new Point(temp.x, temp.y), new Point(temp.x +

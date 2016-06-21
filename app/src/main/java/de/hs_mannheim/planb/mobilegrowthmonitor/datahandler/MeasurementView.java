@@ -137,14 +137,12 @@ public class MeasurementView extends BaseActivity {
         profile = dbHelper.getProfile(profile_Id);
 
 
-        if (extras.containsKey("weight")) {
-            weight = extras.getFloat("weight");
-        } else {
+
             if (dbHelper.getLatestMeasurement(profile_Id) != null) {
 
                 weight = dbHelper.getLatestMeasurement(profile_Id).weight;
             }
-        }
+
         if (extras.containsKey("height")) {
             height = extras.getDouble("height");
 
@@ -275,6 +273,7 @@ public class MeasurementView extends BaseActivity {
         bmiValue *= 100;
         bmiValue -= bmiValue % 1;
         bmiValue /= 100;
+        int age = Utils.getAgeInMonths(birthday, null);
 
         bmi = (TextView) findViewById(R.id.tv_bmi);
         bmi.setVisibility(View.VISIBLE);
@@ -289,19 +288,19 @@ public class MeasurementView extends BaseActivity {
 
         heightCategory = (TextView) findViewById(R.id.tv_height_category);
         heightCategory.setVisibility(View.VISIBLE);
+        if(age<=120) {
+            weightText = (TextView) findViewById(R.id.tv_weightText);
+            weightText.setVisibility(View.VISIBLE);
 
-        weightText = (TextView) findViewById(R.id.tv_weightText);
-        weightText.setVisibility(View.VISIBLE);
-
-        weightCategory = (TextView) findViewById(R.id.tv_weight_category);
-        weightCategory.setVisibility(View.VISIBLE);
-
-
+            weightCategory = (TextView) findViewById(R.id.tv_weight_category);
+            weightCategory.setVisibility(View.VISIBLE);
+            weightCategory.setText(getTextWeight(weightData, birthday, weight));
+        }
         bmiCategory.setText(getTextBMI(bmiData, birthday, bmiValue));
 
         heightCategory.setText(getTextHeight(heightData, birthday, height * 100));
 
-        weightCategory.setText(getTextWeight(weightData, birthday, weight));
+
 
 
     }
@@ -322,20 +321,20 @@ public class MeasurementView extends BaseActivity {
                     double sdPlus3 = (data[i][data[0].length / 2 + 3]);
                     if (bmi > sdPlus3) {
                         setBackgroundColor(1, bmiCategory);
-                        return getString(R.string.bmi_category_weight_child_severly_overweight);
+                        return getString(R.string.weight_category_weight_child_severly_overweight);
 
                     } else if (bmi > sdPlus2) {
                         setBackgroundColor(2, bmiCategory);
-                        return getString(R.string.bmi_category_weight_child_overweight);
+                        return getString(R.string.weight_category_weight_child_overweight);
                     } else if (bmi < sdMinus3) {
                         setBackgroundColor(1, bmiCategory);
-                        return getString(R.string.bmi_category_weight_child_severly_underweight);
+                        return getString(R.string.weight_category_weight_child_severly_underweight);
                     } else if (bmi < sdMinus2) {
                         setBackgroundColor(3, bmiCategory);
-                        return getString(R.string.bmi_category_weight_child_underweight);
+                        return getString(R.string.weight_category_weight_child_underweight);
                     }
                     setBackgroundColor(4, bmiCategory);
-                    return getString(R.string.bmi_category_weight_child_normal_weight);
+                    return getString(R.string.weight_category_weight_child_normal_weight);
 
                 }
             }
@@ -389,7 +388,8 @@ public class MeasurementView extends BaseActivity {
         int age = Utils.getAgeInMonths(birthday, null);
 
         if (age > 120) {
-            return getString(R.string.bmi_category_weight_not_valid);
+
+            return "";
         } else if (age <= 60) {
             age *= 30;
         }
