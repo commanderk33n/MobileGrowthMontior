@@ -9,6 +9,6 @@
         android:id="@+id/plot"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        ap:domainLabel="Diagram legend"/>
+        ap:domainLabel="@string/diagram_legend"/>
 
 </LinearLayout>

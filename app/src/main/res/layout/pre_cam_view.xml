@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_save_measurement"
                 android:id="@+id/tv_titel_instruction"
-                android:text="How to take a picture:"
+                android:text="@string/titel_instructions"
                 android:textAlignment="center"
                 android:textSize="16dp"
                 android:layout_marginTop="20dp"/>
