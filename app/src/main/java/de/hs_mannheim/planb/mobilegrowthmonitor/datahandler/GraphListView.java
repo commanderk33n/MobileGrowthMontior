@@ -121,7 +121,13 @@ public class GraphListView extends BaseActivity {
             }else{
                 return v;
             }
-
+            if(pos==0){
+                pos=1;
+            }else if(pos==1){
+                pos=2;
+            }else if(pos==2){
+                pos=0;
+            }
             XYPlot mPlot = (XYPlot) v.findViewById(R.id.plot);
             mPlot.clear();
             Filereader f = new Filereader(getApplicationContext());
@@ -165,10 +171,7 @@ public class GraphListView extends BaseActivity {
             }
 
 
-        /*
-        Find the Data with SD0 for the appropriate range
-         */
-            // List<Double> optimal = new ArrayList<>();
+
             List<Double> sdMinus2 = new ArrayList<>();
             List<Double> sdPlus2 = new ArrayList<>();
             Date birthday = null;
@@ -267,6 +270,7 @@ public class GraphListView extends BaseActivity {
             valueFormat.configure(getApplicationContext(),
                     R.xml.line_point_formatter_with_labels);
             valueFormat.setPointLabeler(null);
+
             // just for fun, add some smoothing to the lines:
             // see: http://androidplot.com/smooth-curves-and-androidplot/
             valueFormat.setInterpolationParams(
