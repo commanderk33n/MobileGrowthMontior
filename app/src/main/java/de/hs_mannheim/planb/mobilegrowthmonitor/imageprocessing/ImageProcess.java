@@ -316,7 +316,7 @@ public class ImageProcess {
      */
     public int getYLowerHorizontalLine(Mat img) {
         // init
-        int threshold = 50;
+        int threshold = 10;
         int minLineLength = 10;
         int maxLineGap = 10;
         Mat lines = new Mat();
@@ -324,14 +324,14 @@ public class ImageProcess {
         try {
             Mat destination;
             destination = img;
-            Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 360, threshold, minLineLength, maxLineGap);
+            Imgproc.HoughLinesP(destination, lines, 1, Math.PI / 180, threshold, minLineLength, maxLineGap);
             for (int x = 0; x < lines.rows(); x++) {
                 double[] vec = lines.get(x, 0);
                 double x1 = vec[0],
                         y1 = vec[1],
                         x2 = vec[2],
                         y2 = vec[3];
-                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 5) {
+                if (Math.abs((Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI)) < 3) {
                     if ((destination.width() / 3 > x1 || x2 > destination.width() * 2.0 / 3.0) && y1 > miny && y1 < destination.height()) {
                         //   if (y1 > miny && y1 < destination.height()) {
                         miny = (int) y1;
