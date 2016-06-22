@@ -271,8 +271,12 @@ public class ImageAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //dismisses Dialog automatically
-                            REFERENCE_OBJECT_HEIGHT = Double.parseDouble(height.getText().toString());
-                            new Thread(new Runnable() {
+                            if(height.getText().toString().equals("")){
+                                REFERENCE_OBJECT_HEIGHT=14.9;
+                            }else{
+                                REFERENCE_OBJECT_HEIGHT = Double.parseDouble(height.getText().toString());
+                            }
+                                new Thread(new Runnable() {
                             public void run() {
                                 Log.i("Thread", "started");
                                 try {
