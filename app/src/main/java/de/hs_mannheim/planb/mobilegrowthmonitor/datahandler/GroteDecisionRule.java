@@ -20,7 +20,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
 import de.hs_mannheim.planb.mobilegrowthmonitor.misc.Utils;
 
 /**
- * Created by Morty on 12.06.2016.
+ * Gives A result on user input after taking input from user
  */
 public class GroteDecisionRule implements DecisionRule {
     private static final String PREFS_NAME = "Values";
