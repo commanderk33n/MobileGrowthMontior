@@ -23,7 +23,7 @@ import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
 
 /**
  * Created by Laura on 02.06.2016.
- *
+ * <p>
  * This view gives the possibility to export a morphing gif
  * also it enables the export of the database as a .csv file
  */
@@ -32,6 +32,7 @@ public class ExportView extends BaseActivity {
     private int profileId;
     private DbHelper dbHelper;
     ProfileData profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +51,10 @@ public class ExportView extends BaseActivity {
      *
      * @param view
      */
-    public void exportData(View view){
+    public void exportData(View view) {
 
         ArrayList<MeasurementData> measurements = dbHelper.getAllMeasurements(profileId);
-        if(measurements!=null) {
+        if (measurements != null) {
             CSVWriter writer = null;
 
             try {
@@ -88,13 +89,14 @@ public class ExportView extends BaseActivity {
             intent.setType("application/csv");
             startActivity(Intent.createChooser(intent, "Send mail"));
 
-        }else{
+        } else {
             Toast.makeText(this, R.string.no_measurements, Toast.LENGTH_LONG).show();
         }
     }
 
     /**
      * exports an animated gif of the profile specific files
+     *
      * @param view
      */
     public void exportGif(View view) {
@@ -104,28 +106,39 @@ public class ExportView extends BaseActivity {
             @Override
             public void run() {
                 GalleryView.getFromSdCard();
-                GalleryView.writeGif();
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_with_gif));
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
-                        + "/growpics/gif.gif")));
-                intent.setType("image/gif");
-                startActivity(Intent.createChooser(intent, "Send mail"));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.pictures_converted_gif, Toast.LENGTH_LONG).show();
+                try {
+                    GalleryView.writeGif();
 
-                    }
-                });
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "MobileGrowthMonitor Data");
+                    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_with_gif));
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()
+                            + "/growpics/gif.gif")));
+                    intent.setType("image/gif");
+                    startActivity(Intent.createChooser(intent, "Send mail"));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), R.string.pictures_converted_gif, Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                } catch (IllegalArgumentException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "There are no pictures to create a gif-file.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }
             }
         }).start();
     }
 
 
-        @Override
-    protected void onDestroy(){
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
         dbHelper.close();
     }

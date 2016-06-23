@@ -12,12 +12,13 @@ import android.widget.GridView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.ProfileView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.ProfileData;
+import de.hs_mannheim.planb.mobilegrowthmonitor.profiles.ProfileView;
 
 
 public class GalleryView extends AppCompatActivity {
@@ -53,11 +54,12 @@ public class GalleryView extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-      //    onWindowFocusChanged(true);
+        //    onWindowFocusChanged(true);
     }
 
     /**
      * this is used to reload the pictures
+     *
      * @param hasFocus
      */
     @Override
@@ -114,8 +116,9 @@ public class GalleryView extends AppCompatActivity {
 
     /**
      * this is used to read images and create a Bitmapp
+     *
      * @param imageUrl the path to the image
-     * @param hiRes true : high resolution, false: a third of high resolution
+     * @param hiRes    true : high resolution, false: a third of high resolution
      * @return a Bitmap from imageUrl
      * @throws Exception
      */
@@ -147,9 +150,10 @@ public class GalleryView extends AppCompatActivity {
 
     /**
      * uses the Animated gif encoder to create a gif
+     *
      * @return
      */
-    public static byte[] generateGIF() {
+    public static byte[] generateGIF() throws IllegalArgumentException {
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         if (pathList == null) {
             File folder = new File(Environment.getExternalStorageDirectory().getPath(), "growpics" + File.separator + profileName);
@@ -166,25 +170,30 @@ public class GalleryView extends AppCompatActivity {
                 }
             }
         }
-        Log.i(TAG, "pathlist" + pathList.size());
-        for (String s : pathList) {
-            try {
-                Bitmap b = GalleryView.urlImageToBitmap(s,false);
-                bitmaps.add(b);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (pathList.size() >= 2) {
+            Log.i(TAG, "pathlist" + pathList.size());
+            for (String s : pathList) {
+                try {
+                    Bitmap b = GalleryView.urlImageToBitmap(s, false);
+                    bitmaps.add(b);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+            encoder.setRepeat(0);
+            encoder.delay = 50;
+            encoder.start(bos);
+            for (Bitmap bitmap : bitmaps) {
+                encoder.addFrame(bitmap);
+            }
+            encoder.finish();
+            return bos.toByteArray();
+        } else {
+            throw new IllegalArgumentException();
         }
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
-        encoder.setRepeat(0);
-        encoder.delay = 50;
-        encoder.start(bos);
-        for (Bitmap bitmap : bitmaps) {
-            encoder.addFrame(bitmap);
-        }
-        encoder.finish();
-        return bos.toByteArray();
+
     }
 
     /**
@@ -196,7 +205,7 @@ public class GalleryView extends AppCompatActivity {
             outStream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/growpics/gif.gif");
             outStream.write(generateGIF());
             outStream.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

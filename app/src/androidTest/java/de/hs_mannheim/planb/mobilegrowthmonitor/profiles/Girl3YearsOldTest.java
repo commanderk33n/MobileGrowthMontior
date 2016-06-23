@@ -75,7 +75,7 @@ public class Girl3YearsOldTest {
                 allOf(withId(R.id.save_profile), withText("Speichern"), withContentDescription("Speichern"), isDisplayed()));
         actionMenuItemView.perform(click());
 
-        onView(withId(R.id.rv_profileList)).perform(swipeUp());
+        onView(withId(R.id.rv_profileList)).perform(swipeUp()).perform(swipeUp());
 
         onView(allOf(withId(R.id.tv_name), (withText("Girl3YearsOld O, ")))).perform(click());
 

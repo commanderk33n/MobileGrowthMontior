@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Looper;
@@ -168,7 +167,7 @@ public class ImageAdapter extends BaseAdapter {
         // it will position the zoomed-in view in the place of the thumbnail.
         thumbView.setAlpha(0f);
         fullscreenImageView.setVisibility(View.VISIBLE);
-        sizeMeasurement.setVisibility(View.VISIBLE);
+        //sizeMeasurement.setVisibility(View.VISIBLE);
         // Set the pivot point for SCALE_X and SCALE_Y transformations to the
         // top-left corner of
         // the zoomed-in view (the default is the center of the view).
@@ -229,7 +228,7 @@ public class ImageAdapter extends BaseAdapter {
                     public void onAnimationEnd(Animator animation) {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
-                        sizeMeasurement.setVisibility(View.GONE);
+                       // sizeMeasurement.setVisibility(View.GONE);
                         currentAnimator = null;
 
                     }
@@ -238,7 +237,7 @@ public class ImageAdapter extends BaseAdapter {
                     public void onAnimationCancel(Animator animation) {
                         thumbView.setAlpha(1f);
                         fullscreenImageView.setVisibility(View.GONE);
-                        sizeMeasurement.setVisibility(View.GONE);
+                        //sizeMeasurement.setVisibility(View.GONE);
                         currentAnimator = null;
                     }
                 });

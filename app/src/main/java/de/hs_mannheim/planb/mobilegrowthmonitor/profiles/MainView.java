@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,10 +30,10 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import de.hs_mannheim.planb.mobilegrowthmonitor.misc.PermissionDialogFragment;
 import de.hs_mannheim.planb.mobilegrowthmonitor.R;
 import de.hs_mannheim.planb.mobilegrowthmonitor.database.DbHelper;
 import de.hs_mannheim.planb.mobilegrowthmonitor.datavisual.Listener;
+import de.hs_mannheim.planb.mobilegrowthmonitor.misc.PermissionDialogFragment;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AbstractAppLock;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.AppLockView;
 import de.hs_mannheim.planb.mobilegrowthmonitor.pinlock.BaseActivity;
@@ -82,7 +81,6 @@ public class MainView extends BaseActivity implements Listener, PermissionDialog
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, R.string.snackbar_create_profile, Snackbar.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), CreateProfileView.class);
                     startActivity(intent);
                 }
