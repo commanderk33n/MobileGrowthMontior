@@ -2,6 +2,11 @@
 
 ## MEP2016 Project - PlanB
 
+## Known Isses:
+
+- Espresso tests not working because of last changes
+
+
 ## Description:
 
 Die Überwachung des Wachstums von augenscheinlich gesunden Kindern dient der Früherkennung von schwerwiegenden Krankheiten. 
