@@ -114,5 +114,14 @@
     <string name="instruction">Bitte platzieren Sie das rechteckige Referenzobjekt in dem linken, oberen Kasten, wie die blaue Karte unten. Dann platzieren Sie die Person zwischen den beiden vertikalen Linien in der Mitte des Bildes.\n\nDann neigen und drehen Sie ihr Smartphone, bis die beiden rot-hinterlegten Felder Neigung und Roll nahe Null sind und grün hinterlegt werden..\n\nNur dann können Sie ein Bild aufnehmen!</string>
     <string name="graph_help_title">Erklärung</string>
     <string name="explanation">Diese Graphen vergleichen die gemessenen Daten mit den WHO Wachstumsstandards. Die obere Linie (SD+2) und die untere Linie (SD-2) stehen hierbei für den Punkt, an dem die WHO ein abnormes Wachstum definiert.</string>
+    <string name="cdr_no_further">Keine weitere Untersuchung benötigt</string>
+    <string name="cdr_diagnostic">Ein Arzt ist eventuell aufzusuchen.</string>
+    <string name="cdr_birthweight">Geben Sie das Geburtsgewicht ein.</string>
+    <string name="cdr_distance_target_height">Abstand zur standarisierten Zielgröße geringer als -2SD?</string>
+    <string name="cdr_disproportion">Disproportion or dysmorphische Merkmale, oder beides</string>
+    <string name="cdr_birthweight_length_gestation">Geburtsgewicht oder Tragedauer unter -2SD, oder Emotionale Deprivation</string>
+    <string name="cdr_too_old">Zu alt für die CDR</string>
+    <string name="no">Nein</string>
+    <string name="cdr_not_enough_measurements">Nicht genug Messungen für eine CDR</string>
 
 </resources>

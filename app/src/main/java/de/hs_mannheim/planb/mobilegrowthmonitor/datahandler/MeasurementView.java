@@ -48,6 +48,7 @@ public class MeasurementView extends BaseActivity {
     private ProfileData profile;
     private TextView bmi, bmiCategory, heightText, weightText, heightCategory, weightCategory;
     private static Button undo;
+    private Button cdr;
     public static final String TAG = MeasurementView.class.getSimpleName();
     public static Context baseContext;
     private static volatile boolean startCallback, goBack;
@@ -203,8 +204,11 @@ public class MeasurementView extends BaseActivity {
         // mImageView.setVisibility(View.GONE);
         undo = (Button) findViewById(R.id.btn_undo);
 
-        DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
-        dbDummyData.addData(profile_Id);
+        cdr = (Button) findViewById(R.id.btn_clinical);
+
+
+        //   DbDummyData dbDummyData = new DbDummyData(getApplicationContext());
+      //  dbDummyData.addData(profile_Id);
     }
 
     /**
@@ -251,6 +255,10 @@ public class MeasurementView extends BaseActivity {
             if (undo != null) {
                 undo.setVisibility(View.INVISIBLE);
             }
+            if(cdr!=null){
+                cdr.setVisibility(View.VISIBLE);
+            }
+
 
         }
     }
@@ -297,7 +305,6 @@ public class MeasurementView extends BaseActivity {
             weightCategory.setText(getTextWeight(weightData, birthday, weight));
         }
         bmiCategory.setText(getTextBMI(bmiData, birthday, bmiValue));
-
         heightCategory.setText(getTextHeight(heightData, birthday, height * 100));
 
 
@@ -555,13 +562,34 @@ public class MeasurementView extends BaseActivity {
      * @param view
      */
     public void undo(View view) {
-        File file = new File(image);
-        file.delete();
-        File editedImage = new File(edited);
-        editedImage.delete();
+
+        if(image !=null ) {
+            File file = new File(image);
+            file.delete();
+        }
+        if(edited!=null) {
+            File editedImage = new File(edited);
+            editedImage.delete();
+        }
         Intent intent = new Intent(this, PreCameraView.class);
         intent.putExtra("profile_Id", profile.index);
         startActivity(intent);
+    }
+
+    public void clnicalDecision(View view){
+        if(dbHelper.getAllMeasurements(profile_Id).size()>1){
+      try{
+          new GroteDecisionRule().getDecision(profile,this);
+
+      }catch (Exception e){
+          Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+
+      }
+    }else{
+            Toast.makeText(this, R.string.validate_data, Toast.LENGTH_LONG).show();
+
+        }
+
     }
 
     @Override

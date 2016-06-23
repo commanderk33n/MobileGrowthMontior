@@ -60,8 +60,11 @@
     <string name="bmi_category_weight_child_overweight">That means overweight!</string>
     <string name="bmi_category_weight_child_severly_overweight">That means strong overweight!</string>
 
-
-
+    <string name="weight_category_weight_child_severly_underweight">That means strong underweight for his height!</string>
+    <string name="weight_category_weight_child_underweight">That means underweight for his height!</string>
+    <string name="weight_category_weight_child_normal_weight">That means normal weight for his height!</string>
+    <string name="weight_category_weight_child_overweight">That means overweight for his height!</string>
+    <string name="weight_category_weight_child_severly_overweight">That means strong overweight for his height!</string>
 
 
 
@@ -123,4 +126,13 @@
     </string>
 
     <string name="instruction">Please put your rectangular reference object in the left upper rectangle, like the blue card in the picture below. Then position the person in the camera view as below between the two vertical lines.\n\nThen pitch and rotate your phone until the values of pitch and roll are near Zero und have a green background.\n\nOnly then you\'ll be able to take a picture!</string>
+    <string name="cdr_not_enough_measurements">Not enough Mesurements for a CDR</string>
+    <string name="cdr_no_further">No further investigation required</string>
+    <string name="cdr_diagnostic">Referal for Diagnostic work-up</string>
+    <string name="cdr_birthweight">Enter birthweight</string>
+    <string name="cdr_distance_target_height">Distance to standardised target height less than –2 SD</string>
+    <string name="cdr_disproportion">Disproportion or dysmorphic features, or both</string>
+    <string name="cdr_birthweight_length_gestation">Birthweight or length of gestation less than -2SD, or emotional deprivation?</string>
+    <string name="cdr_too_old">Too old for CDR</string>
+    <string name="no">No</string>
 </resources>

@@ -43,6 +43,22 @@ public class Utils {
 
     }
 
+    /**
+     * gets a Date Object from our String
+     * @param date with the Format yyyy-MM-dd
+     * @return
+     */
+    public static Date getDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date tempDate = new Date();
+        try {
+            tempDate = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return tempDate;
+    }
+
 
         /**
          * Returns age of a profileUser out of a String
